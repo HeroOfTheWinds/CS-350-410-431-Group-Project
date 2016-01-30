@@ -1,1 +1,15 @@
 c:\users\cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.pdb
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.Compatibility.dll
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.dll
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.dll
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.pdb
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.xml
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.xml
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csprojResolveAssemblyReference.cache
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.Properties.Resources.resources
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
