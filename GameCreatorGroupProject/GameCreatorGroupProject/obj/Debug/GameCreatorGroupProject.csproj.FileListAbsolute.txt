@@ -13,3 +13,6 @@ C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameC
 C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
 C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
 C:\Users\Cor\documents\visual studio 2015\Projects\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb

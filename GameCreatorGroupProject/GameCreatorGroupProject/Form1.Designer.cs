@@ -39,6 +39,9 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ModeControlTabs = new System.Windows.Forms.TabControl();
             this.ResourcesTab = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnSetName = new System.Windows.Forms.Button();
+            this.lblResName = new System.Windows.Forms.Label();
             this.lblRProperties = new System.Windows.Forms.Label();
             this.lblResourcePreview = new System.Windows.Forms.Label();
             this.pnlResourceProperties = new System.Windows.Forms.Panel();
@@ -51,48 +54,62 @@
             this.btnAddResource = new System.Windows.Forms.Button();
             this.listResources = new System.Windows.Forms.ListBox();
             this.ObjectCreatorTab = new System.Windows.Forms.TabPage();
-            this.RoomEditorTab = new System.Windows.Forms.TabPage();
-            this.glRoomView = new OpenTK.GLControl();
-            this.imageResources = new System.Windows.Forms.ImageList(this.components);
-            this.openResourceDialog = new System.Windows.Forms.OpenFileDialog();
-            this.lblResName = new System.Windows.Forms.Label();
-            this.btnSetName = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtObjectName = new System.Windows.Forms.TextBox();
+            this.btnSetObjName = new System.Windows.Forms.Button();
+            this.lblObjectName = new System.Windows.Forms.Label();
+            this.gboxBehaviorCode = new System.Windows.Forms.GroupBox();
+            this.txtObjectCode = new System.Windows.Forms.TextBox();
+            this.gboxSprite = new System.Windows.Forms.GroupBox();
+            this.radioSprite = new System.Windows.Forms.RadioButton();
+            this.radioDisk = new System.Windows.Forms.RadioButton();
+            this.radioBox = new System.Windows.Forms.RadioButton();
+            this.lblCollisionMask = new System.Windows.Forms.Label();
+            this.picSpriteView = new System.Windows.Forms.PictureBox();
+            this.btnSetSprite = new System.Windows.Forms.Button();
+            this.cmbSprite = new System.Windows.Forms.ComboBox();
+            this.lblSprite = new System.Windows.Forms.Label();
+            this.pnlObjectTools = new System.Windows.Forms.Panel();
+            this.gboxEvents = new System.Windows.Forms.GroupBox();
+            this.btnTestVar = new System.Windows.Forms.Button();
+            this.btnOnDestruct = new System.Windows.Forms.Button();
+            this.btnOnCreate = new System.Windows.Forms.Button();
+            this.btnAlarm = new System.Windows.Forms.Button();
+            this.btnCollision = new System.Windows.Forms.Button();
+            this.btnInput = new System.Windows.Forms.Button();
+            this.gboxActions = new System.Windows.Forms.GroupBox();
+            this.btnVariable = new System.Windows.Forms.Button();
+            this.btnChangeSprite = new System.Windows.Forms.Button();
+            this.btnTimer = new System.Windows.Forms.Button();
+            this.btnHealth = new System.Windows.Forms.Button();
+            this.btnScore = new System.Windows.Forms.Button();
+            this.btnMove = new System.Windows.Forms.Button();
+            this.btnDestroy = new System.Windows.Forms.Button();
+            this.btnInstantiate = new System.Windows.Forms.Button();
             this.lblObjects = new System.Windows.Forms.Label();
             this.btnRemoveObject = new System.Windows.Forms.Button();
             this.btnAddObject = new System.Windows.Forms.Button();
             this.listObjects = new System.Windows.Forms.ListBox();
-            this.pnlObjectTools = new System.Windows.Forms.Panel();
-            this.gboxSprite = new System.Windows.Forms.GroupBox();
-            this.lblSprite = new System.Windows.Forms.Label();
-            this.cmbSprite = new System.Windows.Forms.ComboBox();
-            this.btnSetSprite = new System.Windows.Forms.Button();
-            this.picSpriteView = new System.Windows.Forms.PictureBox();
-            this.lblCollisionMask = new System.Windows.Forms.Label();
-            this.radioBox = new System.Windows.Forms.RadioButton();
-            this.radioDisk = new System.Windows.Forms.RadioButton();
-            this.radioSprite = new System.Windows.Forms.RadioButton();
-            this.gboxBehaviorCode = new System.Windows.Forms.GroupBox();
-            this.txtObjectCode = new System.Windows.Forms.TextBox();
-            this.gboxActions = new System.Windows.Forms.GroupBox();
-            this.gboxEvents = new System.Windows.Forms.GroupBox();
-            this.btnInstantiate = new System.Windows.Forms.Button();
-            this.btnDestroy = new System.Windows.Forms.Button();
-            this.btnMove = new System.Windows.Forms.Button();
-            this.btnScore = new System.Windows.Forms.Button();
-            this.btnHealth = new System.Windows.Forms.Button();
-            this.btnTimer = new System.Windows.Forms.Button();
-            this.btnChangeSprite = new System.Windows.Forms.Button();
-            this.btnVariable = new System.Windows.Forms.Button();
-            this.btnInput = new System.Windows.Forms.Button();
-            this.btnCollision = new System.Windows.Forms.Button();
-            this.btnAlarm = new System.Windows.Forms.Button();
-            this.btnOnCreate = new System.Windows.Forms.Button();
-            this.btnOnDestruct = new System.Windows.Forms.Button();
-            this.btnTestVar = new System.Windows.Forms.Button();
-            this.txtObjectName = new System.Windows.Forms.TextBox();
-            this.btnSetObjName = new System.Windows.Forms.Button();
-            this.lblObjectName = new System.Windows.Forms.Label();
+            this.RoomEditorTab = new System.Windows.Forms.TabPage();
+            this.glRoomView = new OpenTK.GLControl();
+            this.imageResources = new System.Windows.Forms.ImageList(this.components);
+            this.openResourceDialog = new System.Windows.Forms.OpenFileDialog();
+            this.tabsRoomDesigner = new System.Windows.Forms.TabControl();
+            this.tabObjects = new System.Windows.Forms.TabPage();
+            this.tabRoomProperties = new System.Windows.Forms.TabPage();
+            this.lblRooms = new System.Windows.Forms.Label();
+            this.btnRemoveRoom = new System.Windows.Forms.Button();
+            this.btnAddRoom = new System.Windows.Forms.Button();
+            this.listRooms = new System.Windows.Forms.ListBox();
+            this.tabBackground = new System.Windows.Forms.TabPage();
+            this.listObjChoices = new System.Windows.Forms.ListBox();
+            this.lblXPos = new System.Windows.Forms.Label();
+            this.txtXPos = new System.Windows.Forms.TextBox();
+            this.txtYPos = new System.Windows.Forms.TextBox();
+            this.lblYPos = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.lblLayer = new System.Windows.Forms.Label();
+            this.txtLayer = new System.Windows.Forms.TextBox();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -100,13 +117,15 @@
             this.pnlResourcePreview.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.ObjectCreatorTab.SuspendLayout();
-            this.RoomEditorTab.SuspendLayout();
-            this.pnlObjectTools.SuspendLayout();
+            this.gboxBehaviorCode.SuspendLayout();
             this.gboxSprite.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSpriteView)).BeginInit();
-            this.gboxBehaviorCode.SuspendLayout();
-            this.gboxActions.SuspendLayout();
+            this.pnlObjectTools.SuspendLayout();
             this.gboxEvents.SuspendLayout();
+            this.gboxActions.SuspendLayout();
+            this.RoomEditorTab.SuspendLayout();
+            this.tabsRoomDesigner.SuspendLayout();
+            this.tabObjects.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -205,6 +224,32 @@
             this.ResourcesTab.Size = new System.Drawing.Size(1151, 681);
             this.ResourcesTab.TabIndex = 0;
             this.ResourcesTab.Text = "Resources";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(285, 625);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(540, 20);
+            this.textBox1.TabIndex = 10;
+            // 
+            // btnSetName
+            // 
+            this.btnSetName.Location = new System.Drawing.Point(831, 623);
+            this.btnSetName.Name = "btnSetName";
+            this.btnSetName.Size = new System.Drawing.Size(75, 23);
+            this.btnSetName.TabIndex = 9;
+            this.btnSetName.Text = "OK";
+            this.btnSetName.UseVisualStyleBackColor = true;
+            // 
+            // lblResName
+            // 
+            this.lblResName.AutoSize = true;
+            this.lblResName.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.lblResName.Location = new System.Drawing.Point(192, 628);
+            this.lblResName.Name = "lblResName";
+            this.lblResName.Size = new System.Drawing.Size(87, 13);
+            this.lblResName.TabIndex = 8;
+            this.lblResName.Text = "Resource Name:";
             // 
             // lblRProperties
             // 
@@ -339,61 +384,317 @@
             this.ObjectCreatorTab.TabIndex = 1;
             this.ObjectCreatorTab.Text = "Object Creator";
             // 
-            // RoomEditorTab
+            // txtObjectName
             // 
-            this.RoomEditorTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.RoomEditorTab.Controls.Add(this.glRoomView);
-            this.RoomEditorTab.Location = new System.Drawing.Point(4, 22);
-            this.RoomEditorTab.Name = "RoomEditorTab";
-            this.RoomEditorTab.Size = new System.Drawing.Size(1151, 681);
-            this.RoomEditorTab.TabIndex = 2;
-            this.RoomEditorTab.Text = "Room Editor";
-            this.RoomEditorTab.UseVisualStyleBackColor = true;
+            this.txtObjectName.Location = new System.Drawing.Point(266, 29);
+            this.txtObjectName.Name = "txtObjectName";
+            this.txtObjectName.Size = new System.Drawing.Size(555, 20);
+            this.txtObjectName.TabIndex = 13;
             // 
-            // glRoomView
+            // btnSetObjName
             // 
-            this.glRoomView.BackColor = System.Drawing.Color.Black;
-            this.glRoomView.Location = new System.Drawing.Point(270, 28);
-            this.glRoomView.Name = "glRoomView";
-            this.glRoomView.Size = new System.Drawing.Size(866, 621);
-            this.glRoomView.TabIndex = 0;
-            this.glRoomView.VSync = false;
+            this.btnSetObjName.Location = new System.Drawing.Point(827, 27);
+            this.btnSetObjName.Name = "btnSetObjName";
+            this.btnSetObjName.Size = new System.Drawing.Size(75, 23);
+            this.btnSetObjName.TabIndex = 12;
+            this.btnSetObjName.Text = "OK";
+            this.btnSetObjName.UseVisualStyleBackColor = true;
             // 
-            // imageResources
+            // lblObjectName
             // 
-            this.imageResources.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.imageResources.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageResources.TransparentColor = System.Drawing.Color.Transparent;
+            this.lblObjectName.AutoSize = true;
+            this.lblObjectName.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.lblObjectName.Location = new System.Drawing.Point(190, 32);
+            this.lblObjectName.Name = "lblObjectName";
+            this.lblObjectName.Size = new System.Drawing.Size(72, 13);
+            this.lblObjectName.TabIndex = 11;
+            this.lblObjectName.Text = "Object Name:";
             // 
-            // openResourceDialog
+            // gboxBehaviorCode
             // 
-            this.openResourceDialog.FileName = "openFileDialog1";
+            this.gboxBehaviorCode.Controls.Add(this.txtObjectCode);
+            this.gboxBehaviorCode.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.gboxBehaviorCode.Location = new System.Drawing.Point(191, 152);
+            this.gboxBehaviorCode.Name = "gboxBehaviorCode";
+            this.gboxBehaviorCode.Size = new System.Drawing.Size(715, 492);
+            this.gboxBehaviorCode.TabIndex = 10;
+            this.gboxBehaviorCode.TabStop = false;
+            this.gboxBehaviorCode.Text = "Behavior Code:";
             // 
-            // lblResName
+            // txtObjectCode
             // 
-            this.lblResName.AutoSize = true;
-            this.lblResName.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblResName.Location = new System.Drawing.Point(192, 628);
-            this.lblResName.Name = "lblResName";
-            this.lblResName.Size = new System.Drawing.Size(87, 13);
-            this.lblResName.TabIndex = 8;
-            this.lblResName.Text = "Resource Name:";
+            this.txtObjectCode.Location = new System.Drawing.Point(10, 19);
+            this.txtObjectCode.Multiline = true;
+            this.txtObjectCode.Name = "txtObjectCode";
+            this.txtObjectCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtObjectCode.Size = new System.Drawing.Size(699, 467);
+            this.txtObjectCode.TabIndex = 0;
             // 
-            // btnSetName
+            // gboxSprite
             // 
-            this.btnSetName.Location = new System.Drawing.Point(831, 623);
-            this.btnSetName.Name = "btnSetName";
-            this.btnSetName.Size = new System.Drawing.Size(75, 23);
-            this.btnSetName.TabIndex = 9;
-            this.btnSetName.Text = "OK";
-            this.btnSetName.UseVisualStyleBackColor = true;
+            this.gboxSprite.Controls.Add(this.radioSprite);
+            this.gboxSprite.Controls.Add(this.radioDisk);
+            this.gboxSprite.Controls.Add(this.radioBox);
+            this.gboxSprite.Controls.Add(this.lblCollisionMask);
+            this.gboxSprite.Controls.Add(this.picSpriteView);
+            this.gboxSprite.Controls.Add(this.btnSetSprite);
+            this.gboxSprite.Controls.Add(this.cmbSprite);
+            this.gboxSprite.Controls.Add(this.lblSprite);
+            this.gboxSprite.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.gboxSprite.Location = new System.Drawing.Point(191, 56);
+            this.gboxSprite.Name = "gboxSprite";
+            this.gboxSprite.Size = new System.Drawing.Size(715, 90);
+            this.gboxSprite.TabIndex = 9;
+            this.gboxSprite.TabStop = false;
+            this.gboxSprite.Text = "Sprites:";
             // 
-            // textBox1
+            // radioSprite
             // 
-            this.textBox1.Location = new System.Drawing.Point(285, 625);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(540, 20);
-            this.textBox1.TabIndex = 10;
+            this.radioSprite.AutoSize = true;
+            this.radioSprite.Location = new System.Drawing.Point(191, 52);
+            this.radioSprite.Name = "radioSprite";
+            this.radioSprite.Size = new System.Drawing.Size(84, 17);
+            this.radioSprite.TabIndex = 7;
+            this.radioSprite.TabStop = true;
+            this.radioSprite.Text = "Sprite-based";
+            this.radioSprite.UseVisualStyleBackColor = true;
+            // 
+            // radioDisk
+            // 
+            this.radioDisk.AutoSize = true;
+            this.radioDisk.Location = new System.Drawing.Point(139, 52);
+            this.radioDisk.Name = "radioDisk";
+            this.radioDisk.Size = new System.Drawing.Size(46, 17);
+            this.radioDisk.TabIndex = 6;
+            this.radioDisk.TabStop = true;
+            this.radioDisk.Text = "Disk";
+            this.radioDisk.UseVisualStyleBackColor = true;
+            // 
+            // radioBox
+            // 
+            this.radioBox.AutoSize = true;
+            this.radioBox.Location = new System.Drawing.Point(90, 52);
+            this.radioBox.Name = "radioBox";
+            this.radioBox.Size = new System.Drawing.Size(43, 17);
+            this.radioBox.TabIndex = 5;
+            this.radioBox.TabStop = true;
+            this.radioBox.Text = "Box";
+            this.radioBox.UseVisualStyleBackColor = true;
+            // 
+            // lblCollisionMask
+            // 
+            this.lblCollisionMask.AutoSize = true;
+            this.lblCollisionMask.Location = new System.Drawing.Point(7, 54);
+            this.lblCollisionMask.Name = "lblCollisionMask";
+            this.lblCollisionMask.Size = new System.Drawing.Size(77, 13);
+            this.lblCollisionMask.TabIndex = 4;
+            this.lblCollisionMask.Text = "Collision Mask:";
+            // 
+            // picSpriteView
+            // 
+            this.picSpriteView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.picSpriteView.Location = new System.Drawing.Point(645, 15);
+            this.picSpriteView.Name = "picSpriteView";
+            this.picSpriteView.Size = new System.Drawing.Size(64, 64);
+            this.picSpriteView.TabIndex = 3;
+            this.picSpriteView.TabStop = false;
+            // 
+            // btnSetSprite
+            // 
+            this.btnSetSprite.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSetSprite.Location = new System.Drawing.Point(564, 15);
+            this.btnSetSprite.Name = "btnSetSprite";
+            this.btnSetSprite.Size = new System.Drawing.Size(75, 23);
+            this.btnSetSprite.TabIndex = 2;
+            this.btnSetSprite.Text = "Set";
+            this.btnSetSprite.UseVisualStyleBackColor = true;
+            // 
+            // cmbSprite
+            // 
+            this.cmbSprite.FormattingEnabled = true;
+            this.cmbSprite.Location = new System.Drawing.Point(138, 17);
+            this.cmbSprite.Name = "cmbSprite";
+            this.cmbSprite.Size = new System.Drawing.Size(420, 21);
+            this.cmbSprite.TabIndex = 1;
+            // 
+            // lblSprite
+            // 
+            this.lblSprite.AutoSize = true;
+            this.lblSprite.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.lblSprite.Location = new System.Drawing.Point(7, 20);
+            this.lblSprite.Name = "lblSprite";
+            this.lblSprite.Size = new System.Drawing.Size(125, 13);
+            this.lblSprite.TabIndex = 0;
+            this.lblSprite.Text = "Choose Sprite Resource:";
+            // 
+            // pnlObjectTools
+            // 
+            this.pnlObjectTools.BackColor = System.Drawing.SystemColors.Control;
+            this.pnlObjectTools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlObjectTools.Controls.Add(this.gboxEvents);
+            this.pnlObjectTools.Controls.Add(this.gboxActions);
+            this.pnlObjectTools.Location = new System.Drawing.Point(912, 29);
+            this.pnlObjectTools.Name = "pnlObjectTools";
+            this.pnlObjectTools.Size = new System.Drawing.Size(231, 615);
+            this.pnlObjectTools.TabIndex = 8;
+            // 
+            // gboxEvents
+            // 
+            this.gboxEvents.Controls.Add(this.btnTestVar);
+            this.gboxEvents.Controls.Add(this.btnOnDestruct);
+            this.gboxEvents.Controls.Add(this.btnOnCreate);
+            this.gboxEvents.Controls.Add(this.btnAlarm);
+            this.gboxEvents.Controls.Add(this.btnCollision);
+            this.gboxEvents.Controls.Add(this.btnInput);
+            this.gboxEvents.Location = new System.Drawing.Point(3, 296);
+            this.gboxEvents.Name = "gboxEvents";
+            this.gboxEvents.Size = new System.Drawing.Size(222, 312);
+            this.gboxEvents.TabIndex = 1;
+            this.gboxEvents.TabStop = false;
+            this.gboxEvents.Text = "Events";
+            // 
+            // btnTestVar
+            // 
+            this.btnTestVar.Location = new System.Drawing.Point(6, 164);
+            this.btnTestVar.Name = "btnTestVar";
+            this.btnTestVar.Size = new System.Drawing.Size(211, 23);
+            this.btnTestVar.TabIndex = 6;
+            this.btnTestVar.Text = "Test Variable";
+            this.btnTestVar.UseVisualStyleBackColor = true;
+            // 
+            // btnOnDestruct
+            // 
+            this.btnOnDestruct.Location = new System.Drawing.Point(6, 135);
+            this.btnOnDestruct.Name = "btnOnDestruct";
+            this.btnOnDestruct.Size = new System.Drawing.Size(211, 23);
+            this.btnOnDestruct.TabIndex = 5;
+            this.btnOnDestruct.Text = "On Destruct";
+            this.btnOnDestruct.UseVisualStyleBackColor = true;
+            // 
+            // btnOnCreate
+            // 
+            this.btnOnCreate.Location = new System.Drawing.Point(6, 106);
+            this.btnOnCreate.Name = "btnOnCreate";
+            this.btnOnCreate.Size = new System.Drawing.Size(210, 23);
+            this.btnOnCreate.TabIndex = 4;
+            this.btnOnCreate.Text = "On Create";
+            this.btnOnCreate.UseVisualStyleBackColor = true;
+            // 
+            // btnAlarm
+            // 
+            this.btnAlarm.Location = new System.Drawing.Point(6, 77);
+            this.btnAlarm.Name = "btnAlarm";
+            this.btnAlarm.Size = new System.Drawing.Size(210, 23);
+            this.btnAlarm.TabIndex = 3;
+            this.btnAlarm.Text = "Timer Alarm";
+            this.btnAlarm.UseVisualStyleBackColor = true;
+            // 
+            // btnCollision
+            // 
+            this.btnCollision.Location = new System.Drawing.Point(6, 48);
+            this.btnCollision.Name = "btnCollision";
+            this.btnCollision.Size = new System.Drawing.Size(210, 23);
+            this.btnCollision.TabIndex = 2;
+            this.btnCollision.Text = "Collision";
+            this.btnCollision.UseVisualStyleBackColor = true;
+            // 
+            // btnInput
+            // 
+            this.btnInput.Location = new System.Drawing.Point(6, 19);
+            this.btnInput.Name = "btnInput";
+            this.btnInput.Size = new System.Drawing.Size(210, 23);
+            this.btnInput.TabIndex = 1;
+            this.btnInput.Text = "Get Input";
+            this.btnInput.UseVisualStyleBackColor = true;
+            // 
+            // gboxActions
+            // 
+            this.gboxActions.Controls.Add(this.btnVariable);
+            this.gboxActions.Controls.Add(this.btnChangeSprite);
+            this.gboxActions.Controls.Add(this.btnTimer);
+            this.gboxActions.Controls.Add(this.btnHealth);
+            this.gboxActions.Controls.Add(this.btnScore);
+            this.gboxActions.Controls.Add(this.btnMove);
+            this.gboxActions.Controls.Add(this.btnDestroy);
+            this.gboxActions.Controls.Add(this.btnInstantiate);
+            this.gboxActions.Location = new System.Drawing.Point(3, 4);
+            this.gboxActions.Name = "gboxActions";
+            this.gboxActions.Size = new System.Drawing.Size(223, 286);
+            this.gboxActions.TabIndex = 0;
+            this.gboxActions.TabStop = false;
+            this.gboxActions.Text = "Actions";
+            // 
+            // btnVariable
+            // 
+            this.btnVariable.Location = new System.Drawing.Point(6, 223);
+            this.btnVariable.Name = "btnVariable";
+            this.btnVariable.Size = new System.Drawing.Size(209, 23);
+            this.btnVariable.TabIndex = 7;
+            this.btnVariable.Text = "Set Variable";
+            this.btnVariable.UseVisualStyleBackColor = true;
+            // 
+            // btnChangeSprite
+            // 
+            this.btnChangeSprite.Location = new System.Drawing.Point(6, 194);
+            this.btnChangeSprite.Name = "btnChangeSprite";
+            this.btnChangeSprite.Size = new System.Drawing.Size(210, 23);
+            this.btnChangeSprite.TabIndex = 6;
+            this.btnChangeSprite.Text = "Change Sprite";
+            this.btnChangeSprite.UseVisualStyleBackColor = true;
+            // 
+            // btnTimer
+            // 
+            this.btnTimer.Location = new System.Drawing.Point(6, 165);
+            this.btnTimer.Name = "btnTimer";
+            this.btnTimer.Size = new System.Drawing.Size(210, 23);
+            this.btnTimer.TabIndex = 5;
+            this.btnTimer.Text = "Set Timer";
+            this.btnTimer.UseVisualStyleBackColor = true;
+            // 
+            // btnHealth
+            // 
+            this.btnHealth.Location = new System.Drawing.Point(6, 136);
+            this.btnHealth.Name = "btnHealth";
+            this.btnHealth.Size = new System.Drawing.Size(210, 23);
+            this.btnHealth.TabIndex = 4;
+            this.btnHealth.Text = "Set Health";
+            this.btnHealth.UseVisualStyleBackColor = true;
+            // 
+            // btnScore
+            // 
+            this.btnScore.Location = new System.Drawing.Point(6, 107);
+            this.btnScore.Name = "btnScore";
+            this.btnScore.Size = new System.Drawing.Size(210, 23);
+            this.btnScore.TabIndex = 3;
+            this.btnScore.Text = "Set Score";
+            this.btnScore.UseVisualStyleBackColor = true;
+            // 
+            // btnMove
+            // 
+            this.btnMove.Location = new System.Drawing.Point(6, 78);
+            this.btnMove.Name = "btnMove";
+            this.btnMove.Size = new System.Drawing.Size(210, 23);
+            this.btnMove.TabIndex = 2;
+            this.btnMove.Text = "Move";
+            this.btnMove.UseVisualStyleBackColor = true;
+            // 
+            // btnDestroy
+            // 
+            this.btnDestroy.Location = new System.Drawing.Point(6, 49);
+            this.btnDestroy.Name = "btnDestroy";
+            this.btnDestroy.Size = new System.Drawing.Size(210, 23);
+            this.btnDestroy.TabIndex = 1;
+            this.btnDestroy.Text = "Destroy Object";
+            this.btnDestroy.UseVisualStyleBackColor = true;
+            // 
+            // btnInstantiate
+            // 
+            this.btnInstantiate.Location = new System.Drawing.Point(6, 20);
+            this.btnInstantiate.Name = "btnInstantiate";
+            this.btnInstantiate.Size = new System.Drawing.Size(210, 23);
+            this.btnInstantiate.TabIndex = 0;
+            this.btnInstantiate.Text = "Instantiate Object";
+            this.btnInstantiate.UseVisualStyleBackColor = true;
             // 
             // lblObjects
             // 
@@ -432,317 +733,214 @@
             this.listObjects.Size = new System.Drawing.Size(178, 615);
             this.listObjects.TabIndex = 4;
             // 
-            // pnlObjectTools
+            // RoomEditorTab
             // 
-            this.pnlObjectTools.BackColor = System.Drawing.SystemColors.Control;
-            this.pnlObjectTools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlObjectTools.Controls.Add(this.gboxEvents);
-            this.pnlObjectTools.Controls.Add(this.gboxActions);
-            this.pnlObjectTools.Location = new System.Drawing.Point(912, 29);
-            this.pnlObjectTools.Name = "pnlObjectTools";
-            this.pnlObjectTools.Size = new System.Drawing.Size(231, 615);
-            this.pnlObjectTools.TabIndex = 8;
+            this.RoomEditorTab.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.RoomEditorTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RoomEditorTab.Controls.Add(this.lblRooms);
+            this.RoomEditorTab.Controls.Add(this.btnRemoveRoom);
+            this.RoomEditorTab.Controls.Add(this.btnAddRoom);
+            this.RoomEditorTab.Controls.Add(this.listRooms);
+            this.RoomEditorTab.Controls.Add(this.tabsRoomDesigner);
+            this.RoomEditorTab.Controls.Add(this.glRoomView);
+            this.RoomEditorTab.Location = new System.Drawing.Point(4, 22);
+            this.RoomEditorTab.Name = "RoomEditorTab";
+            this.RoomEditorTab.Size = new System.Drawing.Size(1151, 681);
+            this.RoomEditorTab.TabIndex = 2;
+            this.RoomEditorTab.Text = "Room Editor";
             // 
-            // gboxSprite
+            // glRoomView
             // 
-            this.gboxSprite.Controls.Add(this.radioSprite);
-            this.gboxSprite.Controls.Add(this.radioDisk);
-            this.gboxSprite.Controls.Add(this.radioBox);
-            this.gboxSprite.Controls.Add(this.lblCollisionMask);
-            this.gboxSprite.Controls.Add(this.picSpriteView);
-            this.gboxSprite.Controls.Add(this.btnSetSprite);
-            this.gboxSprite.Controls.Add(this.cmbSprite);
-            this.gboxSprite.Controls.Add(this.lblSprite);
-            this.gboxSprite.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.gboxSprite.Location = new System.Drawing.Point(191, 56);
-            this.gboxSprite.Name = "gboxSprite";
-            this.gboxSprite.Size = new System.Drawing.Size(715, 90);
-            this.gboxSprite.TabIndex = 9;
-            this.gboxSprite.TabStop = false;
-            this.gboxSprite.Text = "Sprites:";
+            this.glRoomView.BackColor = System.Drawing.Color.Black;
+            this.glRoomView.Location = new System.Drawing.Point(430, 28);
+            this.glRoomView.Name = "glRoomView";
+            this.glRoomView.Size = new System.Drawing.Size(716, 622);
+            this.glRoomView.TabIndex = 0;
+            this.glRoomView.VSync = false;
             // 
-            // lblSprite
+            // imageResources
             // 
-            this.lblSprite.AutoSize = true;
-            this.lblSprite.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblSprite.Location = new System.Drawing.Point(7, 20);
-            this.lblSprite.Name = "lblSprite";
-            this.lblSprite.Size = new System.Drawing.Size(125, 13);
-            this.lblSprite.TabIndex = 0;
-            this.lblSprite.Text = "Choose Sprite Resource:";
+            this.imageResources.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.imageResources.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageResources.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // cmbSprite
+            // openResourceDialog
             // 
-            this.cmbSprite.FormattingEnabled = true;
-            this.cmbSprite.Location = new System.Drawing.Point(138, 17);
-            this.cmbSprite.Name = "cmbSprite";
-            this.cmbSprite.Size = new System.Drawing.Size(420, 21);
-            this.cmbSprite.TabIndex = 1;
+            this.openResourceDialog.FileName = "openFileDialog1";
             // 
-            // btnSetSprite
+            // tabsRoomDesigner
             // 
-            this.btnSetSprite.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSetSprite.Location = new System.Drawing.Point(564, 15);
-            this.btnSetSprite.Name = "btnSetSprite";
-            this.btnSetSprite.Size = new System.Drawing.Size(75, 23);
-            this.btnSetSprite.TabIndex = 2;
-            this.btnSetSprite.Text = "Set";
-            this.btnSetSprite.UseVisualStyleBackColor = true;
+            this.tabsRoomDesigner.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabsRoomDesigner.Controls.Add(this.tabObjects);
+            this.tabsRoomDesigner.Controls.Add(this.tabRoomProperties);
+            this.tabsRoomDesigner.Controls.Add(this.tabBackground);
+            this.tabsRoomDesigner.Location = new System.Drawing.Point(146, 28);
+            this.tabsRoomDesigner.Multiline = true;
+            this.tabsRoomDesigner.Name = "tabsRoomDesigner";
+            this.tabsRoomDesigner.SelectedIndex = 0;
+            this.tabsRoomDesigner.Size = new System.Drawing.Size(278, 644);
+            this.tabsRoomDesigner.TabIndex = 1;
             // 
-            // picSpriteView
+            // tabObjects
             // 
-            this.picSpriteView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.picSpriteView.Location = new System.Drawing.Point(645, 15);
-            this.picSpriteView.Name = "picSpriteView";
-            this.picSpriteView.Size = new System.Drawing.Size(64, 64);
-            this.picSpriteView.TabIndex = 3;
-            this.picSpriteView.TabStop = false;
+            this.tabObjects.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabObjects.Controls.Add(this.txtLayer);
+            this.tabObjects.Controls.Add(this.lblLayer);
+            this.tabObjects.Controls.Add(this.checkBox2);
+            this.tabObjects.Controls.Add(this.checkBox1);
+            this.tabObjects.Controls.Add(this.txtYPos);
+            this.tabObjects.Controls.Add(this.lblYPos);
+            this.tabObjects.Controls.Add(this.txtXPos);
+            this.tabObjects.Controls.Add(this.lblXPos);
+            this.tabObjects.Controls.Add(this.listObjChoices);
+            this.tabObjects.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.tabObjects.Location = new System.Drawing.Point(4, 4);
+            this.tabObjects.Name = "tabObjects";
+            this.tabObjects.Padding = new System.Windows.Forms.Padding(3);
+            this.tabObjects.Size = new System.Drawing.Size(270, 618);
+            this.tabObjects.TabIndex = 0;
+            this.tabObjects.Text = "Objects";
             // 
-            // lblCollisionMask
+            // tabRoomProperties
             // 
-            this.lblCollisionMask.AutoSize = true;
-            this.lblCollisionMask.Location = new System.Drawing.Point(7, 54);
-            this.lblCollisionMask.Name = "lblCollisionMask";
-            this.lblCollisionMask.Size = new System.Drawing.Size(77, 13);
-            this.lblCollisionMask.TabIndex = 4;
-            this.lblCollisionMask.Text = "Collision Mask:";
+            this.tabRoomProperties.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabRoomProperties.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.tabRoomProperties.Location = new System.Drawing.Point(4, 4);
+            this.tabRoomProperties.Name = "tabRoomProperties";
+            this.tabRoomProperties.Padding = new System.Windows.Forms.Padding(3);
+            this.tabRoomProperties.Size = new System.Drawing.Size(270, 618);
+            this.tabRoomProperties.TabIndex = 1;
+            this.tabRoomProperties.Text = "Room Properties";
             // 
-            // radioBox
+            // lblRooms
             // 
-            this.radioBox.AutoSize = true;
-            this.radioBox.Location = new System.Drawing.Point(90, 52);
-            this.radioBox.Name = "radioBox";
-            this.radioBox.Size = new System.Drawing.Size(43, 17);
-            this.radioBox.TabIndex = 5;
-            this.radioBox.TabStop = true;
-            this.radioBox.Text = "Box";
-            this.radioBox.UseVisualStyleBackColor = true;
+            this.lblRooms.AutoSize = true;
+            this.lblRooms.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.lblRooms.Location = new System.Drawing.Point(3, 12);
+            this.lblRooms.Name = "lblRooms";
+            this.lblRooms.Size = new System.Drawing.Size(43, 13);
+            this.lblRooms.TabIndex = 11;
+            this.lblRooms.Text = "Rooms:";
             // 
-            // radioDisk
+            // btnRemoveRoom
             // 
-            this.radioDisk.AutoSize = true;
-            this.radioDisk.Location = new System.Drawing.Point(139, 52);
-            this.radioDisk.Name = "radioDisk";
-            this.radioDisk.Size = new System.Drawing.Size(46, 17);
-            this.radioDisk.TabIndex = 6;
-            this.radioDisk.TabStop = true;
-            this.radioDisk.Text = "Disk";
-            this.radioDisk.UseVisualStyleBackColor = true;
+            this.btnRemoveRoom.Location = new System.Drawing.Point(76, 649);
+            this.btnRemoveRoom.Name = "btnRemoveRoom";
+            this.btnRemoveRoom.Size = new System.Drawing.Size(64, 23);
+            this.btnRemoveRoom.TabIndex = 10;
+            this.btnRemoveRoom.Text = "Remove";
+            this.btnRemoveRoom.UseVisualStyleBackColor = true;
             // 
-            // radioSprite
+            // btnAddRoom
             // 
-            this.radioSprite.AutoSize = true;
-            this.radioSprite.Location = new System.Drawing.Point(191, 52);
-            this.radioSprite.Name = "radioSprite";
-            this.radioSprite.Size = new System.Drawing.Size(84, 17);
-            this.radioSprite.TabIndex = 7;
-            this.radioSprite.TabStop = true;
-            this.radioSprite.Text = "Sprite-based";
-            this.radioSprite.UseVisualStyleBackColor = true;
+            this.btnAddRoom.Location = new System.Drawing.Point(6, 649);
+            this.btnAddRoom.Name = "btnAddRoom";
+            this.btnAddRoom.Size = new System.Drawing.Size(64, 23);
+            this.btnAddRoom.TabIndex = 9;
+            this.btnAddRoom.Text = "Add";
+            this.btnAddRoom.UseVisualStyleBackColor = true;
             // 
-            // gboxBehaviorCode
+            // listRooms
             // 
-            this.gboxBehaviorCode.Controls.Add(this.txtObjectCode);
-            this.gboxBehaviorCode.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.gboxBehaviorCode.Location = new System.Drawing.Point(191, 152);
-            this.gboxBehaviorCode.Name = "gboxBehaviorCode";
-            this.gboxBehaviorCode.Size = new System.Drawing.Size(715, 492);
-            this.gboxBehaviorCode.TabIndex = 10;
-            this.gboxBehaviorCode.TabStop = false;
-            this.gboxBehaviorCode.Text = "Behavior Code:";
+            this.listRooms.BackColor = System.Drawing.SystemColors.Control;
+            this.listRooms.FormattingEnabled = true;
+            this.listRooms.Location = new System.Drawing.Point(6, 28);
+            this.listRooms.Name = "listRooms";
+            this.listRooms.Size = new System.Drawing.Size(134, 615);
+            this.listRooms.TabIndex = 8;
             // 
-            // txtObjectCode
+            // tabBackground
             // 
-            this.txtObjectCode.Location = new System.Drawing.Point(10, 19);
-            this.txtObjectCode.Multiline = true;
-            this.txtObjectCode.Name = "txtObjectCode";
-            this.txtObjectCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtObjectCode.Size = new System.Drawing.Size(699, 467);
-            this.txtObjectCode.TabIndex = 0;
+            this.tabBackground.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabBackground.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.tabBackground.Location = new System.Drawing.Point(4, 4);
+            this.tabBackground.Name = "tabBackground";
+            this.tabBackground.Padding = new System.Windows.Forms.Padding(3);
+            this.tabBackground.Size = new System.Drawing.Size(270, 618);
+            this.tabBackground.TabIndex = 2;
+            this.tabBackground.Text = "Background";
             // 
-            // gboxActions
+            // listObjChoices
             // 
-            this.gboxActions.Controls.Add(this.btnVariable);
-            this.gboxActions.Controls.Add(this.btnChangeSprite);
-            this.gboxActions.Controls.Add(this.btnTimer);
-            this.gboxActions.Controls.Add(this.btnHealth);
-            this.gboxActions.Controls.Add(this.btnScore);
-            this.gboxActions.Controls.Add(this.btnMove);
-            this.gboxActions.Controls.Add(this.btnDestroy);
-            this.gboxActions.Controls.Add(this.btnInstantiate);
-            this.gboxActions.Location = new System.Drawing.Point(3, 4);
-            this.gboxActions.Name = "gboxActions";
-            this.gboxActions.Size = new System.Drawing.Size(223, 286);
-            this.gboxActions.TabIndex = 0;
-            this.gboxActions.TabStop = false;
-            this.gboxActions.Text = "Actions";
+            this.listObjChoices.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.listObjChoices.FormattingEnabled = true;
+            this.listObjChoices.Location = new System.Drawing.Point(7, 7);
+            this.listObjChoices.Name = "listObjChoices";
+            this.listObjChoices.Size = new System.Drawing.Size(257, 524);
+            this.listObjChoices.TabIndex = 0;
             // 
-            // gboxEvents
+            // lblXPos
             // 
-            this.gboxEvents.Controls.Add(this.btnTestVar);
-            this.gboxEvents.Controls.Add(this.btnOnDestruct);
-            this.gboxEvents.Controls.Add(this.btnOnCreate);
-            this.gboxEvents.Controls.Add(this.btnAlarm);
-            this.gboxEvents.Controls.Add(this.btnCollision);
-            this.gboxEvents.Controls.Add(this.btnInput);
-            this.gboxEvents.Location = new System.Drawing.Point(3, 296);
-            this.gboxEvents.Name = "gboxEvents";
-            this.gboxEvents.Size = new System.Drawing.Size(222, 312);
-            this.gboxEvents.TabIndex = 1;
-            this.gboxEvents.TabStop = false;
-            this.gboxEvents.Text = "Events";
+            this.lblXPos.AutoSize = true;
+            this.lblXPos.Location = new System.Drawing.Point(6, 544);
+            this.lblXPos.Name = "lblXPos";
+            this.lblXPos.Size = new System.Drawing.Size(35, 13);
+            this.lblXPos.TabIndex = 1;
+            this.lblXPos.Text = "x pos:";
             // 
-            // btnInstantiate
+            // txtXPos
             // 
-            this.btnInstantiate.Location = new System.Drawing.Point(6, 20);
-            this.btnInstantiate.Name = "btnInstantiate";
-            this.btnInstantiate.Size = new System.Drawing.Size(210, 23);
-            this.btnInstantiate.TabIndex = 0;
-            this.btnInstantiate.Text = "Instantiate Object";
-            this.btnInstantiate.UseVisualStyleBackColor = true;
+            this.txtXPos.Location = new System.Drawing.Point(48, 541);
+            this.txtXPos.Name = "txtXPos";
+            this.txtXPos.Size = new System.Drawing.Size(55, 20);
+            this.txtXPos.TabIndex = 2;
+            this.txtXPos.Text = "0";
             // 
-            // btnDestroy
+            // txtYPos
             // 
-            this.btnDestroy.Location = new System.Drawing.Point(6, 49);
-            this.btnDestroy.Name = "btnDestroy";
-            this.btnDestroy.Size = new System.Drawing.Size(210, 23);
-            this.btnDestroy.TabIndex = 1;
-            this.btnDestroy.Text = "Destroy Object";
-            this.btnDestroy.UseVisualStyleBackColor = true;
+            this.txtYPos.Location = new System.Drawing.Point(48, 567);
+            this.txtYPos.Name = "txtYPos";
+            this.txtYPos.Size = new System.Drawing.Size(55, 20);
+            this.txtYPos.TabIndex = 4;
+            this.txtYPos.Text = "0";
             // 
-            // btnMove
+            // lblYPos
             // 
-            this.btnMove.Location = new System.Drawing.Point(6, 78);
-            this.btnMove.Name = "btnMove";
-            this.btnMove.Size = new System.Drawing.Size(210, 23);
-            this.btnMove.TabIndex = 2;
-            this.btnMove.Text = "Move";
-            this.btnMove.UseVisualStyleBackColor = true;
+            this.lblYPos.AutoSize = true;
+            this.lblYPos.Location = new System.Drawing.Point(6, 570);
+            this.lblYPos.Name = "lblYPos";
+            this.lblYPos.Size = new System.Drawing.Size(35, 13);
+            this.lblYPos.TabIndex = 3;
+            this.lblYPos.Text = "y pos:";
             // 
-            // btnScore
+            // checkBox1
             // 
-            this.btnScore.Location = new System.Drawing.Point(6, 107);
-            this.btnScore.Name = "btnScore";
-            this.btnScore.Size = new System.Drawing.Size(210, 23);
-            this.btnScore.TabIndex = 3;
-            this.btnScore.Text = "Set Score";
-            this.btnScore.UseVisualStyleBackColor = true;
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox1.Location = new System.Drawing.Point(109, 543);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(78, 17);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Text = "Persistent?";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
-            // btnHealth
+            // checkBox2
             // 
-            this.btnHealth.Location = new System.Drawing.Point(6, 136);
-            this.btnHealth.Name = "btnHealth";
-            this.btnHealth.Size = new System.Drawing.Size(210, 23);
-            this.btnHealth.TabIndex = 4;
-            this.btnHealth.Text = "Set Health";
-            this.btnHealth.UseVisualStyleBackColor = true;
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox2.Location = new System.Drawing.Point(109, 569);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(99, 17);
+            this.checkBox2.TabIndex = 6;
+            this.checkBox2.Text = "Prevent Sleep?";
+            this.checkBox2.UseVisualStyleBackColor = true;
             // 
-            // btnTimer
+            // lblLayer
             // 
-            this.btnTimer.Location = new System.Drawing.Point(6, 165);
-            this.btnTimer.Name = "btnTimer";
-            this.btnTimer.Size = new System.Drawing.Size(210, 23);
-            this.btnTimer.TabIndex = 5;
-            this.btnTimer.Text = "Set Timer";
-            this.btnTimer.UseVisualStyleBackColor = true;
+            this.lblLayer.AutoSize = true;
+            this.lblLayer.Location = new System.Drawing.Point(6, 596);
+            this.lblLayer.Name = "lblLayer";
+            this.lblLayer.Size = new System.Drawing.Size(36, 13);
+            this.lblLayer.TabIndex = 7;
+            this.lblLayer.Text = "Layer:";
             // 
-            // btnChangeSprite
+            // txtLayer
             // 
-            this.btnChangeSprite.Location = new System.Drawing.Point(6, 194);
-            this.btnChangeSprite.Name = "btnChangeSprite";
-            this.btnChangeSprite.Size = new System.Drawing.Size(210, 23);
-            this.btnChangeSprite.TabIndex = 6;
-            this.btnChangeSprite.Text = "Change Sprite";
-            this.btnChangeSprite.UseVisualStyleBackColor = true;
-            // 
-            // btnVariable
-            // 
-            this.btnVariable.Location = new System.Drawing.Point(6, 223);
-            this.btnVariable.Name = "btnVariable";
-            this.btnVariable.Size = new System.Drawing.Size(209, 23);
-            this.btnVariable.TabIndex = 7;
-            this.btnVariable.Text = "Set Variable";
-            this.btnVariable.UseVisualStyleBackColor = true;
-            // 
-            // btnInput
-            // 
-            this.btnInput.Location = new System.Drawing.Point(6, 19);
-            this.btnInput.Name = "btnInput";
-            this.btnInput.Size = new System.Drawing.Size(210, 23);
-            this.btnInput.TabIndex = 1;
-            this.btnInput.Text = "Get Input";
-            this.btnInput.UseVisualStyleBackColor = true;
-            // 
-            // btnCollision
-            // 
-            this.btnCollision.Location = new System.Drawing.Point(6, 48);
-            this.btnCollision.Name = "btnCollision";
-            this.btnCollision.Size = new System.Drawing.Size(210, 23);
-            this.btnCollision.TabIndex = 2;
-            this.btnCollision.Text = "Collision";
-            this.btnCollision.UseVisualStyleBackColor = true;
-            // 
-            // btnAlarm
-            // 
-            this.btnAlarm.Location = new System.Drawing.Point(6, 77);
-            this.btnAlarm.Name = "btnAlarm";
-            this.btnAlarm.Size = new System.Drawing.Size(210, 23);
-            this.btnAlarm.TabIndex = 3;
-            this.btnAlarm.Text = "Timer Alarm";
-            this.btnAlarm.UseVisualStyleBackColor = true;
-            // 
-            // btnOnCreate
-            // 
-            this.btnOnCreate.Location = new System.Drawing.Point(6, 106);
-            this.btnOnCreate.Name = "btnOnCreate";
-            this.btnOnCreate.Size = new System.Drawing.Size(210, 23);
-            this.btnOnCreate.TabIndex = 4;
-            this.btnOnCreate.Text = "On Create";
-            this.btnOnCreate.UseVisualStyleBackColor = true;
-            // 
-            // btnOnDestruct
-            // 
-            this.btnOnDestruct.Location = new System.Drawing.Point(6, 135);
-            this.btnOnDestruct.Name = "btnOnDestruct";
-            this.btnOnDestruct.Size = new System.Drawing.Size(211, 23);
-            this.btnOnDestruct.TabIndex = 5;
-            this.btnOnDestruct.Text = "On Destruct";
-            this.btnOnDestruct.UseVisualStyleBackColor = true;
-            // 
-            // btnTestVar
-            // 
-            this.btnTestVar.Location = new System.Drawing.Point(6, 164);
-            this.btnTestVar.Name = "btnTestVar";
-            this.btnTestVar.Size = new System.Drawing.Size(211, 23);
-            this.btnTestVar.TabIndex = 6;
-            this.btnTestVar.Text = "Test Variable";
-            this.btnTestVar.UseVisualStyleBackColor = true;
-            // 
-            // txtObjectName
-            // 
-            this.txtObjectName.Location = new System.Drawing.Point(266, 29);
-            this.txtObjectName.Name = "txtObjectName";
-            this.txtObjectName.Size = new System.Drawing.Size(555, 20);
-            this.txtObjectName.TabIndex = 13;
-            // 
-            // btnSetObjName
-            // 
-            this.btnSetObjName.Location = new System.Drawing.Point(827, 27);
-            this.btnSetObjName.Name = "btnSetObjName";
-            this.btnSetObjName.Size = new System.Drawing.Size(75, 23);
-            this.btnSetObjName.TabIndex = 12;
-            this.btnSetObjName.Text = "OK";
-            this.btnSetObjName.UseVisualStyleBackColor = true;
-            // 
-            // lblObjectName
-            // 
-            this.lblObjectName.AutoSize = true;
-            this.lblObjectName.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblObjectName.Location = new System.Drawing.Point(190, 32);
-            this.lblObjectName.Name = "lblObjectName";
-            this.lblObjectName.Size = new System.Drawing.Size(72, 13);
-            this.lblObjectName.TabIndex = 11;
-            this.lblObjectName.Text = "Object Name:";
+            this.txtLayer.Location = new System.Drawing.Point(48, 593);
+            this.txtLayer.Name = "txtLayer";
+            this.txtLayer.Size = new System.Drawing.Size(55, 20);
+            this.txtLayer.TabIndex = 8;
+            this.txtLayer.Text = "0";
             // 
             // MainWindow
             // 
@@ -766,15 +964,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.ObjectCreatorTab.ResumeLayout(false);
             this.ObjectCreatorTab.PerformLayout();
-            this.RoomEditorTab.ResumeLayout(false);
-            this.pnlObjectTools.ResumeLayout(false);
+            this.gboxBehaviorCode.ResumeLayout(false);
+            this.gboxBehaviorCode.PerformLayout();
             this.gboxSprite.ResumeLayout(false);
             this.gboxSprite.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picSpriteView)).EndInit();
-            this.gboxBehaviorCode.ResumeLayout(false);
-            this.gboxBehaviorCode.PerformLayout();
-            this.gboxActions.ResumeLayout(false);
+            this.pnlObjectTools.ResumeLayout(false);
             this.gboxEvents.ResumeLayout(false);
+            this.gboxActions.ResumeLayout(false);
+            this.RoomEditorTab.ResumeLayout(false);
+            this.RoomEditorTab.PerformLayout();
+            this.tabsRoomDesigner.ResumeLayout(false);
+            this.tabObjects.ResumeLayout(false);
+            this.tabObjects.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -846,6 +1048,23 @@
         private System.Windows.Forms.Button btnAlarm;
         private System.Windows.Forms.Button btnCollision;
         private System.Windows.Forms.Button btnInput;
+        private System.Windows.Forms.Label lblRooms;
+        private System.Windows.Forms.Button btnRemoveRoom;
+        private System.Windows.Forms.Button btnAddRoom;
+        private System.Windows.Forms.ListBox listRooms;
+        private System.Windows.Forms.TabControl tabsRoomDesigner;
+        private System.Windows.Forms.TabPage tabObjects;
+        private System.Windows.Forms.TabPage tabRoomProperties;
+        private System.Windows.Forms.TabPage tabBackground;
+        private System.Windows.Forms.TextBox txtLayer;
+        private System.Windows.Forms.Label lblLayer;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.TextBox txtYPos;
+        private System.Windows.Forms.Label lblYPos;
+        private System.Windows.Forms.TextBox txtXPos;
+        private System.Windows.Forms.Label lblXPos;
+        private System.Windows.Forms.ListBox listObjChoices;
     }
 }
 
