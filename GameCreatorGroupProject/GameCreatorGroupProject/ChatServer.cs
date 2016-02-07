@@ -93,7 +93,6 @@ namespace GameCreatorGroupProject
                     }
 
                 }
-                //REMEMBER TO GO BACK THROUGH AND CHECK FOR NULL THINGS WHEN CLOSING, also figure out how to tell clients theyre dced
 
                 if (writer != null) { writer.Close(); }
                 if (reader != null) { reader.Close(); }
