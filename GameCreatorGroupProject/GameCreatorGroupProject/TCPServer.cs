@@ -17,11 +17,8 @@ namespace GameCreatorGroupProject
 
         //starts the server for use with the specified project
         abstract public void startServer(Project project);
-        
+
         //stops the server
-        public void stopServer()
-        {
-            listener.Stop();
-        }
+        abstract public void stopServer();
     }
 }

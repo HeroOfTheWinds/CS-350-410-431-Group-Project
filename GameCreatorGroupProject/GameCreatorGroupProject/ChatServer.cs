@@ -16,6 +16,7 @@ namespace GameCreatorGroupProject
     {
         private List<TcpClient> clientList = new List<TcpClient>();
         private Dictionary<IPAddress, string> collaborators;
+        private bool running = true;
         //chat port
         private readonly int port = 20113;
 
@@ -37,10 +38,8 @@ namespace GameCreatorGroupProject
                 MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             //main server control
-            while (true)
+            while (running)
             {
-                //allows other threads to run
-                Thread.Sleep(10);
                 //checks if a new client is waiting to connect
                 if (listener.Pending())
                 {
@@ -58,44 +57,58 @@ namespace GameCreatorGroupProject
         //sends messages to all clients
         private void transmitter(Object client)
         {
-            TcpClient thisClient = (TcpClient)client;
-            NetworkStream inStream = ((TcpClient)client).GetStream();
-            StringBuilder message = new StringBuilder();
-            StreamReader reader = new StreamReader(inStream);
-            StreamWriter writer;
-            NetworkStream outStream;
-            while (true)
+            using (TcpClient thisClient = (TcpClient)client)
             {
-                //allows other threads to run
-                Thread.Sleep(10);
-                //checks if data is available on the clients stream
-                if (inStream.DataAvailable)
+                NetworkStream inStream = ((TcpClient)client).GetStream();
+                StringBuilder message = new StringBuilder();
+                StreamReader reader = new StreamReader(inStream);
+                StreamWriter writer = null;
+                NetworkStream outStream;
+                while (thisClient.Connected && running)
                 {
-                    //sends data to all clients in chat
-                    foreach (TcpClient c in clientList)
+                    //checks if data is available on the clients stream
+                    if (inStream.DataAvailable)
                     {
-                        message.Clear();
-                        IPAddress userIP;
-                        string clientName;
-                        //gets client IP, used to determine client name (to be changed)
-                        userIP = ((IPEndPoint)thisClient.Client.RemoteEndPoint).Address;
-                        //creates StreamWriter for current outgoing client
-                        outStream = c.GetStream();
-                        writer = new StreamWriter(outStream);
-                        //appends sender name to beginning of message
-                        collaborators.TryGetValue(userIP, out clientName);
-                        message.Append(clientName);
-                        message.Append(": ");
-                        //appends outgoing message
-                        message.Append(reader.ReadLine());
-                        //writes message to outgoing stream
-                        writer.WriteLine(message.ToString());
-                        writer.Flush();
+                        //sends data to all clients in chat
+                        foreach (TcpClient c in clientList)
+                        {
+                            message.Clear();
+                            IPAddress userIP;
+                            string clientName;
+                            //gets client IP, used to determine client name (to be changed)
+                            userIP = ((IPEndPoint)thisClient.Client.RemoteEndPoint).Address;
+                            //creates StreamWriter for current outgoing client
+                            outStream = c.GetStream();
+                            writer = new StreamWriter(outStream);
+                            //appends sender name to beginning of message
+                            collaborators.TryGetValue(userIP, out clientName);
+                            message.Append(clientName);
+                            message.Append(": ");
+                            //appends outgoing message
+                            message.Append(reader.ReadLine());
+                            //writes message to outgoing stream
+                            writer.WriteLine(message.ToString());
+                            writer.Flush();
+                        }
                     }
-                }
-                
-            }
 
+                }
+                //REMEMBER TO GO BACK THROUGH AND CHECK FOR NULL THINGS WHEN CLOSING, also figure out how to tell clients theyre dced
+
+                if (writer != null) { writer.Close(); }
+                if (reader != null) { reader.Close(); }
+
+                lock (clientList)
+                {
+                    clientList.Remove(thisClient);
+                }
+            }
+        }
+
+        public override void stopServer()
+        {
+            if (listener != null) { listener.Stop(); }
+            running = false;
         }
     }
 

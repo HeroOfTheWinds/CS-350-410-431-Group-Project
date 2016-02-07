@@ -14,6 +14,8 @@ namespace GameCreatorGroupProject
 {
     class ChatClient : TCPClient
     {
+        StreamWriter writer = null;
+        StreamReader reader = null;
         //chat port
         private readonly int port = 20113;
 
@@ -22,33 +24,54 @@ namespace GameCreatorGroupProject
         {
             string message;
 
-            client = new TcpClient(serverIP, port);
-            stream = client.GetStream();
-            StreamReader reader = new StreamReader(stream);
-            //reads messages
-            while (true)
+            using (client = new TcpClient(serverIP, port))
             {
-                //allows other threads to execute
-                Thread.Sleep(10);
-                //possible issue if server has not yet read sent data
-                if (stream.DataAvailable)
+                if (client.Connected)
                 {
-                    //reads stream data
-                    message = reader.ReadLine();
+                    stream = client.GetStream();
+                    writer = new StreamWriter(stream);
+                    reader = new StreamReader(stream);
                 }
+                else
+                {
+                    MessageBox.Show("A network error has occured.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                //reads messages
+                while (client.Connected)
+                {
+                    //possible issue if server has not yet read sent data
+                    if (stream.DataAvailable)
+                    {
+                        //reads stream data
+                        message = reader.ReadLine();
+                    }
 
-                //add code to write message to chat interface
+                    //add code to write message to chat interface
 
+                }
+                MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         //sends a message
         public override void send(ref Object message)
         {
-            //writes message to stream
-            StreamWriter writer = new StreamWriter(stream);
-            writer.WriteLine((string)message);
-            writer.Flush();
+            if (writer != null)
+            {
+                //writes message to stream
+                writer.WriteLine((string)message);
+                writer.Flush();
+            }
+            else
+            {
+                throw new notConnectedException("Client must be connected to server before send is invoked");
+            }
+        }
+
+        public override void disconnectClient()
+        {
+            if (writer != null) { writer.Close(); }
+            if (reader != null) { reader.Close(); }
         }
     }
 }

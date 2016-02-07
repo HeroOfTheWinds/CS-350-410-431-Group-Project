@@ -23,10 +23,6 @@ namespace GameCreatorGroupProject
         abstract public void send(ref Object data);
 
         //disconnects the client from the server
-        public void disconnectClient()
-        {
-            stream.Close();
-            client.Close();
-        }
+        abstract public void disconnectClient();
     }
 }
