@@ -39,6 +39,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ModeControlTabs = new System.Windows.Forms.TabControl();
             this.ResourcesTab = new System.Windows.Forms.TabPage();
+            this.btnSaveResource = new System.Windows.Forms.Button();
             this.txtResourceName = new System.Windows.Forms.TextBox();
             this.btnSetName = new System.Windows.Forms.Button();
             this.lblResName = new System.Windows.Forms.Label();
@@ -54,6 +55,7 @@
             this.btnAddResource = new System.Windows.Forms.Button();
             this.listResources = new System.Windows.Forms.ListBox();
             this.ObjectCreatorTab = new System.Windows.Forms.TabPage();
+            this.btnSaveObj = new System.Windows.Forms.Button();
             this.txtObjectName = new System.Windows.Forms.TextBox();
             this.btnSetObjName = new System.Windows.Forms.Button();
             this.lblObjectName = new System.Windows.Forms.Label();
@@ -70,6 +72,7 @@
             this.lblSprite = new System.Windows.Forms.Label();
             this.pnlObjectTools = new System.Windows.Forms.Panel();
             this.gboxEvents = new System.Windows.Forms.GroupBox();
+            this.btnOnStep = new System.Windows.Forms.Button();
             this.btnTestVar = new System.Windows.Forms.Button();
             this.btnOnDestruct = new System.Windows.Forms.Button();
             this.btnOnCreate = new System.Windows.Forms.Button();
@@ -90,6 +93,7 @@
             this.btnAddObject = new System.Windows.Forms.Button();
             this.listObjects = new System.Windows.Forms.ListBox();
             this.RoomEditorTab = new System.Windows.Forms.TabPage();
+            this.btnSaveRoom = new System.Windows.Forms.Button();
             this.lblRooms = new System.Windows.Forms.Label();
             this.btnRemoveRoom = new System.Windows.Forms.Button();
             this.btnAddRoom = new System.Windows.Forms.Button();
@@ -106,43 +110,39 @@
             this.lblXPos = new System.Windows.Forms.Label();
             this.listObjChoices = new System.Windows.Forms.ListBox();
             this.tabRoomProperties = new System.Windows.Forms.TabPage();
-            this.tabBackground = new System.Windows.Forms.TabPage();
-            this.glRoomView = new OpenTK.GLControl();
-            this.imageResources = new System.Windows.Forms.ImageList(this.components);
-            this.openResourceDialog = new System.Windows.Forms.OpenFileDialog();
-            this.lblSizeX = new System.Windows.Forms.Label();
-            this.txtSizeX = new System.Windows.Forms.TextBox();
-            this.txtSizeY = new System.Windows.Forms.TextBox();
-            this.lblSizeY = new System.Windows.Forms.Label();
-            this.btnOnStep = new System.Windows.Forms.Button();
-            this.btnSaveObj = new System.Windows.Forms.Button();
-            this.btnSaveResource = new System.Windows.Forms.Button();
-            this.btnSaveRoom = new System.Windows.Forms.Button();
-            this.lblFPS = new System.Windows.Forms.Label();
-            this.txtFPS = new System.Windows.Forms.TextBox();
-            this.chkPersistRoom = new System.Windows.Forms.CheckBox();
+            this.txtRoomName = new System.Windows.Forms.TextBox();
+            this.lblRoomName = new System.Windows.Forms.Label();
+            this.lblRoomCode = new System.Windows.Forms.Label();
+            this.txtRoomCode = new System.Windows.Forms.TextBox();
+            this.lblImageEffects = new System.Windows.Forms.Label();
+            this.chkListEffects = new System.Windows.Forms.CheckedListBox();
+            this.txtScrollY = new System.Windows.Forms.TextBox();
+            this.lblScrollY = new System.Windows.Forms.Label();
+            this.txtScrollX = new System.Windows.Forms.TextBox();
+            this.lblScrollX = new System.Windows.Forms.Label();
             this.txtViewH = new System.Windows.Forms.TextBox();
             this.lblViewH = new System.Windows.Forms.Label();
             this.txtViewW = new System.Windows.Forms.TextBox();
             this.lblViewW = new System.Windows.Forms.Label();
-            this.txtScrollX = new System.Windows.Forms.TextBox();
-            this.lblScrollX = new System.Windows.Forms.Label();
-            this.txtScrollY = new System.Windows.Forms.TextBox();
-            this.lblScrollY = new System.Windows.Forms.Label();
-            this.chkListEffects = new System.Windows.Forms.CheckedListBox();
-            this.lblImageEffects = new System.Windows.Forms.Label();
-            this.txtRoomCode = new System.Windows.Forms.TextBox();
-            this.lblRoomCode = new System.Windows.Forms.Label();
-            this.txtRoomName = new System.Windows.Forms.TextBox();
-            this.lblRoomName = new System.Windows.Forms.Label();
-            this.colorRoomBG = new System.Windows.Forms.ColorDialog();
-            this.lblBGColor = new System.Windows.Forms.Label();
-            this.btnChooseColor = new System.Windows.Forms.Button();
-            this.lblBGImage = new System.Windows.Forms.Label();
-            this.cmbxBGImage = new System.Windows.Forms.ComboBox();
+            this.chkPersistRoom = new System.Windows.Forms.CheckBox();
+            this.txtFPS = new System.Windows.Forms.TextBox();
+            this.lblFPS = new System.Windows.Forms.Label();
+            this.txtSizeY = new System.Windows.Forms.TextBox();
+            this.lblSizeY = new System.Windows.Forms.Label();
+            this.txtSizeX = new System.Windows.Forms.TextBox();
+            this.lblSizeX = new System.Windows.Forms.Label();
+            this.tabBackground = new System.Windows.Forms.TabPage();
+            this.listTiles = new System.Windows.Forms.ListView();
             this.cmbxTileImg = new System.Windows.Forms.ComboBox();
             this.lblTileImg = new System.Windows.Forms.Label();
-            this.listTiles = new System.Windows.Forms.ListView();
+            this.cmbxBGImage = new System.Windows.Forms.ComboBox();
+            this.lblBGImage = new System.Windows.Forms.Label();
+            this.btnChooseColor = new System.Windows.Forms.Button();
+            this.lblBGColor = new System.Windows.Forms.Label();
+            this.glRoomView = new OpenTK.GLControl();
+            this.imageResources = new System.Windows.Forms.ImageList(this.components);
+            this.openResourceDialog = new System.Windows.Forms.OpenFileDialog();
+            this.colorRoomBG = new System.Windows.Forms.ColorDialog();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -229,6 +229,9 @@
             // 
             // ModeControlTabs
             // 
+            this.ModeControlTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ModeControlTabs.Controls.Add(this.ResourcesTab);
             this.ModeControlTabs.Controls.Add(this.ObjectCreatorTab);
             this.ModeControlTabs.Controls.Add(this.RoomEditorTab);
@@ -261,8 +264,21 @@
             this.ResourcesTab.TabIndex = 0;
             this.ResourcesTab.Text = "Resources";
             // 
+            // btnSaveResource
+            // 
+            this.btnSaveResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveResource.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnSaveResource.Location = new System.Drawing.Point(912, 652);
+            this.btnSaveResource.Name = "btnSaveResource";
+            this.btnSaveResource.Size = new System.Drawing.Size(231, 23);
+            this.btnSaveResource.TabIndex = 11;
+            this.btnSaveResource.Text = "Save Resource";
+            this.btnSaveResource.UseVisualStyleBackColor = false;
+            // 
             // txtResourceName
             // 
+            this.txtResourceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtResourceName.Location = new System.Drawing.Point(285, 625);
             this.txtResourceName.Name = "txtResourceName";
             this.txtResourceName.Size = new System.Drawing.Size(540, 20);
@@ -270,6 +286,7 @@
             // 
             // btnSetName
             // 
+            this.btnSetName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetName.Location = new System.Drawing.Point(831, 623);
             this.btnSetName.Name = "btnSetName";
             this.btnSetName.Size = new System.Drawing.Size(75, 23);
@@ -279,6 +296,7 @@
             // 
             // lblResName
             // 
+            this.lblResName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblResName.AutoSize = true;
             this.lblResName.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.lblResName.Location = new System.Drawing.Point(192, 628);
@@ -289,6 +307,7 @@
             // 
             // lblRProperties
             // 
+            this.lblRProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRProperties.AutoSize = true;
             this.lblRProperties.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.lblRProperties.Location = new System.Drawing.Point(912, 12);
@@ -309,6 +328,8 @@
             // 
             // pnlResourceProperties
             // 
+            this.pnlResourceProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlResourceProperties.BackColor = System.Drawing.SystemColors.Control;
             this.pnlResourceProperties.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlResourceProperties.Controls.Add(this.listFPVals);
@@ -320,6 +341,9 @@
             // 
             // listFPVals
             // 
+            this.listFPVals.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listFPVals.FormattingEnabled = true;
             this.listFPVals.Location = new System.Drawing.Point(89, 4);
             this.listFPVals.Name = "listFPVals";
@@ -328,6 +352,9 @@
             // 
             // listFProperties
             // 
+            this.listFProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listFProperties.FormattingEnabled = true;
             this.listFProperties.Items.AddRange(new object[] {
             "File name:",
@@ -342,6 +369,9 @@
             // 
             // pnlResourcePreview
             // 
+            this.pnlResourcePreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlResourcePreview.BackColor = System.Drawing.SystemColors.ControlDark;
             this.pnlResourcePreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pnlResourcePreview.Controls.Add(this.picPreview);
@@ -374,6 +404,7 @@
             // 
             // btnRemoveResource
             // 
+            this.btnRemoveResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRemoveResource.Location = new System.Drawing.Point(99, 652);
             this.btnRemoveResource.Name = "btnRemoveResource";
             this.btnRemoveResource.Size = new System.Drawing.Size(86, 23);
@@ -383,6 +414,7 @@
             // 
             // btnAddResource
             // 
+            this.btnAddResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAddResource.Location = new System.Drawing.Point(7, 652);
             this.btnAddResource.Name = "btnAddResource";
             this.btnAddResource.Size = new System.Drawing.Size(86, 23);
@@ -392,6 +424,8 @@
             // 
             // listResources
             // 
+            this.listResources.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listResources.BackColor = System.Drawing.SystemColors.Control;
             this.listResources.FormattingEnabled = true;
             this.listResources.Location = new System.Drawing.Point(7, 31);
@@ -421,8 +455,21 @@
             this.ObjectCreatorTab.TabIndex = 1;
             this.ObjectCreatorTab.Text = "Object Creator";
             // 
+            // btnSaveObj
+            // 
+            this.btnSaveObj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveObj.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnSaveObj.Location = new System.Drawing.Point(912, 650);
+            this.btnSaveObj.Name = "btnSaveObj";
+            this.btnSaveObj.Size = new System.Drawing.Size(231, 23);
+            this.btnSaveObj.TabIndex = 8;
+            this.btnSaveObj.Text = "Save Object";
+            this.btnSaveObj.UseVisualStyleBackColor = false;
+            // 
             // txtObjectName
             // 
+            this.txtObjectName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtObjectName.Location = new System.Drawing.Point(266, 29);
             this.txtObjectName.Name = "txtObjectName";
             this.txtObjectName.Size = new System.Drawing.Size(555, 20);
@@ -430,6 +477,7 @@
             // 
             // btnSetObjName
             // 
+            this.btnSetObjName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetObjName.Location = new System.Drawing.Point(827, 27);
             this.btnSetObjName.Name = "btnSetObjName";
             this.btnSetObjName.Size = new System.Drawing.Size(75, 23);
@@ -449,6 +497,9 @@
             // 
             // gboxBehaviorCode
             // 
+            this.gboxBehaviorCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxBehaviorCode.Controls.Add(this.txtObjectCode);
             this.gboxBehaviorCode.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.gboxBehaviorCode.Location = new System.Drawing.Point(191, 152);
@@ -460,6 +511,9 @@
             // 
             // txtObjectCode
             // 
+            this.txtObjectCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtObjectCode.Location = new System.Drawing.Point(10, 19);
             this.txtObjectCode.Multiline = true;
             this.txtObjectCode.Name = "txtObjectCode";
@@ -469,6 +523,8 @@
             // 
             // gboxSprite
             // 
+            this.gboxSprite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxSprite.Controls.Add(this.radioSprite);
             this.gboxSprite.Controls.Add(this.radioDisk);
             this.gboxSprite.Controls.Add(this.radioBox);
@@ -487,6 +543,7 @@
             // 
             // radioSprite
             // 
+            this.radioSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioSprite.AutoSize = true;
             this.radioSprite.Location = new System.Drawing.Point(191, 52);
             this.radioSprite.Name = "radioSprite";
@@ -498,6 +555,7 @@
             // 
             // radioDisk
             // 
+            this.radioDisk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioDisk.AutoSize = true;
             this.radioDisk.Location = new System.Drawing.Point(139, 52);
             this.radioDisk.Name = "radioDisk";
@@ -509,6 +567,7 @@
             // 
             // radioBox
             // 
+            this.radioBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioBox.AutoSize = true;
             this.radioBox.Location = new System.Drawing.Point(90, 52);
             this.radioBox.Name = "radioBox";
@@ -520,6 +579,7 @@
             // 
             // lblCollisionMask
             // 
+            this.lblCollisionMask.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCollisionMask.AutoSize = true;
             this.lblCollisionMask.Location = new System.Drawing.Point(7, 54);
             this.lblCollisionMask.Name = "lblCollisionMask";
@@ -529,6 +589,8 @@
             // 
             // picSpriteView
             // 
+            this.picSpriteView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.picSpriteView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.picSpriteView.Location = new System.Drawing.Point(645, 15);
             this.picSpriteView.Name = "picSpriteView";
@@ -538,6 +600,7 @@
             // 
             // btnSetSprite
             // 
+            this.btnSetSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetSprite.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnSetSprite.Location = new System.Drawing.Point(564, 15);
             this.btnSetSprite.Name = "btnSetSprite";
@@ -548,6 +611,8 @@
             // 
             // cmbSprite
             // 
+            this.cmbSprite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbSprite.FormattingEnabled = true;
             this.cmbSprite.Location = new System.Drawing.Point(138, 17);
             this.cmbSprite.Name = "cmbSprite";
@@ -566,6 +631,8 @@
             // 
             // pnlObjectTools
             // 
+            this.pnlObjectTools.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlObjectTools.BackColor = System.Drawing.SystemColors.Control;
             this.pnlObjectTools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlObjectTools.Controls.Add(this.gboxEvents);
@@ -577,6 +644,9 @@
             // 
             // gboxEvents
             // 
+            this.gboxEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxEvents.Controls.Add(this.btnOnStep);
             this.gboxEvents.Controls.Add(this.btnTestVar);
             this.gboxEvents.Controls.Add(this.btnOnDestruct);
@@ -591,8 +661,21 @@
             this.gboxEvents.TabStop = false;
             this.gboxEvents.Text = "Events";
             // 
+            // btnOnStep
+            // 
+            this.btnOnStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOnStep.Location = new System.Drawing.Point(6, 193);
+            this.btnOnStep.Name = "btnOnStep";
+            this.btnOnStep.Size = new System.Drawing.Size(211, 23);
+            this.btnOnStep.TabIndex = 7;
+            this.btnOnStep.Text = "On Step";
+            this.btnOnStep.UseVisualStyleBackColor = true;
+            // 
             // btnTestVar
             // 
+            this.btnTestVar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestVar.Location = new System.Drawing.Point(6, 164);
             this.btnTestVar.Name = "btnTestVar";
             this.btnTestVar.Size = new System.Drawing.Size(211, 23);
@@ -602,6 +685,8 @@
             // 
             // btnOnDestruct
             // 
+            this.btnOnDestruct.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnDestruct.Location = new System.Drawing.Point(6, 135);
             this.btnOnDestruct.Name = "btnOnDestruct";
             this.btnOnDestruct.Size = new System.Drawing.Size(211, 23);
@@ -611,6 +696,8 @@
             // 
             // btnOnCreate
             // 
+            this.btnOnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnCreate.Location = new System.Drawing.Point(6, 106);
             this.btnOnCreate.Name = "btnOnCreate";
             this.btnOnCreate.Size = new System.Drawing.Size(210, 23);
@@ -620,6 +707,8 @@
             // 
             // btnAlarm
             // 
+            this.btnAlarm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAlarm.Location = new System.Drawing.Point(6, 77);
             this.btnAlarm.Name = "btnAlarm";
             this.btnAlarm.Size = new System.Drawing.Size(210, 23);
@@ -629,6 +718,8 @@
             // 
             // btnCollision
             // 
+            this.btnCollision.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCollision.Location = new System.Drawing.Point(6, 48);
             this.btnCollision.Name = "btnCollision";
             this.btnCollision.Size = new System.Drawing.Size(210, 23);
@@ -638,6 +729,8 @@
             // 
             // btnInput
             // 
+            this.btnInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInput.Location = new System.Drawing.Point(6, 19);
             this.btnInput.Name = "btnInput";
             this.btnInput.Size = new System.Drawing.Size(210, 23);
@@ -647,6 +740,9 @@
             // 
             // gboxActions
             // 
+            this.gboxActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxActions.Controls.Add(this.btnVariable);
             this.gboxActions.Controls.Add(this.btnChangeSprite);
             this.gboxActions.Controls.Add(this.btnTimer);
@@ -664,6 +760,8 @@
             // 
             // btnVariable
             // 
+            this.btnVariable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVariable.Location = new System.Drawing.Point(6, 223);
             this.btnVariable.Name = "btnVariable";
             this.btnVariable.Size = new System.Drawing.Size(209, 23);
@@ -673,6 +771,8 @@
             // 
             // btnChangeSprite
             // 
+            this.btnChangeSprite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChangeSprite.Location = new System.Drawing.Point(6, 194);
             this.btnChangeSprite.Name = "btnChangeSprite";
             this.btnChangeSprite.Size = new System.Drawing.Size(210, 23);
@@ -682,6 +782,8 @@
             // 
             // btnTimer
             // 
+            this.btnTimer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTimer.Location = new System.Drawing.Point(6, 165);
             this.btnTimer.Name = "btnTimer";
             this.btnTimer.Size = new System.Drawing.Size(210, 23);
@@ -691,6 +793,8 @@
             // 
             // btnHealth
             // 
+            this.btnHealth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHealth.Location = new System.Drawing.Point(6, 136);
             this.btnHealth.Name = "btnHealth";
             this.btnHealth.Size = new System.Drawing.Size(210, 23);
@@ -700,6 +804,8 @@
             // 
             // btnScore
             // 
+            this.btnScore.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnScore.Location = new System.Drawing.Point(6, 107);
             this.btnScore.Name = "btnScore";
             this.btnScore.Size = new System.Drawing.Size(210, 23);
@@ -709,6 +815,8 @@
             // 
             // btnMove
             // 
+            this.btnMove.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMove.Location = new System.Drawing.Point(6, 78);
             this.btnMove.Name = "btnMove";
             this.btnMove.Size = new System.Drawing.Size(210, 23);
@@ -718,6 +826,8 @@
             // 
             // btnDestroy
             // 
+            this.btnDestroy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDestroy.Location = new System.Drawing.Point(6, 49);
             this.btnDestroy.Name = "btnDestroy";
             this.btnDestroy.Size = new System.Drawing.Size(210, 23);
@@ -727,6 +837,8 @@
             // 
             // btnInstantiate
             // 
+            this.btnInstantiate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInstantiate.Location = new System.Drawing.Point(6, 20);
             this.btnInstantiate.Name = "btnInstantiate";
             this.btnInstantiate.Size = new System.Drawing.Size(210, 23);
@@ -746,6 +858,7 @@
             // 
             // btnRemoveObject
             // 
+            this.btnRemoveObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRemoveObject.Location = new System.Drawing.Point(98, 650);
             this.btnRemoveObject.Name = "btnRemoveObject";
             this.btnRemoveObject.Size = new System.Drawing.Size(86, 23);
@@ -755,6 +868,7 @@
             // 
             // btnAddObject
             // 
+            this.btnAddObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAddObject.Location = new System.Drawing.Point(6, 650);
             this.btnAddObject.Name = "btnAddObject";
             this.btnAddObject.Size = new System.Drawing.Size(86, 23);
@@ -764,6 +878,8 @@
             // 
             // listObjects
             // 
+            this.listObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listObjects.BackColor = System.Drawing.SystemColors.Control;
             this.listObjects.FormattingEnabled = true;
             this.listObjects.Location = new System.Drawing.Point(6, 29);
@@ -788,6 +904,17 @@
             this.RoomEditorTab.TabIndex = 2;
             this.RoomEditorTab.Text = "Room Editor";
             // 
+            // btnSaveRoom
+            // 
+            this.btnSaveRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveRoom.BackColor = System.Drawing.Color.LimeGreen;
+            this.btnSaveRoom.Location = new System.Drawing.Point(915, 653);
+            this.btnSaveRoom.Name = "btnSaveRoom";
+            this.btnSaveRoom.Size = new System.Drawing.Size(231, 23);
+            this.btnSaveRoom.TabIndex = 12;
+            this.btnSaveRoom.Text = "Save Room";
+            this.btnSaveRoom.UseVisualStyleBackColor = false;
+            // 
             // lblRooms
             // 
             this.lblRooms.AutoSize = true;
@@ -800,6 +927,7 @@
             // 
             // btnRemoveRoom
             // 
+            this.btnRemoveRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnRemoveRoom.Location = new System.Drawing.Point(76, 649);
             this.btnRemoveRoom.Name = "btnRemoveRoom";
             this.btnRemoveRoom.Size = new System.Drawing.Size(64, 23);
@@ -809,6 +937,7 @@
             // 
             // btnAddRoom
             // 
+            this.btnAddRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAddRoom.Location = new System.Drawing.Point(6, 649);
             this.btnAddRoom.Name = "btnAddRoom";
             this.btnAddRoom.Size = new System.Drawing.Size(64, 23);
@@ -818,6 +947,8 @@
             // 
             // listRooms
             // 
+            this.listRooms.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listRooms.BackColor = System.Drawing.SystemColors.Control;
             this.listRooms.FormattingEnabled = true;
             this.listRooms.Location = new System.Drawing.Point(6, 28);
@@ -828,6 +959,8 @@
             // tabsRoomDesigner
             // 
             this.tabsRoomDesigner.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabsRoomDesigner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tabsRoomDesigner.Controls.Add(this.tabObjects);
             this.tabsRoomDesigner.Controls.Add(this.tabRoomProperties);
             this.tabsRoomDesigner.Controls.Add(this.tabBackground);
@@ -860,6 +993,7 @@
             // 
             // txtLayer
             // 
+            this.txtLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtLayer.Location = new System.Drawing.Point(48, 593);
             this.txtLayer.Name = "txtLayer";
             this.txtLayer.Size = new System.Drawing.Size(55, 20);
@@ -868,6 +1002,7 @@
             // 
             // lblLayer
             // 
+            this.lblLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLayer.AutoSize = true;
             this.lblLayer.Location = new System.Drawing.Point(6, 596);
             this.lblLayer.Name = "lblLayer";
@@ -877,6 +1012,7 @@
             // 
             // checkBox2
             // 
+            this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox2.AutoSize = true;
             this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBox2.Location = new System.Drawing.Point(109, 569);
@@ -888,6 +1024,7 @@
             // 
             // checkBox1
             // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.checkBox1.Location = new System.Drawing.Point(109, 543);
@@ -899,6 +1036,7 @@
             // 
             // txtYPos
             // 
+            this.txtYPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtYPos.Location = new System.Drawing.Point(48, 567);
             this.txtYPos.Name = "txtYPos";
             this.txtYPos.Size = new System.Drawing.Size(55, 20);
@@ -907,6 +1045,7 @@
             // 
             // lblYPos
             // 
+            this.lblYPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblYPos.AutoSize = true;
             this.lblYPos.Location = new System.Drawing.Point(6, 570);
             this.lblYPos.Name = "lblYPos";
@@ -916,6 +1055,7 @@
             // 
             // txtXPos
             // 
+            this.txtXPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtXPos.Location = new System.Drawing.Point(48, 541);
             this.txtXPos.Name = "txtXPos";
             this.txtXPos.Size = new System.Drawing.Size(55, 20);
@@ -924,6 +1064,7 @@
             // 
             // lblXPos
             // 
+            this.lblXPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblXPos.AutoSize = true;
             this.lblXPos.Location = new System.Drawing.Point(6, 544);
             this.lblXPos.Name = "lblXPos";
@@ -933,6 +1074,9 @@
             // 
             // listObjChoices
             // 
+            this.listObjChoices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listObjChoices.BackColor = System.Drawing.SystemColors.ControlLight;
             this.listObjChoices.FormattingEnabled = true;
             this.listObjChoices.Location = new System.Drawing.Point(7, 7);
@@ -972,150 +1116,109 @@
             this.tabRoomProperties.TabIndex = 1;
             this.tabRoomProperties.Text = "Room Properties";
             // 
-            // tabBackground
+            // txtRoomName
             // 
-            this.tabBackground.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.tabBackground.Controls.Add(this.listTiles);
-            this.tabBackground.Controls.Add(this.cmbxTileImg);
-            this.tabBackground.Controls.Add(this.lblTileImg);
-            this.tabBackground.Controls.Add(this.cmbxBGImage);
-            this.tabBackground.Controls.Add(this.lblBGImage);
-            this.tabBackground.Controls.Add(this.btnChooseColor);
-            this.tabBackground.Controls.Add(this.lblBGColor);
-            this.tabBackground.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.tabBackground.Location = new System.Drawing.Point(4, 4);
-            this.tabBackground.Name = "tabBackground";
-            this.tabBackground.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBackground.Size = new System.Drawing.Size(270, 618);
-            this.tabBackground.TabIndex = 2;
-            this.tabBackground.Text = "Background";
+            this.txtRoomName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtRoomName.Location = new System.Drawing.Point(82, 6);
+            this.txtRoomName.Name = "txtRoomName";
+            this.txtRoomName.Size = new System.Drawing.Size(182, 20);
+            this.txtRoomName.TabIndex = 20;
             // 
-            // glRoomView
+            // lblRoomName
             // 
-            this.glRoomView.BackColor = System.Drawing.Color.Black;
-            this.glRoomView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.glRoomView.Location = new System.Drawing.Point(430, 28);
-            this.glRoomView.Name = "glRoomView";
-            this.glRoomView.Size = new System.Drawing.Size(716, 622);
-            this.glRoomView.TabIndex = 0;
-            this.glRoomView.VSync = false;
+            this.lblRoomName.AutoSize = true;
+            this.lblRoomName.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblRoomName.Location = new System.Drawing.Point(7, 9);
+            this.lblRoomName.Name = "lblRoomName";
+            this.lblRoomName.Size = new System.Drawing.Size(69, 13);
+            this.lblRoomName.TabIndex = 19;
+            this.lblRoomName.Text = "Room Name:";
             // 
-            // imageResources
+            // lblRoomCode
             // 
-            this.imageResources.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.imageResources.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageResources.TransparentColor = System.Drawing.Color.Transparent;
+            this.lblRoomCode.AutoSize = true;
+            this.lblRoomCode.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblRoomCode.Location = new System.Drawing.Point(7, 228);
+            this.lblRoomCode.Name = "lblRoomCode";
+            this.lblRoomCode.Size = new System.Drawing.Size(66, 13);
+            this.lblRoomCode.TabIndex = 18;
+            this.lblRoomCode.Text = "Room Code:";
             // 
-            // openResourceDialog
+            // txtRoomCode
             // 
-            this.openResourceDialog.FileName = "openFileDialog1";
+            this.txtRoomCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtRoomCode.Location = new System.Drawing.Point(10, 244);
+            this.txtRoomCode.Multiline = true;
+            this.txtRoomCode.Name = "txtRoomCode";
+            this.txtRoomCode.Size = new System.Drawing.Size(254, 366);
+            this.txtRoomCode.TabIndex = 17;
             // 
-            // lblSizeX
+            // lblImageEffects
             // 
-            this.lblSizeX.AutoSize = true;
-            this.lblSizeX.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblSizeX.Location = new System.Drawing.Point(7, 37);
-            this.lblSizeX.Name = "lblSizeX";
-            this.lblSizeX.Size = new System.Drawing.Size(40, 13);
-            this.lblSizeX.TabIndex = 0;
-            this.lblSizeX.Text = "Size X:";
+            this.lblImageEffects.AutoSize = true;
+            this.lblImageEffects.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblImageEffects.Location = new System.Drawing.Point(7, 140);
+            this.lblImageEffects.Name = "lblImageEffects";
+            this.lblImageEffects.Size = new System.Drawing.Size(75, 13);
+            this.lblImageEffects.TabIndex = 16;
+            this.lblImageEffects.Text = "Image Effects:";
             // 
-            // txtSizeX
+            // chkListEffects
             // 
-            this.txtSizeX.Location = new System.Drawing.Point(53, 34);
-            this.txtSizeX.Name = "txtSizeX";
-            this.txtSizeX.Size = new System.Drawing.Size(70, 20);
-            this.txtSizeX.TabIndex = 1;
-            this.txtSizeX.Text = "640";
+            this.chkListEffects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkListEffects.Enabled = false;
+            this.chkListEffects.FormattingEnabled = true;
+            this.chkListEffects.Location = new System.Drawing.Point(88, 140);
+            this.chkListEffects.Name = "chkListEffects";
+            this.chkListEffects.ScrollAlwaysVisible = true;
+            this.chkListEffects.Size = new System.Drawing.Size(176, 79);
+            this.chkListEffects.TabIndex = 15;
             // 
-            // txtSizeY
+            // txtScrollY
             // 
-            this.txtSizeY.Location = new System.Drawing.Point(194, 34);
-            this.txtSizeY.Name = "txtSizeY";
-            this.txtSizeY.Size = new System.Drawing.Size(70, 20);
-            this.txtSizeY.TabIndex = 3;
-            this.txtSizeY.Text = "400";
+            this.txtScrollY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtScrollY.Location = new System.Drawing.Point(234, 114);
+            this.txtScrollY.Name = "txtScrollY";
+            this.txtScrollY.Size = new System.Drawing.Size(30, 20);
+            this.txtScrollY.TabIndex = 14;
+            this.txtScrollY.Text = "0";
             // 
-            // lblSizeY
+            // lblScrollY
             // 
-            this.lblSizeY.AutoSize = true;
-            this.lblSizeY.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblSizeY.Location = new System.Drawing.Point(148, 37);
-            this.lblSizeY.Name = "lblSizeY";
-            this.lblSizeY.Size = new System.Drawing.Size(40, 13);
-            this.lblSizeY.TabIndex = 2;
-            this.lblSizeY.Text = "Size Y:";
+            this.lblScrollY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblScrollY.AutoSize = true;
+            this.lblScrollY.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblScrollY.Location = new System.Drawing.Point(148, 117);
+            this.lblScrollY.Name = "lblScrollY";
+            this.lblScrollY.Size = new System.Drawing.Size(80, 13);
+            this.lblScrollY.TabIndex = 13;
+            this.lblScrollY.Text = "Scroll Speed Y:";
             // 
-            // btnOnStep
+            // txtScrollX
             // 
-            this.btnOnStep.Location = new System.Drawing.Point(6, 193);
-            this.btnOnStep.Name = "btnOnStep";
-            this.btnOnStep.Size = new System.Drawing.Size(211, 23);
-            this.btnOnStep.TabIndex = 7;
-            this.btnOnStep.Text = "On Step";
-            this.btnOnStep.UseVisualStyleBackColor = true;
+            this.txtScrollX.Location = new System.Drawing.Point(93, 114);
+            this.txtScrollX.Name = "txtScrollX";
+            this.txtScrollX.Size = new System.Drawing.Size(30, 20);
+            this.txtScrollX.TabIndex = 12;
+            this.txtScrollX.Text = "0";
             // 
-            // btnSaveObj
+            // lblScrollX
             // 
-            this.btnSaveObj.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveObj.Location = new System.Drawing.Point(912, 650);
-            this.btnSaveObj.Name = "btnSaveObj";
-            this.btnSaveObj.Size = new System.Drawing.Size(231, 23);
-            this.btnSaveObj.TabIndex = 8;
-            this.btnSaveObj.Text = "Save Object";
-            this.btnSaveObj.UseVisualStyleBackColor = false;
-            // 
-            // btnSaveResource
-            // 
-            this.btnSaveResource.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveResource.Location = new System.Drawing.Point(912, 652);
-            this.btnSaveResource.Name = "btnSaveResource";
-            this.btnSaveResource.Size = new System.Drawing.Size(231, 23);
-            this.btnSaveResource.TabIndex = 11;
-            this.btnSaveResource.Text = "Save Resource";
-            this.btnSaveResource.UseVisualStyleBackColor = false;
-            // 
-            // btnSaveRoom
-            // 
-            this.btnSaveRoom.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveRoom.Location = new System.Drawing.Point(915, 653);
-            this.btnSaveRoom.Name = "btnSaveRoom";
-            this.btnSaveRoom.Size = new System.Drawing.Size(231, 23);
-            this.btnSaveRoom.TabIndex = 12;
-            this.btnSaveRoom.Text = "Save Room";
-            this.btnSaveRoom.UseVisualStyleBackColor = false;
-            // 
-            // lblFPS
-            // 
-            this.lblFPS.AutoSize = true;
-            this.lblFPS.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblFPS.Location = new System.Drawing.Point(7, 66);
-            this.lblFPS.Name = "lblFPS";
-            this.lblFPS.Size = new System.Drawing.Size(85, 13);
-            this.lblFPS.TabIndex = 4;
-            this.lblFPS.Text = "Frames Per Sec:";
-            // 
-            // txtFPS
-            // 
-            this.txtFPS.Location = new System.Drawing.Point(98, 63);
-            this.txtFPS.Name = "txtFPS";
-            this.txtFPS.Size = new System.Drawing.Size(25, 20);
-            this.txtFPS.TabIndex = 5;
-            this.txtFPS.Text = "30";
-            // 
-            // chkPersistRoom
-            // 
-            this.chkPersistRoom.AutoSize = true;
-            this.chkPersistRoom.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.chkPersistRoom.Location = new System.Drawing.Point(151, 65);
-            this.chkPersistRoom.Name = "chkPersistRoom";
-            this.chkPersistRoom.Size = new System.Drawing.Size(78, 17);
-            this.chkPersistRoom.TabIndex = 6;
-            this.chkPersistRoom.Text = "Persistent?";
-            this.chkPersistRoom.UseVisualStyleBackColor = true;
+            this.lblScrollX.AutoSize = true;
+            this.lblScrollX.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblScrollX.Location = new System.Drawing.Point(7, 117);
+            this.lblScrollX.Name = "lblScrollX";
+            this.lblScrollX.Size = new System.Drawing.Size(80, 13);
+            this.lblScrollX.TabIndex = 11;
+            this.lblScrollX.Text = "Scroll Speed X:";
             // 
             // txtViewH
             // 
+            this.txtViewH.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtViewH.Location = new System.Drawing.Point(221, 88);
             this.txtViewH.Name = "txtViewH";
             this.txtViewH.Size = new System.Drawing.Size(43, 20);
@@ -1124,6 +1227,7 @@
             // 
             // lblViewH
             // 
+            this.lblViewH.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblViewH.AutoSize = true;
             this.lblViewH.ForeColor = System.Drawing.SystemColors.WindowText;
             this.lblViewH.Location = new System.Drawing.Point(148, 91);
@@ -1150,141 +1254,107 @@
             this.lblViewW.TabIndex = 7;
             this.lblViewW.Text = "View Width:";
             // 
-            // txtScrollX
+            // chkPersistRoom
             // 
-            this.txtScrollX.Location = new System.Drawing.Point(93, 114);
-            this.txtScrollX.Name = "txtScrollX";
-            this.txtScrollX.Size = new System.Drawing.Size(30, 20);
-            this.txtScrollX.TabIndex = 12;
-            this.txtScrollX.Text = "0";
+            this.chkPersistRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkPersistRoom.AutoSize = true;
+            this.chkPersistRoom.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.chkPersistRoom.Location = new System.Drawing.Point(151, 65);
+            this.chkPersistRoom.Name = "chkPersistRoom";
+            this.chkPersistRoom.Size = new System.Drawing.Size(78, 17);
+            this.chkPersistRoom.TabIndex = 6;
+            this.chkPersistRoom.Text = "Persistent?";
+            this.chkPersistRoom.UseVisualStyleBackColor = true;
             // 
-            // lblScrollX
+            // txtFPS
             // 
-            this.lblScrollX.AutoSize = true;
-            this.lblScrollX.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblScrollX.Location = new System.Drawing.Point(7, 117);
-            this.lblScrollX.Name = "lblScrollX";
-            this.lblScrollX.Size = new System.Drawing.Size(80, 13);
-            this.lblScrollX.TabIndex = 11;
-            this.lblScrollX.Text = "Scroll Speed X:";
+            this.txtFPS.Location = new System.Drawing.Point(98, 63);
+            this.txtFPS.Name = "txtFPS";
+            this.txtFPS.Size = new System.Drawing.Size(25, 20);
+            this.txtFPS.TabIndex = 5;
+            this.txtFPS.Text = "30";
             // 
-            // txtScrollY
+            // lblFPS
             // 
-            this.txtScrollY.Location = new System.Drawing.Point(234, 114);
-            this.txtScrollY.Name = "txtScrollY";
-            this.txtScrollY.Size = new System.Drawing.Size(30, 20);
-            this.txtScrollY.TabIndex = 14;
-            this.txtScrollY.Text = "0";
+            this.lblFPS.AutoSize = true;
+            this.lblFPS.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblFPS.Location = new System.Drawing.Point(7, 66);
+            this.lblFPS.Name = "lblFPS";
+            this.lblFPS.Size = new System.Drawing.Size(85, 13);
+            this.lblFPS.TabIndex = 4;
+            this.lblFPS.Text = "Frames Per Sec:";
             // 
-            // lblScrollY
+            // txtSizeY
             // 
-            this.lblScrollY.AutoSize = true;
-            this.lblScrollY.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblScrollY.Location = new System.Drawing.Point(148, 117);
-            this.lblScrollY.Name = "lblScrollY";
-            this.lblScrollY.Size = new System.Drawing.Size(80, 13);
-            this.lblScrollY.TabIndex = 13;
-            this.lblScrollY.Text = "Scroll Speed Y:";
+            this.txtSizeY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSizeY.Location = new System.Drawing.Point(194, 34);
+            this.txtSizeY.Name = "txtSizeY";
+            this.txtSizeY.Size = new System.Drawing.Size(70, 20);
+            this.txtSizeY.TabIndex = 3;
+            this.txtSizeY.Text = "400";
             // 
-            // chkListEffects
+            // lblSizeY
             // 
-            this.chkListEffects.Enabled = false;
-            this.chkListEffects.FormattingEnabled = true;
-            this.chkListEffects.Location = new System.Drawing.Point(88, 140);
-            this.chkListEffects.Name = "chkListEffects";
-            this.chkListEffects.ScrollAlwaysVisible = true;
-            this.chkListEffects.Size = new System.Drawing.Size(176, 79);
-            this.chkListEffects.TabIndex = 15;
+            this.lblSizeY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSizeY.AutoSize = true;
+            this.lblSizeY.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblSizeY.Location = new System.Drawing.Point(148, 37);
+            this.lblSizeY.Name = "lblSizeY";
+            this.lblSizeY.Size = new System.Drawing.Size(40, 13);
+            this.lblSizeY.TabIndex = 2;
+            this.lblSizeY.Text = "Size Y:";
             // 
-            // lblImageEffects
+            // txtSizeX
             // 
-            this.lblImageEffects.AutoSize = true;
-            this.lblImageEffects.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblImageEffects.Location = new System.Drawing.Point(7, 140);
-            this.lblImageEffects.Name = "lblImageEffects";
-            this.lblImageEffects.Size = new System.Drawing.Size(75, 13);
-            this.lblImageEffects.TabIndex = 16;
-            this.lblImageEffects.Text = "Image Effects:";
+            this.txtSizeX.Location = new System.Drawing.Point(53, 34);
+            this.txtSizeX.Name = "txtSizeX";
+            this.txtSizeX.Size = new System.Drawing.Size(70, 20);
+            this.txtSizeX.TabIndex = 1;
+            this.txtSizeX.Text = "640";
             // 
-            // txtRoomCode
+            // lblSizeX
             // 
-            this.txtRoomCode.Location = new System.Drawing.Point(10, 244);
-            this.txtRoomCode.Multiline = true;
-            this.txtRoomCode.Name = "txtRoomCode";
-            this.txtRoomCode.Size = new System.Drawing.Size(254, 366);
-            this.txtRoomCode.TabIndex = 17;
+            this.lblSizeX.AutoSize = true;
+            this.lblSizeX.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblSizeX.Location = new System.Drawing.Point(7, 37);
+            this.lblSizeX.Name = "lblSizeX";
+            this.lblSizeX.Size = new System.Drawing.Size(40, 13);
+            this.lblSizeX.TabIndex = 0;
+            this.lblSizeX.Text = "Size X:";
             // 
-            // lblRoomCode
+            // tabBackground
             // 
-            this.lblRoomCode.AutoSize = true;
-            this.lblRoomCode.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblRoomCode.Location = new System.Drawing.Point(7, 228);
-            this.lblRoomCode.Name = "lblRoomCode";
-            this.lblRoomCode.Size = new System.Drawing.Size(66, 13);
-            this.lblRoomCode.TabIndex = 18;
-            this.lblRoomCode.Text = "Room Code:";
+            this.tabBackground.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.tabBackground.Controls.Add(this.listTiles);
+            this.tabBackground.Controls.Add(this.cmbxTileImg);
+            this.tabBackground.Controls.Add(this.lblTileImg);
+            this.tabBackground.Controls.Add(this.cmbxBGImage);
+            this.tabBackground.Controls.Add(this.lblBGImage);
+            this.tabBackground.Controls.Add(this.btnChooseColor);
+            this.tabBackground.Controls.Add(this.lblBGColor);
+            this.tabBackground.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.tabBackground.Location = new System.Drawing.Point(4, 4);
+            this.tabBackground.Name = "tabBackground";
+            this.tabBackground.Padding = new System.Windows.Forms.Padding(3);
+            this.tabBackground.Size = new System.Drawing.Size(270, 618);
+            this.tabBackground.TabIndex = 2;
+            this.tabBackground.Text = "Background";
             // 
-            // txtRoomName
+            // listTiles
             // 
-            this.txtRoomName.Location = new System.Drawing.Point(82, 6);
-            this.txtRoomName.Name = "txtRoomName";
-            this.txtRoomName.Size = new System.Drawing.Size(182, 20);
-            this.txtRoomName.TabIndex = 20;
-            // 
-            // lblRoomName
-            // 
-            this.lblRoomName.AutoSize = true;
-            this.lblRoomName.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblRoomName.Location = new System.Drawing.Point(7, 9);
-            this.lblRoomName.Name = "lblRoomName";
-            this.lblRoomName.Size = new System.Drawing.Size(69, 13);
-            this.lblRoomName.TabIndex = 19;
-            this.lblRoomName.Text = "Room Name:";
-            // 
-            // colorRoomBG
-            // 
-            this.colorRoomBG.AnyColor = true;
-            // 
-            // lblBGColor
-            // 
-            this.lblBGColor.AutoSize = true;
-            this.lblBGColor.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblBGColor.Location = new System.Drawing.Point(7, 7);
-            this.lblBGColor.Name = "lblBGColor";
-            this.lblBGColor.Size = new System.Drawing.Size(95, 13);
-            this.lblBGColor.TabIndex = 0;
-            this.lblBGColor.Text = "Background Color:";
-            // 
-            // btnChooseColor
-            // 
-            this.btnChooseColor.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.btnChooseColor.Location = new System.Drawing.Point(108, 2);
-            this.btnChooseColor.Name = "btnChooseColor";
-            this.btnChooseColor.Size = new System.Drawing.Size(156, 23);
-            this.btnChooseColor.TabIndex = 1;
-            this.btnChooseColor.Text = "Choose Color...";
-            this.btnChooseColor.UseVisualStyleBackColor = true;
-            // 
-            // lblBGImage
-            // 
-            this.lblBGImage.AutoSize = true;
-            this.lblBGImage.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblBGImage.Location = new System.Drawing.Point(7, 36);
-            this.lblBGImage.Name = "lblBGImage";
-            this.lblBGImage.Size = new System.Drawing.Size(100, 13);
-            this.lblBGImage.TabIndex = 2;
-            this.lblBGImage.Text = "Background Image:";
-            // 
-            // cmbxBGImage
-            // 
-            this.cmbxBGImage.FormattingEnabled = true;
-            this.cmbxBGImage.Location = new System.Drawing.Point(108, 32);
-            this.cmbxBGImage.Name = "cmbxBGImage";
-            this.cmbxBGImage.Size = new System.Drawing.Size(156, 21);
-            this.cmbxBGImage.TabIndex = 3;
+            this.listTiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listTiles.Location = new System.Drawing.Point(10, 121);
+            this.listTiles.Name = "listTiles";
+            this.listTiles.Size = new System.Drawing.Size(254, 490);
+            this.listTiles.TabIndex = 6;
+            this.listTiles.UseCompatibleStateImageBehavior = false;
             // 
             // cmbxTileImg
             // 
+            this.cmbxTileImg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbxTileImg.FormattingEnabled = true;
             this.cmbxTileImg.Location = new System.Drawing.Point(108, 94);
             this.cmbxTileImg.Name = "cmbxTileImg";
@@ -1301,13 +1371,75 @@
             this.lblTileImg.TabIndex = 4;
             this.lblTileImg.Text = "Tile Image:";
             // 
-            // listTiles
+            // cmbxBGImage
             // 
-            this.listTiles.Location = new System.Drawing.Point(10, 121);
-            this.listTiles.Name = "listTiles";
-            this.listTiles.Size = new System.Drawing.Size(254, 490);
-            this.listTiles.TabIndex = 6;
-            this.listTiles.UseCompatibleStateImageBehavior = false;
+            this.cmbxBGImage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbxBGImage.FormattingEnabled = true;
+            this.cmbxBGImage.Location = new System.Drawing.Point(108, 32);
+            this.cmbxBGImage.Name = "cmbxBGImage";
+            this.cmbxBGImage.Size = new System.Drawing.Size(156, 21);
+            this.cmbxBGImage.TabIndex = 3;
+            // 
+            // lblBGImage
+            // 
+            this.lblBGImage.AutoSize = true;
+            this.lblBGImage.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblBGImage.Location = new System.Drawing.Point(7, 36);
+            this.lblBGImage.Name = "lblBGImage";
+            this.lblBGImage.Size = new System.Drawing.Size(100, 13);
+            this.lblBGImage.TabIndex = 2;
+            this.lblBGImage.Text = "Background Image:";
+            // 
+            // btnChooseColor
+            // 
+            this.btnChooseColor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnChooseColor.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.btnChooseColor.Location = new System.Drawing.Point(108, 2);
+            this.btnChooseColor.Name = "btnChooseColor";
+            this.btnChooseColor.Size = new System.Drawing.Size(156, 23);
+            this.btnChooseColor.TabIndex = 1;
+            this.btnChooseColor.Text = "Choose Color...";
+            this.btnChooseColor.UseVisualStyleBackColor = true;
+            // 
+            // lblBGColor
+            // 
+            this.lblBGColor.AutoSize = true;
+            this.lblBGColor.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.lblBGColor.Location = new System.Drawing.Point(7, 7);
+            this.lblBGColor.Name = "lblBGColor";
+            this.lblBGColor.Size = new System.Drawing.Size(95, 13);
+            this.lblBGColor.TabIndex = 0;
+            this.lblBGColor.Text = "Background Color:";
+            // 
+            // glRoomView
+            // 
+            this.glRoomView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.glRoomView.BackColor = System.Drawing.Color.Black;
+            this.glRoomView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.glRoomView.Enabled = false;
+            this.glRoomView.Location = new System.Drawing.Point(430, 28);
+            this.glRoomView.Name = "glRoomView";
+            this.glRoomView.Size = new System.Drawing.Size(716, 622);
+            this.glRoomView.TabIndex = 0;
+            this.glRoomView.VSync = false;
+            // 
+            // imageResources
+            // 
+            this.imageResources.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.imageResources.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageResources.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // openResourceDialog
+            // 
+            this.openResourceDialog.FileName = "openFileDialog1";
+            // 
+            // colorRoomBG
+            // 
+            this.colorRoomBG.AnyColor = true;
             // 
             // MainWindow
             // 
