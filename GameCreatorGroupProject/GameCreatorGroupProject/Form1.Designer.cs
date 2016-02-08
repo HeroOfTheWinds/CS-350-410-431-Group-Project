@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolFile = new System.Windows.Forms.ToolStripDropDownButton();
             this.itemNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -143,6 +144,15 @@
             this.imageResources = new System.Windows.Forms.ImageList(this.components);
             this.openResourceDialog = new System.Windows.Forms.OpenFileDialog();
             this.colorRoomBG = new System.Windows.Forms.ColorDialog();
+            this.splitChatSplit = new System.Windows.Forms.SplitContainer();
+            this.btnSendMsg = new System.Windows.Forms.Button();
+            this.txtMessage = new System.Windows.Forms.TextBox();
+            this.txtChat = new System.Windows.Forms.TextBox();
+            this.toolChat = new System.Windows.Forms.ToolStripDropDownButton();
+            this.itemStartServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -161,13 +171,18 @@
             this.tabObjects.SuspendLayout();
             this.tabRoomProperties.SuspendLayout();
             this.tabBackground.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitChatSplit)).BeginInit();
+            this.splitChatSplit.Panel1.SuspendLayout();
+            this.splitChatSplit.Panel2.SuspendLayout();
+            this.splitChatSplit.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
             // 
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolFile});
+            this.toolFile,
+            this.toolChat});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1184, 25);
@@ -194,6 +209,7 @@
             this.itemNew.Name = "itemNew";
             this.itemNew.Size = new System.Drawing.Size(152, 22);
             this.itemNew.Text = "New Project...";
+            this.itemNew.Click += new System.EventHandler(this.itemNew_Click);
             // 
             // itemOpen
             // 
@@ -235,10 +251,10 @@
             this.ModeControlTabs.Controls.Add(this.ResourcesTab);
             this.ModeControlTabs.Controls.Add(this.ObjectCreatorTab);
             this.ModeControlTabs.Controls.Add(this.RoomEditorTab);
-            this.ModeControlTabs.Location = new System.Drawing.Point(13, 29);
+            this.ModeControlTabs.Location = new System.Drawing.Point(3, 3);
             this.ModeControlTabs.Name = "ModeControlTabs";
             this.ModeControlTabs.SelectedIndex = 0;
-            this.ModeControlTabs.Size = new System.Drawing.Size(1159, 707);
+            this.ModeControlTabs.Size = new System.Drawing.Size(1152, 504);
             this.ModeControlTabs.TabIndex = 2;
             // 
             // ResourcesTab
@@ -260,7 +276,7 @@
             this.ResourcesTab.Location = new System.Drawing.Point(4, 22);
             this.ResourcesTab.Name = "ResourcesTab";
             this.ResourcesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ResourcesTab.Size = new System.Drawing.Size(1151, 681);
+            this.ResourcesTab.Size = new System.Drawing.Size(1144, 478);
             this.ResourcesTab.TabIndex = 0;
             this.ResourcesTab.Text = "Resources";
             // 
@@ -268,7 +284,7 @@
             // 
             this.btnSaveResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveResource.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveResource.Location = new System.Drawing.Point(912, 652);
+            this.btnSaveResource.Location = new System.Drawing.Point(905, 449);
             this.btnSaveResource.Name = "btnSaveResource";
             this.btnSaveResource.Size = new System.Drawing.Size(231, 23);
             this.btnSaveResource.TabIndex = 11;
@@ -279,15 +295,15 @@
             // 
             this.txtResourceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtResourceName.Location = new System.Drawing.Point(285, 625);
+            this.txtResourceName.Location = new System.Drawing.Point(285, 422);
             this.txtResourceName.Name = "txtResourceName";
-            this.txtResourceName.Size = new System.Drawing.Size(540, 20);
+            this.txtResourceName.Size = new System.Drawing.Size(533, 20);
             this.txtResourceName.TabIndex = 10;
             // 
             // btnSetName
             // 
             this.btnSetName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSetName.Location = new System.Drawing.Point(831, 623);
+            this.btnSetName.Location = new System.Drawing.Point(824, 420);
             this.btnSetName.Name = "btnSetName";
             this.btnSetName.Size = new System.Drawing.Size(75, 23);
             this.btnSetName.TabIndex = 9;
@@ -299,7 +315,7 @@
             this.lblResName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblResName.AutoSize = true;
             this.lblResName.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblResName.Location = new System.Drawing.Point(192, 628);
+            this.lblResName.Location = new System.Drawing.Point(192, 425);
             this.lblResName.Name = "lblResName";
             this.lblResName.Size = new System.Drawing.Size(87, 13);
             this.lblResName.TabIndex = 8;
@@ -310,7 +326,7 @@
             this.lblRProperties.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRProperties.AutoSize = true;
             this.lblRProperties.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.lblRProperties.Location = new System.Drawing.Point(912, 12);
+            this.lblRProperties.Location = new System.Drawing.Point(905, 12);
             this.lblRProperties.Name = "lblRProperties";
             this.lblRProperties.Size = new System.Drawing.Size(106, 13);
             this.lblRProperties.TabIndex = 7;
@@ -334,9 +350,9 @@
             this.pnlResourceProperties.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlResourceProperties.Controls.Add(this.listFPVals);
             this.pnlResourceProperties.Controls.Add(this.listFProperties);
-            this.pnlResourceProperties.Location = new System.Drawing.Point(912, 31);
+            this.pnlResourceProperties.Location = new System.Drawing.Point(905, 31);
             this.pnlResourceProperties.Name = "pnlResourceProperties";
-            this.pnlResourceProperties.Size = new System.Drawing.Size(231, 615);
+            this.pnlResourceProperties.Size = new System.Drawing.Size(231, 412);
             this.pnlResourceProperties.TabIndex = 5;
             // 
             // listFPVals
@@ -347,7 +363,7 @@
             this.listFPVals.FormattingEnabled = true;
             this.listFPVals.Location = new System.Drawing.Point(89, 4);
             this.listFPVals.Name = "listFPVals";
-            this.listFPVals.Size = new System.Drawing.Size(137, 602);
+            this.listFPVals.Size = new System.Drawing.Size(137, 394);
             this.listFPVals.TabIndex = 1;
             // 
             // listFProperties
@@ -364,7 +380,7 @@
             "Color Space:"});
             this.listFProperties.Location = new System.Drawing.Point(4, 4);
             this.listFProperties.Name = "listFProperties";
-            this.listFProperties.Size = new System.Drawing.Size(79, 602);
+            this.listFProperties.Size = new System.Drawing.Size(79, 394);
             this.listFProperties.TabIndex = 0;
             // 
             // pnlResourcePreview
@@ -377,17 +393,16 @@
             this.pnlResourcePreview.Controls.Add(this.picPreview);
             this.pnlResourcePreview.Location = new System.Drawing.Point(192, 31);
             this.pnlResourcePreview.Name = "pnlResourcePreview";
-            this.pnlResourcePreview.Size = new System.Drawing.Size(714, 586);
+            this.pnlResourcePreview.Size = new System.Drawing.Size(707, 383);
             this.pnlResourcePreview.TabIndex = 4;
             // 
             // picPreview
             // 
-            this.picPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.picPreview.Location = new System.Drawing.Point(245, 180);
+            this.picPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picPreview.Location = new System.Drawing.Point(245, 88);
             this.picPreview.Name = "picPreview";
-            this.picPreview.Size = new System.Drawing.Size(226, 226);
+            this.picPreview.Size = new System.Drawing.Size(219, 219);
+            this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.picPreview.TabIndex = 0;
             this.picPreview.TabStop = false;
             this.picPreview.Visible = false;
@@ -405,7 +420,7 @@
             // btnRemoveResource
             // 
             this.btnRemoveResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveResource.Location = new System.Drawing.Point(99, 652);
+            this.btnRemoveResource.Location = new System.Drawing.Point(99, 449);
             this.btnRemoveResource.Name = "btnRemoveResource";
             this.btnRemoveResource.Size = new System.Drawing.Size(86, 23);
             this.btnRemoveResource.TabIndex = 2;
@@ -415,7 +430,7 @@
             // btnAddResource
             // 
             this.btnAddResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAddResource.Location = new System.Drawing.Point(7, 652);
+            this.btnAddResource.Location = new System.Drawing.Point(7, 449);
             this.btnAddResource.Name = "btnAddResource";
             this.btnAddResource.Size = new System.Drawing.Size(86, 23);
             this.btnAddResource.TabIndex = 1;
@@ -430,7 +445,7 @@
             this.listResources.FormattingEnabled = true;
             this.listResources.Location = new System.Drawing.Point(7, 31);
             this.listResources.Name = "listResources";
-            this.listResources.Size = new System.Drawing.Size(178, 615);
+            this.listResources.Size = new System.Drawing.Size(178, 407);
             this.listResources.TabIndex = 0;
             // 
             // ObjectCreatorTab
@@ -451,7 +466,7 @@
             this.ObjectCreatorTab.Location = new System.Drawing.Point(4, 22);
             this.ObjectCreatorTab.Name = "ObjectCreatorTab";
             this.ObjectCreatorTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ObjectCreatorTab.Size = new System.Drawing.Size(1151, 681);
+            this.ObjectCreatorTab.Size = new System.Drawing.Size(1144, 478);
             this.ObjectCreatorTab.TabIndex = 1;
             this.ObjectCreatorTab.Text = "Object Creator";
             // 
@@ -459,7 +474,7 @@
             // 
             this.btnSaveObj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveObj.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveObj.Location = new System.Drawing.Point(912, 650);
+            this.btnSaveObj.Location = new System.Drawing.Point(905, 447);
             this.btnSaveObj.Name = "btnSaveObj";
             this.btnSaveObj.Size = new System.Drawing.Size(231, 23);
             this.btnSaveObj.TabIndex = 8;
@@ -472,13 +487,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtObjectName.Location = new System.Drawing.Point(266, 29);
             this.txtObjectName.Name = "txtObjectName";
-            this.txtObjectName.Size = new System.Drawing.Size(555, 20);
+            this.txtObjectName.Size = new System.Drawing.Size(548, 20);
             this.txtObjectName.TabIndex = 13;
             // 
             // btnSetObjName
             // 
             this.btnSetObjName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSetObjName.Location = new System.Drawing.Point(827, 27);
+            this.btnSetObjName.Location = new System.Drawing.Point(820, 27);
             this.btnSetObjName.Name = "btnSetObjName";
             this.btnSetObjName.Size = new System.Drawing.Size(75, 23);
             this.btnSetObjName.TabIndex = 12;
@@ -504,7 +519,7 @@
             this.gboxBehaviorCode.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.gboxBehaviorCode.Location = new System.Drawing.Point(191, 152);
             this.gboxBehaviorCode.Name = "gboxBehaviorCode";
-            this.gboxBehaviorCode.Size = new System.Drawing.Size(715, 492);
+            this.gboxBehaviorCode.Size = new System.Drawing.Size(708, 289);
             this.gboxBehaviorCode.TabIndex = 10;
             this.gboxBehaviorCode.TabStop = false;
             this.gboxBehaviorCode.Text = "Behavior Code:";
@@ -518,7 +533,7 @@
             this.txtObjectCode.Multiline = true;
             this.txtObjectCode.Name = "txtObjectCode";
             this.txtObjectCode.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtObjectCode.Size = new System.Drawing.Size(699, 467);
+            this.txtObjectCode.Size = new System.Drawing.Size(692, 264);
             this.txtObjectCode.TabIndex = 0;
             // 
             // gboxSprite
@@ -536,7 +551,7 @@
             this.gboxSprite.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.gboxSprite.Location = new System.Drawing.Point(191, 56);
             this.gboxSprite.Name = "gboxSprite";
-            this.gboxSprite.Size = new System.Drawing.Size(715, 90);
+            this.gboxSprite.Size = new System.Drawing.Size(708, 90);
             this.gboxSprite.TabIndex = 9;
             this.gboxSprite.TabStop = false;
             this.gboxSprite.Text = "Sprites:";
@@ -592,7 +607,7 @@
             this.picSpriteView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picSpriteView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.picSpriteView.Location = new System.Drawing.Point(645, 15);
+            this.picSpriteView.Location = new System.Drawing.Point(638, 15);
             this.picSpriteView.Name = "picSpriteView";
             this.picSpriteView.Size = new System.Drawing.Size(64, 64);
             this.picSpriteView.TabIndex = 3;
@@ -602,7 +617,7 @@
             // 
             this.btnSetSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetSprite.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSetSprite.Location = new System.Drawing.Point(564, 15);
+            this.btnSetSprite.Location = new System.Drawing.Point(557, 15);
             this.btnSetSprite.Name = "btnSetSprite";
             this.btnSetSprite.Size = new System.Drawing.Size(75, 23);
             this.btnSetSprite.TabIndex = 2;
@@ -616,7 +631,7 @@
             this.cmbSprite.FormattingEnabled = true;
             this.cmbSprite.Location = new System.Drawing.Point(138, 17);
             this.cmbSprite.Name = "cmbSprite";
-            this.cmbSprite.Size = new System.Drawing.Size(420, 21);
+            this.cmbSprite.Size = new System.Drawing.Size(413, 21);
             this.cmbSprite.TabIndex = 1;
             // 
             // lblSprite
@@ -637,9 +652,9 @@
             this.pnlObjectTools.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlObjectTools.Controls.Add(this.gboxEvents);
             this.pnlObjectTools.Controls.Add(this.gboxActions);
-            this.pnlObjectTools.Location = new System.Drawing.Point(912, 29);
+            this.pnlObjectTools.Location = new System.Drawing.Point(905, 29);
             this.pnlObjectTools.Name = "pnlObjectTools";
-            this.pnlObjectTools.Size = new System.Drawing.Size(231, 615);
+            this.pnlObjectTools.Size = new System.Drawing.Size(231, 412);
             this.pnlObjectTools.TabIndex = 8;
             // 
             // gboxEvents
@@ -656,7 +671,7 @@
             this.gboxEvents.Controls.Add(this.btnInput);
             this.gboxEvents.Location = new System.Drawing.Point(3, 296);
             this.gboxEvents.Name = "gboxEvents";
-            this.gboxEvents.Size = new System.Drawing.Size(222, 312);
+            this.gboxEvents.Size = new System.Drawing.Size(222, 109);
             this.gboxEvents.TabIndex = 1;
             this.gboxEvents.TabStop = false;
             this.gboxEvents.Text = "Events";
@@ -753,7 +768,7 @@
             this.gboxActions.Controls.Add(this.btnInstantiate);
             this.gboxActions.Location = new System.Drawing.Point(3, 4);
             this.gboxActions.Name = "gboxActions";
-            this.gboxActions.Size = new System.Drawing.Size(223, 286);
+            this.gboxActions.Size = new System.Drawing.Size(223, 83);
             this.gboxActions.TabIndex = 0;
             this.gboxActions.TabStop = false;
             this.gboxActions.Text = "Actions";
@@ -859,7 +874,7 @@
             // btnRemoveObject
             // 
             this.btnRemoveObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveObject.Location = new System.Drawing.Point(98, 650);
+            this.btnRemoveObject.Location = new System.Drawing.Point(98, 447);
             this.btnRemoveObject.Name = "btnRemoveObject";
             this.btnRemoveObject.Size = new System.Drawing.Size(86, 23);
             this.btnRemoveObject.TabIndex = 6;
@@ -869,7 +884,7 @@
             // btnAddObject
             // 
             this.btnAddObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAddObject.Location = new System.Drawing.Point(6, 650);
+            this.btnAddObject.Location = new System.Drawing.Point(6, 447);
             this.btnAddObject.Name = "btnAddObject";
             this.btnAddObject.Size = new System.Drawing.Size(86, 23);
             this.btnAddObject.TabIndex = 5;
@@ -884,7 +899,7 @@
             this.listObjects.FormattingEnabled = true;
             this.listObjects.Location = new System.Drawing.Point(6, 29);
             this.listObjects.Name = "listObjects";
-            this.listObjects.Size = new System.Drawing.Size(178, 615);
+            this.listObjects.Size = new System.Drawing.Size(178, 407);
             this.listObjects.TabIndex = 4;
             // 
             // RoomEditorTab
@@ -900,7 +915,7 @@
             this.RoomEditorTab.Controls.Add(this.glRoomView);
             this.RoomEditorTab.Location = new System.Drawing.Point(4, 22);
             this.RoomEditorTab.Name = "RoomEditorTab";
-            this.RoomEditorTab.Size = new System.Drawing.Size(1151, 681);
+            this.RoomEditorTab.Size = new System.Drawing.Size(1144, 478);
             this.RoomEditorTab.TabIndex = 2;
             this.RoomEditorTab.Text = "Room Editor";
             // 
@@ -908,7 +923,7 @@
             // 
             this.btnSaveRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveRoom.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveRoom.Location = new System.Drawing.Point(915, 653);
+            this.btnSaveRoom.Location = new System.Drawing.Point(908, 450);
             this.btnSaveRoom.Name = "btnSaveRoom";
             this.btnSaveRoom.Size = new System.Drawing.Size(231, 23);
             this.btnSaveRoom.TabIndex = 12;
@@ -928,7 +943,7 @@
             // btnRemoveRoom
             // 
             this.btnRemoveRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveRoom.Location = new System.Drawing.Point(76, 649);
+            this.btnRemoveRoom.Location = new System.Drawing.Point(76, 446);
             this.btnRemoveRoom.Name = "btnRemoveRoom";
             this.btnRemoveRoom.Size = new System.Drawing.Size(64, 23);
             this.btnRemoveRoom.TabIndex = 10;
@@ -938,7 +953,7 @@
             // btnAddRoom
             // 
             this.btnAddRoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAddRoom.Location = new System.Drawing.Point(6, 649);
+            this.btnAddRoom.Location = new System.Drawing.Point(6, 446);
             this.btnAddRoom.Name = "btnAddRoom";
             this.btnAddRoom.Size = new System.Drawing.Size(64, 23);
             this.btnAddRoom.TabIndex = 9;
@@ -953,7 +968,7 @@
             this.listRooms.FormattingEnabled = true;
             this.listRooms.Location = new System.Drawing.Point(6, 28);
             this.listRooms.Name = "listRooms";
-            this.listRooms.Size = new System.Drawing.Size(134, 615);
+            this.listRooms.Size = new System.Drawing.Size(134, 407);
             this.listRooms.TabIndex = 8;
             // 
             // tabsRoomDesigner
@@ -968,7 +983,7 @@
             this.tabsRoomDesigner.Multiline = true;
             this.tabsRoomDesigner.Name = "tabsRoomDesigner";
             this.tabsRoomDesigner.SelectedIndex = 0;
-            this.tabsRoomDesigner.Size = new System.Drawing.Size(278, 644);
+            this.tabsRoomDesigner.Size = new System.Drawing.Size(278, 441);
             this.tabsRoomDesigner.TabIndex = 1;
             // 
             // tabObjects
@@ -987,14 +1002,14 @@
             this.tabObjects.Location = new System.Drawing.Point(4, 4);
             this.tabObjects.Name = "tabObjects";
             this.tabObjects.Padding = new System.Windows.Forms.Padding(3);
-            this.tabObjects.Size = new System.Drawing.Size(270, 618);
+            this.tabObjects.Size = new System.Drawing.Size(270, 415);
             this.tabObjects.TabIndex = 0;
             this.tabObjects.Text = "Objects";
             // 
             // txtLayer
             // 
             this.txtLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtLayer.Location = new System.Drawing.Point(48, 593);
+            this.txtLayer.Location = new System.Drawing.Point(48, 390);
             this.txtLayer.Name = "txtLayer";
             this.txtLayer.Size = new System.Drawing.Size(55, 20);
             this.txtLayer.TabIndex = 8;
@@ -1004,7 +1019,7 @@
             // 
             this.lblLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLayer.AutoSize = true;
-            this.lblLayer.Location = new System.Drawing.Point(6, 596);
+            this.lblLayer.Location = new System.Drawing.Point(6, 393);
             this.lblLayer.Name = "lblLayer";
             this.lblLayer.Size = new System.Drawing.Size(36, 13);
             this.lblLayer.TabIndex = 7;
@@ -1015,7 +1030,7 @@
             this.checkBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox2.AutoSize = true;
             this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox2.Location = new System.Drawing.Point(109, 569);
+            this.checkBox2.Location = new System.Drawing.Point(109, 366);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(99, 17);
             this.checkBox2.TabIndex = 6;
@@ -1027,7 +1042,7 @@
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
             this.checkBox1.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.checkBox1.Location = new System.Drawing.Point(109, 543);
+            this.checkBox1.Location = new System.Drawing.Point(109, 340);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(78, 17);
             this.checkBox1.TabIndex = 5;
@@ -1037,7 +1052,7 @@
             // txtYPos
             // 
             this.txtYPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtYPos.Location = new System.Drawing.Point(48, 567);
+            this.txtYPos.Location = new System.Drawing.Point(48, 364);
             this.txtYPos.Name = "txtYPos";
             this.txtYPos.Size = new System.Drawing.Size(55, 20);
             this.txtYPos.TabIndex = 4;
@@ -1047,7 +1062,7 @@
             // 
             this.lblYPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblYPos.AutoSize = true;
-            this.lblYPos.Location = new System.Drawing.Point(6, 570);
+            this.lblYPos.Location = new System.Drawing.Point(6, 367);
             this.lblYPos.Name = "lblYPos";
             this.lblYPos.Size = new System.Drawing.Size(35, 13);
             this.lblYPos.TabIndex = 3;
@@ -1056,7 +1071,7 @@
             // txtXPos
             // 
             this.txtXPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtXPos.Location = new System.Drawing.Point(48, 541);
+            this.txtXPos.Location = new System.Drawing.Point(48, 338);
             this.txtXPos.Name = "txtXPos";
             this.txtXPos.Size = new System.Drawing.Size(55, 20);
             this.txtXPos.TabIndex = 2;
@@ -1066,7 +1081,7 @@
             // 
             this.lblXPos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblXPos.AutoSize = true;
-            this.lblXPos.Location = new System.Drawing.Point(6, 544);
+            this.lblXPos.Location = new System.Drawing.Point(6, 341);
             this.lblXPos.Name = "lblXPos";
             this.lblXPos.Size = new System.Drawing.Size(35, 13);
             this.lblXPos.TabIndex = 1;
@@ -1081,7 +1096,7 @@
             this.listObjChoices.FormattingEnabled = true;
             this.listObjChoices.Location = new System.Drawing.Point(7, 7);
             this.listObjChoices.Name = "listObjChoices";
-            this.listObjChoices.Size = new System.Drawing.Size(257, 524);
+            this.listObjChoices.Size = new System.Drawing.Size(257, 316);
             this.listObjChoices.TabIndex = 0;
             // 
             // tabRoomProperties
@@ -1112,7 +1127,7 @@
             this.tabRoomProperties.Location = new System.Drawing.Point(4, 4);
             this.tabRoomProperties.Name = "tabRoomProperties";
             this.tabRoomProperties.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRoomProperties.Size = new System.Drawing.Size(270, 618);
+            this.tabRoomProperties.Size = new System.Drawing.Size(270, 415);
             this.tabRoomProperties.TabIndex = 1;
             this.tabRoomProperties.Text = "Room Properties";
             // 
@@ -1153,7 +1168,7 @@
             this.txtRoomCode.Location = new System.Drawing.Point(10, 244);
             this.txtRoomCode.Multiline = true;
             this.txtRoomCode.Name = "txtRoomCode";
-            this.txtRoomCode.Size = new System.Drawing.Size(254, 366);
+            this.txtRoomCode.Size = new System.Drawing.Size(254, 163);
             this.txtRoomCode.TabIndex = 17;
             // 
             // lblImageEffects
@@ -1336,7 +1351,7 @@
             this.tabBackground.Location = new System.Drawing.Point(4, 4);
             this.tabBackground.Name = "tabBackground";
             this.tabBackground.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBackground.Size = new System.Drawing.Size(270, 618);
+            this.tabBackground.Size = new System.Drawing.Size(270, 415);
             this.tabBackground.TabIndex = 2;
             this.tabBackground.Text = "Background";
             // 
@@ -1347,7 +1362,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listTiles.Location = new System.Drawing.Point(10, 121);
             this.listTiles.Name = "listTiles";
-            this.listTiles.Size = new System.Drawing.Size(254, 490);
+            this.listTiles.Size = new System.Drawing.Size(254, 287);
             this.listTiles.TabIndex = 6;
             this.listTiles.UseCompatibleStateImageBehavior = false;
             // 
@@ -1420,10 +1435,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.glRoomView.BackColor = System.Drawing.Color.Black;
             this.glRoomView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.glRoomView.Enabled = false;
             this.glRoomView.Location = new System.Drawing.Point(430, 28);
             this.glRoomView.Name = "glRoomView";
-            this.glRoomView.Size = new System.Drawing.Size(716, 622);
+            this.glRoomView.Size = new System.Drawing.Size(709, 419);
             this.glRoomView.TabIndex = 0;
             this.glRoomView.VSync = false;
             // 
@@ -1441,13 +1455,109 @@
             // 
             this.colorRoomBG.AnyColor = true;
             // 
+            // splitChatSplit
+            // 
+            this.splitChatSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitChatSplit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.splitChatSplit.Location = new System.Drawing.Point(12, 28);
+            this.splitChatSplit.Name = "splitChatSplit";
+            this.splitChatSplit.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitChatSplit.Panel1
+            // 
+            this.splitChatSplit.Panel1.Controls.Add(this.ModeControlTabs);
+            this.splitChatSplit.Panel1MinSize = 200;
+            // 
+            // splitChatSplit.Panel2
+            // 
+            this.splitChatSplit.Panel2.Controls.Add(this.btnSendMsg);
+            this.splitChatSplit.Panel2.Controls.Add(this.txtMessage);
+            this.splitChatSplit.Panel2.Controls.Add(this.txtChat);
+            this.splitChatSplit.Panel2MinSize = 36;
+            this.splitChatSplit.Size = new System.Drawing.Size(1160, 714);
+            this.splitChatSplit.SplitterDistance = 512;
+            this.splitChatSplit.SplitterWidth = 8;
+            this.splitChatSplit.TabIndex = 3;
+            // 
+            // btnSendMsg
+            // 
+            this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 165);
+            this.btnSendMsg.Name = "btnSendMsg";
+            this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
+            this.btnSendMsg.TabIndex = 2;
+            this.btnSendMsg.Text = "Send";
+            this.btnSendMsg.UseVisualStyleBackColor = true;
+            // 
+            // txtMessage
+            // 
+            this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMessage.Location = new System.Drawing.Point(3, 165);
+            this.txtMessage.Name = "txtMessage";
+            this.txtMessage.Size = new System.Drawing.Size(1006, 20);
+            this.txtMessage.TabIndex = 1;
+            // 
+            // txtChat
+            // 
+            this.txtChat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtChat.Location = new System.Drawing.Point(3, 3);
+            this.txtChat.Multiline = true;
+            this.txtChat.Name = "txtChat";
+            this.txtChat.ReadOnly = true;
+            this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtChat.Size = new System.Drawing.Size(1152, 156);
+            this.txtChat.TabIndex = 0;
+            // 
+            // toolChat
+            // 
+            this.toolChat.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolChat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemStartServer,
+            this.itemConnect,
+            this.itemDisconnect});
+            this.toolChat.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
+            this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolChat.Name = "toolChat";
+            this.toolChat.Size = new System.Drawing.Size(78, 22);
+            this.toolChat.Text = "Team Chat";
+            // 
+            // itemStartServer
+            // 
+            this.itemStartServer.Name = "itemStartServer";
+            this.itemStartServer.Size = new System.Drawing.Size(152, 22);
+            this.itemStartServer.Text = "Start Server...";
+            this.itemStartServer.Click += new System.EventHandler(this.itemStartServer_Click);
+            // 
+            // itemConnect
+            // 
+            this.itemConnect.Name = "itemConnect";
+            this.itemConnect.Size = new System.Drawing.Size(152, 22);
+            this.itemConnect.Text = "Connect...";
+            // 
+            // itemDisconnect
+            // 
+            this.itemDisconnect.Name = "itemDisconnect";
+            this.itemDisconnect.Size = new System.Drawing.Size(152, 22);
+            this.itemDisconnect.Text = "Disconnect...";
+            // 
+            // folderPrjDir
+            // 
+            this.folderPrjDir.Description = "Specify a folder to store the project in:";
+            this.folderPrjDir.RootFolder = System.Environment.SpecialFolder.MyDocuments;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1184, 767);
-            this.Controls.Add(this.ModeControlTabs);
+            this.Controls.Add(this.splitChatSplit);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Name = "MainWindow";
@@ -1460,6 +1570,7 @@
             this.ResourcesTab.PerformLayout();
             this.pnlResourceProperties.ResumeLayout(false);
             this.pnlResourcePreview.ResumeLayout(false);
+            this.pnlResourcePreview.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
             this.ObjectCreatorTab.ResumeLayout(false);
             this.ObjectCreatorTab.PerformLayout();
@@ -1480,6 +1591,11 @@
             this.tabRoomProperties.PerformLayout();
             this.tabBackground.ResumeLayout(false);
             this.tabBackground.PerformLayout();
+            this.splitChatSplit.Panel1.ResumeLayout(false);
+            this.splitChatSplit.Panel2.ResumeLayout(false);
+            this.splitChatSplit.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitChatSplit)).EndInit();
+            this.splitChatSplit.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1601,6 +1717,15 @@
         private System.Windows.Forms.Button btnChooseColor;
         private System.Windows.Forms.Label lblBGColor;
         private System.Windows.Forms.ColorDialog colorRoomBG;
+        private System.Windows.Forms.SplitContainer splitChatSplit;
+        private System.Windows.Forms.Button btnSendMsg;
+        private System.Windows.Forms.TextBox txtMessage;
+        private System.Windows.Forms.TextBox txtChat;
+        private System.Windows.Forms.ToolStripMenuItem itemDisconnect;
+        private System.Windows.Forms.ToolStripMenuItem itemConnect;
+        private System.Windows.Forms.ToolStripMenuItem itemStartServer;
+        private System.Windows.Forms.ToolStripDropDownButton toolChat;
+        private System.Windows.Forms.FolderBrowserDialog folderPrjDir;
     }
 }
 

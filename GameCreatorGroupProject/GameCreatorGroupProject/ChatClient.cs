@@ -47,7 +47,7 @@ namespace GameCreatorGroupProject
                     }
 
                     //add code to write message to chat interface
-
+                    
                 }
                 MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
