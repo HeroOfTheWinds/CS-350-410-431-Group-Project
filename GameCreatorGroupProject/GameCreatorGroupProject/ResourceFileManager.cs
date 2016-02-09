@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,22 +8,42 @@ using System.Threading.Tasks;
 // This file contains functions and classes pertinent to
 // the operation of the Resource Importer in the main application.
 
-// This class contains all the functions needed specifically for use of the resource importer
-class ResourceImporter
+namespace GameCreatorGroupProject
 {
-    /*
-    |   string getAppDataPath()
-    |       This function uses the system environment to find the current
-    |       user's Application Data folder, and returns the path as a string.
-    |
-    */
-    string getAppDataPath()
+    // This class contains all the functions needed specifically for use of the resource importer
+    class ResourceImporter
     {
-        // Use the system-defined path to the User's AppData folder.
-        string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        /*
+        |   string getAppDataPath()
+        |       This function uses the system environment to find the current
+        |       user's Application Data folder, and returns the path as a string.
+        |
+        */
+        private string getAppDataPath()
+        {
+            // Use the system-defined path to the User's AppData folder.
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
-        return path;
+            return path;
+        }
+
+        /*
+        |   void SaveResource(Project project, string name, string resPath)
+        |       This function uses info from the current Project and saves a named resource
+        |       from the given file path to the project's directory, as well as updates
+        |       the project's list of resources.
+        |
+        */
+        public void SaveResource(Project project, string name, string ext, string resPath)
+        {
+            // Generate the destination file path
+            string dest = project.getResourceDir() + "/" + name + ext;
+
+            // Copy file into project's resource directory, overwrite if needed.
+            File.Copy(resPath, dest, true);
+
+            // Update the project's list of resources
+            project.Resources.Add(name, dest);
+        }
     }
-
-
 }

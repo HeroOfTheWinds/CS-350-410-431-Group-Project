@@ -24,9 +24,46 @@ namespace GameCreatorGroupProject
         }
         //other project information
 
+        // Dictionary of resource names and their file locations
+        private Dictionary<string, string> resources;
+
+        public Dictionary<string, string> Resources
+        {
+            get
+            {
+                return resources;
+            }
+            set
+            {
+                resources = value;
+            }
+        }
+
         private string prjName; // Name of the project
         private string prjFolder; // Directory the project is in
         private string resDirectory; // Directory the resource files are in
+
+        // Default constructor
+        public Project()
+        {
+            // If default constructor is called, create a temporary project in the AppData folder
+            prjName = "TempProject";
+            prjFolder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData) + "/TempProject";
+            resDirectory = prjFolder + "/Resources";
+            resources = new Dictionary<string, string>();
+            collaborators = new Dictionary<IPAddress, string>();
+        }
+
+        // Custom constructor, allows setting member variables through parameters
+        public Project(string name, string prjDir, string resDir)
+        {
+            // If default constructor is called, create a temporary project in the AppData folder
+            prjName = name;
+            prjFolder = prjDir;
+            resDirectory = resDir;
+            resources = new Dictionary<string, string>();
+            collaborators = new Dictionary<IPAddress, string>();
+        }
 
         // Function to save the project's information
         public int SaveProject()

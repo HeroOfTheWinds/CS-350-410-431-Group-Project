@@ -37,10 +37,13 @@
             this.itemSave = new System.Windows.Forms.ToolStripMenuItem();
             this.Separator1 = new System.Windows.Forms.ToolStripSeparator();
             this.itemExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolChat = new System.Windows.Forms.ToolStripDropDownButton();
+            this.itemStartServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemConnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.itemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ModeControlTabs = new System.Windows.Forms.TabControl();
             this.ResourcesTab = new System.Windows.Forms.TabPage();
-            this.btnSaveResource = new System.Windows.Forms.Button();
             this.txtResourceName = new System.Windows.Forms.TextBox();
             this.btnSetName = new System.Windows.Forms.Button();
             this.lblResName = new System.Windows.Forms.Label();
@@ -148,10 +151,6 @@
             this.btnSendMsg = new System.Windows.Forms.Button();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
-            this.toolChat = new System.Windows.Forms.ToolStripDropDownButton();
-            this.itemStartServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemConnect = new System.Windows.Forms.ToolStripMenuItem();
-            this.itemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
@@ -234,6 +233,39 @@
             this.itemExit.Size = new System.Drawing.Size(152, 22);
             this.itemExit.Text = "Exit";
             // 
+            // toolChat
+            // 
+            this.toolChat.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolChat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itemStartServer,
+            this.itemConnect,
+            this.itemDisconnect});
+            this.toolChat.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
+            this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolChat.Name = "toolChat";
+            this.toolChat.Size = new System.Drawing.Size(78, 22);
+            this.toolChat.Text = "Team Chat";
+            // 
+            // itemStartServer
+            // 
+            this.itemStartServer.Name = "itemStartServer";
+            this.itemStartServer.Size = new System.Drawing.Size(142, 22);
+            this.itemStartServer.Text = "Start Server...";
+            this.itemStartServer.Click += new System.EventHandler(this.itemStartServer_Click);
+            // 
+            // itemConnect
+            // 
+            this.itemConnect.Name = "itemConnect";
+            this.itemConnect.Size = new System.Drawing.Size(142, 22);
+            this.itemConnect.Text = "Connect...";
+            // 
+            // itemDisconnect
+            // 
+            this.itemDisconnect.Name = "itemDisconnect";
+            this.itemDisconnect.Size = new System.Drawing.Size(142, 22);
+            this.itemDisconnect.Text = "Disconnect...";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -261,7 +293,6 @@
             // 
             this.ResourcesTab.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ResourcesTab.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ResourcesTab.Controls.Add(this.btnSaveResource);
             this.ResourcesTab.Controls.Add(this.txtResourceName);
             this.ResourcesTab.Controls.Add(this.btnSetName);
             this.ResourcesTab.Controls.Add(this.lblResName);
@@ -279,17 +310,6 @@
             this.ResourcesTab.Size = new System.Drawing.Size(1144, 478);
             this.ResourcesTab.TabIndex = 0;
             this.ResourcesTab.Text = "Resources";
-            // 
-            // btnSaveResource
-            // 
-            this.btnSaveResource.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveResource.BackColor = System.Drawing.Color.LimeGreen;
-            this.btnSaveResource.Location = new System.Drawing.Point(905, 449);
-            this.btnSaveResource.Name = "btnSaveResource";
-            this.btnSaveResource.Size = new System.Drawing.Size(231, 23);
-            this.btnSaveResource.TabIndex = 11;
-            this.btnSaveResource.Text = "Save Resource";
-            this.btnSaveResource.UseVisualStyleBackColor = false;
             // 
             // txtResourceName
             // 
@@ -372,12 +392,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listFProperties.FormattingEnabled = true;
-            this.listFProperties.Items.AddRange(new object[] {
-            "File name:",
-            "File size:",
-            "Date created:",
-            "Format:",
-            "Color Space:"});
             this.listFProperties.Location = new System.Drawing.Point(4, 4);
             this.listFProperties.Name = "listFProperties";
             this.listFProperties.Size = new System.Drawing.Size(79, 394);
@@ -399,13 +413,12 @@
             // picPreview
             // 
             this.picPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picPreview.Location = new System.Drawing.Point(245, 88);
+            this.picPreview.Location = new System.Drawing.Point(3, 3);
             this.picPreview.Name = "picPreview";
             this.picPreview.Size = new System.Drawing.Size(219, 219);
             this.picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.picPreview.TabIndex = 0;
             this.picPreview.TabStop = false;
-            this.picPreview.Visible = false;
             // 
             // lblResources
             // 
@@ -436,6 +449,7 @@
             this.btnAddResource.TabIndex = 1;
             this.btnAddResource.Text = "Add";
             this.btnAddResource.UseVisualStyleBackColor = true;
+            this.btnAddResource.Click += new System.EventHandler(this.btnAddResource_Click);
             // 
             // listResources
             // 
@@ -447,6 +461,7 @@
             this.listResources.Name = "listResources";
             this.listResources.Size = new System.Drawing.Size(178, 407);
             this.listResources.TabIndex = 0;
+            this.listResources.SelectedIndexChanged += new System.EventHandler(this.listResources_SelectedIndexChanged);
             // 
             // ObjectCreatorTab
             // 
@@ -1484,7 +1499,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 165);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 161);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1495,7 +1510,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 165);
+            this.txtMessage.Location = new System.Drawing.Point(3, 161);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1510,41 +1525,8 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 156);
+            this.txtChat.Size = new System.Drawing.Size(1152, 152);
             this.txtChat.TabIndex = 0;
-            // 
-            // toolChat
-            // 
-            this.toolChat.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolChat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itemStartServer,
-            this.itemConnect,
-            this.itemDisconnect});
-            this.toolChat.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
-            this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolChat.Name = "toolChat";
-            this.toolChat.Size = new System.Drawing.Size(78, 22);
-            this.toolChat.Text = "Team Chat";
-            // 
-            // itemStartServer
-            // 
-            this.itemStartServer.Name = "itemStartServer";
-            this.itemStartServer.Size = new System.Drawing.Size(152, 22);
-            this.itemStartServer.Text = "Start Server...";
-            this.itemStartServer.Click += new System.EventHandler(this.itemStartServer_Click);
-            // 
-            // itemConnect
-            // 
-            this.itemConnect.Name = "itemConnect";
-            this.itemConnect.Size = new System.Drawing.Size(152, 22);
-            this.itemConnect.Text = "Connect...";
-            // 
-            // itemDisconnect
-            // 
-            this.itemDisconnect.Name = "itemDisconnect";
-            this.itemDisconnect.Size = new System.Drawing.Size(152, 22);
-            this.itemDisconnect.Text = "Disconnect...";
             // 
             // folderPrjDir
             // 
@@ -1684,7 +1666,6 @@
         private System.Windows.Forms.TextBox txtXPos;
         private System.Windows.Forms.Label lblXPos;
         private System.Windows.Forms.ListBox listObjChoices;
-        private System.Windows.Forms.Button btnSaveResource;
         private System.Windows.Forms.Button btnSaveObj;
         private System.Windows.Forms.Button btnOnStep;
         private System.Windows.Forms.Button btnSaveRoom;
