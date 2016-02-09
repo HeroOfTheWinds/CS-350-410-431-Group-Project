@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameCreatorGroupProject
 {
-    class Object
+    class GameObject
     {
         //Update should check for user input at the start or end of each frame.a
         void Update() {
