@@ -137,5 +137,54 @@ namespace GameCreatorGroupProject
             listFProperties.Items.Add("File size:");
             listFPVals.Items.Add((new FileInfo((project.Resources[listResources.SelectedItem.ToString()])).Length.ToString() + " bytes"));
         }
+
+        private void itemSave_Click(object sender, EventArgs e)
+        {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
+            // Save the project
+            int errNum = project.SaveProject();
+
+            if (errNum == 55)
+            {
+                // File was open in another application, tell user we failed.
+                MessageBox.Show("Error: File still open in another process. Could not save.");
+            }
+        }
+
+        private void itemExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void itemOpen_Click(object sender, EventArgs e)
+        {
+            // Set the file open dialog to only show .prj files
+            openResourceDialog.Filter = "Project Files (*.prj)|*.prj|All Files (*.*)|*.*";
+            // Prompt user for project file
+            openResourceDialog.ShowDialog();
+            // Restore filter to unfiltered state
+            openResourceDialog.Filter = "All Files (*.*)|*.*";
+
+            // Grab user-selected path
+            string projPath = openResourceDialog.FileName;
+
+            // Load data into current project
+            project.LoadProject(projPath);
+
+            // Clear out the list of resources the user sees
+            listResources.Items.Clear();
+
+            // Update the list of resources viewed by the user
+            foreach (string resName in project.Resources.Keys)
+            {
+                listResources.Items.Add(resName);
+            }
+        }
     }
 }

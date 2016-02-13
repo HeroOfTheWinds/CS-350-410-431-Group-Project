@@ -68,20 +68,101 @@ namespace GameCreatorGroupProject
         // Function to save the project's information
         public int SaveProject()
         {
-            // Write to a file called ProjectData.prj
-            string[] lines = { prjName, prjFolder, resDirectory };
+            // Erase the previous save data so can write anew
+            // Check if it exists before trying to delete:
+            if (File.Exists(prjFolder + "/ProjectData.prj"))
+            {
+                // Use a try block in case the file is open somewhere else
+                // and can't be deleted
+                try
+                {
+                    File.Delete(prjFolder + "/ProjectData.prj");
+                }
+                catch (IOException e)
+                {
+                    // Return an error number so the caller can display a message
+                    return 55;
+                }
+            }
 
-            string destFile = prjFolder + "/ProjectData.prj";
-            File.WriteAllLines(destFile, lines);
+            // Create a new stream to write project data to a file called ProjectData.prj
+            StreamWriter outFile = new StreamWriter(prjFolder + "/ProjectData.prj");
+            
+            outFile.WriteLine(prjName); // Write name of project
+            outFile.WriteLine(prjFolder); // Write directory of project
+            outFile.WriteLine(resDirectory); // Write directory where resources are
+
+            // To store the list of collaborators, first say how many there are.
+            outFile.WriteLine(Collaborators.Keys.Count);
+            // Now write them all to file, alternating keys and values on lines
+            foreach (IPAddress collab in Collaborators.Keys)
+            {
+                outFile.WriteLine(collab);
+                outFile.WriteLine(Collaborators[collab]);
+            }
+
+            // Using same strategy of number of keys followed by alternating keys and values
+            // Write the resources dictionary to file
+            outFile.WriteLine(Resources.Keys.Count);
+            foreach (string resName in Resources.Keys)
+            {
+                outFile.WriteLine(resName);
+                outFile.WriteLine(Resources[resName]);
+            }
 
             // Add some error checking later
+
+            // Close the stream
+            outFile.Close();
 
             return 0;
         }
 
         // Function to load info into this project from a saved file
-        public int LoadProject(string proj)
+        // Takes the file path to the project file as input
+        public int LoadProject(string projPath)
         {
+            // Create a stream reader to get the data from ProjectData.prj
+            StreamReader inFile = new StreamReader(projPath);
+
+            resources.Clear();
+            collaborators.Clear();
+
+            // Read in and set project name, directory and resources directory
+            prjName = inFile.ReadLine();
+            prjFolder = inFile.ReadLine();
+            resDirectory = inFile.ReadLine();
+
+            // Get the number of collaborators to read in
+            int numCollabs = int.Parse(inFile.ReadLine()); // Parse string as int
+            // Read in all the collaborators
+            for (int i = 0; i < numCollabs; i++)
+            {
+                // Read in the key
+                IPAddress cKey = IPAddress.Parse(inFile.ReadLine()); // Parse string as IP
+                // Read in the value
+                string cVal = inFile.ReadLine();
+
+                // Store in the collaborators dictionary
+                Collaborators.Add(cKey, cVal);
+            }
+
+            // Get number of resources to read in
+            int numRes = int.Parse(inFile.ReadLine());
+            // Read them all in, store in dictionary
+            for (int j = 0; j < numRes; j++)
+            {
+                string rKey = inFile.ReadLine();
+                string rVal = inFile.ReadLine();
+
+                Resources.Add(rKey, rVal);
+            }
+
+            // Error checking?
+
+            // Close the stream
+            inFile.Close();
+
             return 0;
         }
 

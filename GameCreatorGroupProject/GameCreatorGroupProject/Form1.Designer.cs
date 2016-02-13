@@ -215,12 +215,14 @@
             this.itemOpen.Name = "itemOpen";
             this.itemOpen.Size = new System.Drawing.Size(152, 22);
             this.itemOpen.Text = "Open Project...";
+            this.itemOpen.Click += new System.EventHandler(this.itemOpen_Click);
             // 
             // itemSave
             // 
             this.itemSave.Name = "itemSave";
             this.itemSave.Size = new System.Drawing.Size(152, 22);
             this.itemSave.Text = "Save";
+            this.itemSave.Click += new System.EventHandler(this.itemSave_Click);
             // 
             // Separator1
             // 
@@ -232,6 +234,7 @@
             this.itemExit.Name = "itemExit";
             this.itemExit.Size = new System.Drawing.Size(152, 22);
             this.itemExit.Text = "Exit";
+            this.itemExit.Click += new System.EventHandler(this.itemExit_Click);
             // 
             // toolChat
             // 
@@ -1499,7 +1502,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 161);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 157);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1510,7 +1513,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 161);
+            this.txtMessage.Location = new System.Drawing.Point(3, 157);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1525,7 +1528,7 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 152);
+            this.txtChat.Size = new System.Drawing.Size(1152, 148);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
