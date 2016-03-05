@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using OpenTK.Input;
 
 
 
@@ -11,6 +12,7 @@ namespace GameCreatorGroupProject
 {
     class GameObject
     {
+
         String objectname;
         double x;
         double y;
@@ -34,14 +36,36 @@ namespace GameCreatorGroupProject
         }
         //Update should check for user input at the start or end of each frame.a
         void Update() {
-            //how to correctly use IsKeyDown Function?
-            if (System.Windows.Input.Keyboard.IsKeyDown(w) == true) {
+            //get state of all keyboards on device
+            var state = OpenTK.Input.Keyboard.GetState();
+            //checks up key, if it is pressed it will check if location is valid then update location.
+            if (state[Key.Up]) {
                 if (isvalid(x, y + speed))
                     y = y + speed;
 
             }
-            
+            if (state[Key.Down])
+            {
+                if (isvalid(x, y - speed))
+                    y = y - speed;
+
+            }
+            if (state[Key.Left])
+            {
+                if (isvalid(x-speed, y))
+                    x = x - speed;
+
+            }
+            if (state[Key.Right])
+            {
+                if (isvalid(x+speed, y))
+                    x = x + speed;
+
+            }
+
         }
+
+
         //check if location is valid, x coordinate, and y coordinate, max and min xy are the map boundaries
         bool isvalid(double xc, double yc) {
             if (xc < map[0] && xc > map[1] && yc < map[2] && yc > map[3]) {
