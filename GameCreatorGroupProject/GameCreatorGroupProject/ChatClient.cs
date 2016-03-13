@@ -12,12 +12,20 @@ using System.Windows.Forms;
 
 namespace GameCreatorGroupProject
 {
+    //special clients should only be invoked by main client
     class ChatClient : TCPClient
     {
-        StreamWriter writer = null;
-        StreamReader reader = null;
+        private StreamWriter writer = null;
+        private StreamReader reader = null;
         //chat port
         private readonly int port = 20113;
+        private readonly byte serverType = 1;
+        private uint serverID;
+
+        public ChatClient(uint serverID)
+        {
+            this.serverID = serverID;
+        }
 
         //connects to specified chat server
         public override void connectClient(string serverIP)
@@ -31,6 +39,8 @@ namespace GameCreatorGroupProject
                     stream = client.GetStream();
                     writer = new StreamWriter(stream);
                     reader = new StreamReader(stream);
+                    //tells server clients username
+                    writer.WriteLine(MainClient.getUsername());
                 }
                 else
                 {
@@ -44,10 +54,13 @@ namespace GameCreatorGroupProject
                     {
                         //reads stream data
                         message = reader.ReadLine();
+
+
+                        //add code to write message to chat interface
+
+
                     }
 
-                    //add code to write message to chat interface
-                    
                 }
                 MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

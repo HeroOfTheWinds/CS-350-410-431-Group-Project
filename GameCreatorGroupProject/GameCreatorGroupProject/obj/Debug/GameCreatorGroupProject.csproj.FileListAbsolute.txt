@@ -31,3 +31,9 @@ C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProje
 C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
 C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
 C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\Jared\Documents\GitHub\submit\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Jared\Documents\GitHub\submit\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Jared\Documents\GitHub\submit\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb

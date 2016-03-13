@@ -58,12 +58,16 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainClient.cs" />
     <Compile Include="notConnectedException.cs" />
     <Compile Include="Object.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResourceClient.cs" />
     <Compile Include="ResourceFileManager.cs" />
+    <Compile Include="RTCClient.cs" />
+    <Compile Include="ServerInfo.cs" />
     <Compile Include="TCPClient.cs" />
     <Compile Include="TCPServer.cs" />
     <EmbeddedResource Include="Form1.resx">
