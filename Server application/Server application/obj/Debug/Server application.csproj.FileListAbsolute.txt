@@ -1,0 +1,20 @@
+C:\Users\Jared\Documents\GitHub\mod3\GameCreatorGroupProject\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\Jared\Documents\GitHub\mod3\GameCreatorGroupProject\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+C:\Users\Jared\Documents\GitHub\mod3\GameCreatorGroupProject\Server application\Server application\obj\Debug\Server_application.Form1.resources
+C:\Users\Jared\Documents\GitHub\mod3\GameCreatorGroupProject\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+C:\Users\Jared\Documents\GitHub\mod3\GameCreatorGroupProject\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+C:\Users\Jared\Documents\GitHub\mod3\Server application\Server application\bin\Debug\Server application.exe.config
+E:\mod3\Server application\Server application\bin\Debug\Server application.exe.config
+E:\mod3\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+E:\mod3\Server application\Server application\obj\Debug\Server_application.Form1.resources
+E:\mod3\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+E:\mod3\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+H:\mod3\Server application\Server application\bin\Debug\Server application.exe.config
+H:\mod3\Server application\Server application\bin\Debug\Server application.exe
+H:\mod3\Server application\Server application\bin\Debug\Server application.pdb
+H:\mod3\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+H:\mod3\Server application\Server application\obj\Debug\Server_application.Form1.resources
+H:\mod3\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+H:\mod3\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+H:\mod3\Server application\Server application\obj\Debug\Server application.exe
+H:\mod3\Server application\Server application\obj\Debug\Server application.pdb
