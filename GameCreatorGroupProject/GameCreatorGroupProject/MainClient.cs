@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
@@ -6,13 +8,15 @@ using System.Windows.Forms;
 
 namespace GameCreatorGroupProject
 {
-    internal class MainClient : TCPClient
+    internal class MainClient
     {
         //TEMPORARY, each program should have unique clientID
         private static readonly uint thisClientID = 0;
         //have some way for user to provide username
         private static string username = "";
 
+        private TcpClient client = null;
+        private NetworkStream stream = null;
         //handle incoming requests
         private BinaryWriter writer = null;
         private BinaryReader reader = null;
@@ -21,8 +25,24 @@ namespace GameCreatorGroupProject
         private BinaryWriter staticWriter = null;
         private BinaryReader staticReader = null;
         private NetworkStream staticStream = null;
+
+        private Queue<TCPClient> available = new Queue<TCPClient>();
         //main port
         private readonly int port = 20112;
+
+        //returns the next generated client, or null if no clients have been generated
+        //use this to create something that checks for available clients and does stuff with them
+        public TCPClient getAvailable()
+        {
+            if (available.Count != 0)
+            {
+                return available.Dequeue();
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         //returns this clients ID
         public static uint getThisClientID()
@@ -43,67 +63,76 @@ namespace GameCreatorGroupProject
         }
 
         //connects to specified chat server
-        public override void connectClient(string serverIP)
+        public void connectClient(string serverIP)
         {
-            staticClient = new TcpClient(serverIP, port);
-            staticStream = staticClient.GetStream();
-            staticReader = new BinaryReader(staticStream);
-            staticWriter = new BinaryWriter(staticStream);
-            //indicates to server this is the outgoing request client
-            staticWriter.Write((byte)0);
-            //tells server clientID
-            staticWriter.Write(thisClientID);
-            staticWriter.Flush();
-
-            Tuple<byte, uint> connectInfo = null;
-            using (client = new TcpClient(serverIP, port))
+            try
             {
-                if (client.Connected)
+                staticClient = new TcpClient(serverIP, port);
+                staticStream = staticClient.GetStream();
+                staticReader = new BinaryReader(staticStream);
+                staticWriter = new BinaryWriter(staticStream);
+                //indicates to server this is the outgoing request client
+                staticWriter.Write((byte)0);
+                //tells server clientID
+                staticWriter.Write(thisClientID);
+                staticWriter.Flush();
+
+                Tuple<byte, uint> connectInfo = null;
+                using (client = new TcpClient(serverIP, port))
                 {
-                    stream = client.GetStream();
-                    writer = new BinaryWriter(stream);
-                    reader = new BinaryReader(stream);
-                    //indicates to server this is the incoming request client
-                    writer.Write((byte)1);
-                    //tells server clientID
-                    writer.Write(thisClientID);
-                    writer.Flush();
-                }
-                else
-                {
-                    //shows error box if could not connect
-                    MessageBox.Show("A network error has occured.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                //reads connection requests from server
-                while (client.Connected)
-                {
-                    //checks if server has sent a connection request
-                    if (stream.DataAvailable)
+                    if (client.Connected)
                     {
-                        //reads stream data
-                        connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
-                        TCPClient c = null;
-                        //creates requested client
-                        //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
-                        switch (connectInfo.Item1)
-                        {
-                            case 1:
-                                c = new ChatClient(connectInfo.Item2);
-                                break;
-                            case 2:
-                                c = new ResourceClient(connectInfo.Item2);
-                                break;
-                            case 3:
-                                c = new RTCClient(connectInfo.Item2);
-                                break;
-                        }
-                        //connects client to server in new thread
-                        Thread t = new Thread(startClient);
-                        t.Start(c);
+                        stream = client.GetStream();
+                        writer = new BinaryWriter(stream);
+                        reader = new BinaryReader(stream);
+                        //indicates to server this is the incoming request client
+                        writer.Write((byte)1);
+                        //tells server clientID
+                        writer.Write(thisClientID);
+                        writer.Flush();
                     }
+                    else
+                    {
+                        //shows error box if could not connect
+                        MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    //reads connection requests from server
+                    while (client.Connected)
+                    {
+                        //checks if server has sent a connection request
+                        if (stream.DataAvailable)
+                        {
+                            //reads stream data
+                            connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
+                            TCPClient c = null;
+                            //creates requested client
+                            //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
+                            switch (connectInfo.Item1)
+                            {
+                                case 1:
+                                    c = new ChatClient(connectInfo.Item2);
+                                    break;
+                                case 2:
+                                    c = new ResourceClient(connectInfo.Item2);
+                                    break;
+                                case 3:
+                                    c = new RTCClient(connectInfo.Item2);
+                                    break;
+                            }
+                            //connects client to server in new thread
+                            Thread t = new Thread(startClient);
+                            t.Start(c);
+                            available.Enqueue(c);
+                        }
+                    }
+                    //tells user if client disconnected
+                    MessageBox.Show("Disconnected.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                //tells user if client disconnected
-                MessageBox.Show("Disconnected.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception e)
+            {
+                disconnectClient();
+                MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -120,22 +149,23 @@ namespace GameCreatorGroupProject
         }
 
         //sends request for server type specified by message, and sends request for connection for itself
-        public override void send(ref Object message)
+        private uint send(byte type)
         {
+            uint serverID;
             //checks to ensure parameter is valid
-            if ((byte)message == 1 || (byte)message == 2 || (byte)message == 3)
+            if (type == 1 || type == 2 || type == 3)
             {
                 //ensures client has been connected
                 if (staticWriter != null)
                 {
                     //writes request to stream
-                    staticWriter.Write((byte)message);
+                    staticWriter.Write(type);
                     staticWriter.Flush();
                     //not sure if this is a blocking method, might have to find some way to wait for data to be available
                     //gets serverID for connection from main server
-                    uint serverID = staticReader.ReadUInt32();
+                    serverID = staticReader.ReadUInt32();
                     //connects this client
-                    if (!connectClient((byte)message, serverID, thisClientID))
+                    if (!connectClient(type, serverID, thisClientID))
                     {
                         //throws an exception if this client not in server side client list, probably an issue with the server app
                         throw new notConnectedException("Main client not in server's connection list");
@@ -152,10 +182,11 @@ namespace GameCreatorGroupProject
             {
                 throw new ArgumentException("Invalid server type");
             }
+            return serverID;
         }
 
         //disconnects the client
-        public override void disconnectClient()
+        public void disconnectClient()
         {
             if (writer != null) { writer.Close(); }
             if (reader != null) { reader.Close(); }
@@ -164,24 +195,24 @@ namespace GameCreatorGroupProject
         }
 
         //starts chat server
-        public void requestChatServer()
+        public uint requestChatServer()
         {
-            Object requestType = 1;
-            send(ref requestType);
+            byte requestType = 1;
+            return send(requestType);
         }
 
         //starts server for resource sharing
-        public void requestResourceServer()
+        public uint requestResourceServer()
         {
-            Object requestType = 2;
-            send(ref requestType);
+            byte requestType = 2;
+            return send(requestType);
         }
 
         //starts server for real time collaboration
-        public void requestRTCServer()
+        public uint requestRTCServer()
         {
-            Object requestType = 3;
-            send(ref requestType);
+            byte requestType = 3;
+            return send(requestType);
         }
 
         //should probably check if connected in all these methods

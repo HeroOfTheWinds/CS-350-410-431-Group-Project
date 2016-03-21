@@ -27,6 +27,11 @@ namespace GameCreatorGroupProject
             this.serverID = serverID;
         }
 
+        public uint getServerID()
+        {
+            return serverID;
+        }
+
         //connects to specified chat server
         public override void connectClient(string serverIP)
         {

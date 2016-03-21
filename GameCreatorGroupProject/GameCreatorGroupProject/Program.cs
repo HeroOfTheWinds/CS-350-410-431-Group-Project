@@ -9,7 +9,7 @@ namespace GameCreatorGroupProject
 {
     static class Program
     {
-        private static TCPClient online = null;
+        private static MainClient online = null;
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,6 +22,10 @@ namespace GameCreatorGroupProject
             Application.Run(new MainWindow());
             //creates a main client for the program
             online = new MainClient();
+        }
+
+        public static void connect()
+        {
             Thread t = new Thread(connectMain);
             t.Start();
         }
