@@ -34,6 +34,7 @@ namespace GameCreatorGroupProject
                 y = yspawn;
             }
         }
+
         //Update should check for user input at the start or end of each frame.a
         void Update() {
             //get state of all keyboards on device

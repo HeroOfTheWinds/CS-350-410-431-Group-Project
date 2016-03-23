@@ -71,12 +71,20 @@ namespace Server_application
                 if (listener.Pending() && currentID == serverID)
                 {
                     //connects to client
-                    //currently connects to any client, possibly add security later
                     TcpClient client = listener.AcceptTcpClient();
-                    //spawns new thread for handling data transmission to other clients
-                    Thread t = new Thread(transmitter);
-                    t.Start(client);
-                    connectExpected = false;
+                    //if client attempting to connect directly without going through main server, denies connection (closes clients stream)
+                    if (!connectExpected)
+                    {
+                        client.GetStream().Close();
+                        client.Close();
+                    }
+                    //else spawns new thread for handling data transmission to other clients
+                    else
+                    {
+                        Thread t = new Thread(transmitter);
+                        t.Start(client);
+                        connectExpected = false;
+                    }
                 }
             }
         }

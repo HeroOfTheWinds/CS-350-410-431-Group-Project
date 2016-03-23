@@ -18,3 +18,6 @@ H:\mod3\Server application\Server application\obj\Debug\Server_application.Prope
 H:\mod3\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
 H:\mod3\Server application\Server application\obj\Debug\Server application.exe
 H:\mod3\Server application\Server application\obj\Debug\Server application.pdb
+C:\Users\Jared\Documents\GitHub\mod5\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\Jared\Documents\GitHub\mod5\Server application\Server application\obj\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\mod5\Server application\Server application\obj\Debug\Server application.pdb
