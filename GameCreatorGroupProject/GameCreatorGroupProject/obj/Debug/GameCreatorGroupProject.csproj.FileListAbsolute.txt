@@ -67,3 +67,6 @@ C:\Users\Jared\Documents\GitHub\mod5\GameCreatorGroupProject\GameCreatorGroupPro
 C:\Users\Jared\Documents\GitHub\mod5\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
 C:\Users\Jared\Documents\GitHub\mod5\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.Properties.Resources.resources
 C:\Users\Jared\Documents\GitHub\mod5\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
+C:\Users\Jared\Documents\GitHub\mod6\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Jared\Documents\GitHub\mod6\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Jared\Documents\GitHub\mod6\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb

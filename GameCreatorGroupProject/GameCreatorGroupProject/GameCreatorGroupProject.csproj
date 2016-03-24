@@ -67,6 +67,7 @@
     <Compile Include="ResourceClient.cs" />
     <Compile Include="ResourceFileManager.cs" />
     <Compile Include="RTCClient.cs" />
+    <Compile Include="Segment.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="TCPClient.cs" />
     <Compile Include="TCPServer.cs" />
