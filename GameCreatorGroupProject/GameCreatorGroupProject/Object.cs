@@ -299,75 +299,112 @@ namespace GameCreatorGroupProject
             }
             //copies given list
             List<Segment> temp = new List<Segment>(seg);
-            //modifies segment in temp based on movement
-            foreach (Segment s in temp)
+
+            bool first = true;
+            //iterates through collidable objects
+            foreach (GameObject o in collision)
             {
                 //indicates movement in upwards direction
                 if (dir.Equals("u"))
                 {
-                    //modifies segments accordingly
-                    s.StartY += speed;
-                    s.EndY += speed;
-                    //iterates through collidable objects
-                    foreach (GameObject o in collision)
+                    //checks if objects intersect on two axis, else doesn't bother to check intersections
+                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
+                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
                     {
-                        //compares with each collidable objects segments
-                        foreach (Segment l in o.getSegments())
+                        foreach (Segment s in temp)
                         {
-                            //chacks if intersect
-                            if (s.intersect(l))
+                            //modifies segment in temp based on movement, if first iteration
+                            if (first)
                             {
-                                return true;
+                                //modifies segments accordingly
+                                s.StartY += speed;
+                                s.EndY += speed;
+                            }
+                                
+                            //compares with each collidable objects segments
+                            foreach (Segment l in o.getSegments())
+                            {
+                                //chacks if intersect
+                                if (s.intersect(l))
+                                {
+                                    return true;
+                                }
                             }
                         }
+                        //indicates segments in temp have already been updated
+                        first = false;
                     }
                 }
                 //indicates movement in downward direction (see above comments)
                 else if (dir.Equals("d"))
                 {
-                    s.StartY -= speed;
-                    s.EndY -= speed;
-                    foreach (GameObject o in collision)
+                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
+                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
                     {
-                        foreach (Segment l in o.getSegments())
+                        foreach (Segment s in temp)
                         {
-                            if (s.intersect(l))
+                            if (first)
                             {
-                                return true;
+                                s.StartY -= speed;
+                                s.EndY -= speed;
                             }
+                                foreach (Segment l in o.getSegments())
+                                {
+                                    if (s.intersect(l))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                        first = false;
                         }
                     }
-                }
                 //indicates movement in left direction (see above comments)
                 else if (dir.Equals("l"))
                 {
-                    s.StartX -= speed;
-                    s.EndX -= speed;
-                    foreach (GameObject o in collision)
-                    {
-                        foreach (Segment l in o.getSegments())
+                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
+                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
                         {
-                            if (s.intersect(l))
+                        foreach (Segment s in temp)
+                        {
+                            if (first)
                             {
-                                return true;
+                                s.StartX -= speed;
+                                s.EndX -= speed;
+                            }
+                            foreach (Segment l in o.getSegments())
+                            {
+                                if (s.intersect(l))
+                                {
+                                    return true;
+                                }
                             }
                         }
+                        first = false;
                     }
                 }
                 //indicates movement in right direction (see above comments)
                 else if (dir.Equals("r"))
                 {
-                    s.StartX += speed;
-                    s.EndX += speed;
-                    foreach (GameObject o in collision)
+                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
+                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
                     {
-                        foreach (Segment l in o.getSegments())
+                        foreach (Segment s in temp)
                         {
-                            if (s.intersect(l))
+                            if (first)
                             {
-                                return true;
+                                s.StartX += speed;
+                                s.EndX += speed;
+                            }
+                            foreach (Segment l in o.getSegments())
+                            {
+                                if (s.intersect(l))
+                                {
+                                    return true;
+                                }
                             }
                         }
+                        first = false;
                     }
                 }
                 else
