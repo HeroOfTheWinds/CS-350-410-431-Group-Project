@@ -14,12 +14,21 @@ namespace Server_application
     class MainServer : TCPServer
     {
         //dictionary of connected clients by clientID
-        private Dictionary<uint, TcpClient> clientList = null;
-        private bool running = true;
+        private Dictionary<uint, TcpClient> clientList;
+        private bool running;
         private static readonly object serverCounterLock = new Object();
-        private uint serverCounter = 0;
+        private uint serverCounter;
         //main server port
-        private readonly int port = 20112;
+        private readonly int port;
+
+        public MainServer()
+        {
+            clientList = new Dictionary<uint, TcpClient>();
+            running = true;
+            serverCounter = 0;
+            port = 20112;
+        }
+
 
         public override void startServer()
         {
@@ -123,7 +132,7 @@ namespace Server_application
                                     uint serverID = reader.ReadUInt32();
                                     uint clientID = reader.ReadUInt32();
                                     //checks if specified client connected, and gets corresponding TcpClient
-                                    if (clientList.TryGetValue(serverID, out connect))
+                                    if (clientList.TryGetValue(clientID, out connect))
                                     {
                                         //creates reader and writer on requested clients stream
 						                NetworkStream cStream = connect.GetStream();
@@ -213,12 +222,7 @@ namespace Server_application
                         }
                     }
                 }
-                //client type waits for requests from server
-                if (type == 1)
-                {
-                    //adds client to a dictionary for use
-		            clientList.Add(thisClientID, thisClient);
-                }
+                
                 //cleanup
                 if (writer != null) { writer.Close(); }
                 if (reader != null) { reader.Close(); }
@@ -226,6 +230,16 @@ namespace Server_application
                 lock (clientList)
                 {
                     clientList.Remove(thisClientID);
+                }
+
+                //client type waits for requests from server
+                if (type == 1)
+                {
+                    //adds client to a dictionary for use
+                    if (clientList != null)
+                    {
+                        clientList.Add(thisClientID, thisClient);
+                    }
                 }
             }
         }
@@ -247,7 +261,7 @@ namespace Server_application
         //starts a chat server with specidied serverID
         private void startChatServer(object serverID)
         {
-            TCPServer server = new RTCServer((uint)serverID);
+            TCPServer server = new ChatServer((uint)serverID);
             server.startServer();
         }
 

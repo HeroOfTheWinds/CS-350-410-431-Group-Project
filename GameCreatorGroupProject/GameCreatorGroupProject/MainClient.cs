@@ -82,6 +82,7 @@ namespace GameCreatorGroupProject
                 {
                     if (client.Connected)
                     {
+                        Program.connected = true;
                         stream = client.GetStream();
                         writer = new BinaryWriter(stream);
                         reader = new BinaryReader(stream);
@@ -90,6 +91,7 @@ namespace GameCreatorGroupProject
                         //tells server clientID
                         writer.Write(thisClientID);
                         writer.Flush();
+                        MessageBox.Show("Connected to the main server at " + ServerInfo.getServerIP().ToString() + "!");
                     }
                     else
                     {

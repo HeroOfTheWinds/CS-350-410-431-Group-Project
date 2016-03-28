@@ -5,7 +5,7 @@ namespace GameCreatorGroupProject
     //class for holding server information
     internal class ServerInfo
     {
-        private static string serverIP = "0";
+        private static string serverIP = "127.0.0.1";
 
         internal static string getServerIP()
         {

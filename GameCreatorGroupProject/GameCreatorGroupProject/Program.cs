@@ -10,7 +10,7 @@ namespace GameCreatorGroupProject
     static class Program
     {
         private static MainClient online = null;
-
+        public static bool connected = false;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -22,6 +22,11 @@ namespace GameCreatorGroupProject
             Application.Run(new MainWindow());
             //creates a main client for the program
             online = new MainClient();
+            connect();
+
+            while (!connected)
+            { };
+            online.requestChatServer();
         }
 
         public static void connect()
@@ -34,6 +39,7 @@ namespace GameCreatorGroupProject
         private static void connectMain()
         {
             online.connectClient(ServerInfo.getServerIP());
+            
         }
     }
 }

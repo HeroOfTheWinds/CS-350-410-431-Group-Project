@@ -186,5 +186,10 @@ namespace GameCreatorGroupProject
                 listResources.Items.Add(resName);
             }
         }
+
+        private void itemConnect_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

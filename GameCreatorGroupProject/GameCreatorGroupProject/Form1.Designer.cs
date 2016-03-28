@@ -247,26 +247,27 @@
             this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
             this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolChat.Name = "toolChat";
-            this.toolChat.Size = new System.Drawing.Size(78, 22);
+            this.toolChat.Size = new System.Drawing.Size(77, 22);
             this.toolChat.Text = "Team Chat";
             // 
             // itemStartServer
             // 
             this.itemStartServer.Name = "itemStartServer";
-            this.itemStartServer.Size = new System.Drawing.Size(142, 22);
+            this.itemStartServer.Size = new System.Drawing.Size(152, 22);
             this.itemStartServer.Text = "Start Server...";
             this.itemStartServer.Click += new System.EventHandler(this.itemStartServer_Click);
             // 
             // itemConnect
             // 
             this.itemConnect.Name = "itemConnect";
-            this.itemConnect.Size = new System.Drawing.Size(142, 22);
+            this.itemConnect.Size = new System.Drawing.Size(152, 22);
             this.itemConnect.Text = "Connect...";
+            this.itemConnect.Click += new System.EventHandler(this.itemConnect_Click);
             // 
             // itemDisconnect
             // 
             this.itemDisconnect.Name = "itemDisconnect";
-            this.itemDisconnect.Size = new System.Drawing.Size(142, 22);
+            this.itemDisconnect.Size = new System.Drawing.Size(152, 22);
             this.itemDisconnect.Text = "Disconnect...";
             // 
             // statusStrip1
@@ -1502,7 +1503,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 157);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 153);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1513,7 +1514,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 157);
+            this.txtMessage.Location = new System.Drawing.Point(3, 153);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1528,7 +1529,7 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 148);
+            this.txtChat.Size = new System.Drawing.Size(1152, 144);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
