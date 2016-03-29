@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using OpenTK.Input;
 using System.Windows.Forms;
+using OpenTK;
 
 namespace GameCreatorGroupProject
 {
@@ -16,12 +17,12 @@ namespace GameCreatorGroupProject
         private bool col;
 
         private String objectname;
-        private double speed;
-        private double baseSpeed;
-        private double acc;
+        private float speed;
+        private float baseSpeed;
+        private float acc;
         //for map array, 0 max x value, 1 min x value, 2 max y value, 3 min y value
 
-        double[] map = new double[4];
+        float[] map = new float[4];
 
         //indicates direction last moved
         private bool uAcc;
@@ -29,29 +30,30 @@ namespace GameCreatorGroupProject
         private bool rAcc;
         private bool lAcc;
         //location of objects vertices
-        private double[][] loc;
+        private Vector2[] loc;
         //line segments composing the object
         private List<Segment> segs = new List<Segment>();
         //minimum and maximum x, y vals
-        private double maxX;
-        private double minX;
-        private double maxY;
-        private double minY;
+        private float maxX;
+        private float minX;
+        private float maxY;
+        private float minY;
 
         //indicates if object has been spawned
         private bool isSpawned = false;
 
 
-        //constructor takes as inputs, the name of the object, spawn location, map details as an array of doubles that holds the maps size, the speed of the object, acceleration of the object, and whether object has collision.
+        //constructor takes as inputs, the name of the object, spawn location, map details as an array of floats that holds the maps size, the speed of the object, acceleration of the object, and whether object has collision.
         //NOTE: spawCoords must be vertices in order, with the last vertex connecting to the first
-        public GameObject(String name, double[][] spawnCoords, double[] inputmap, double ispeed, double acceleration, bool collision)
+        public GameObject(String name, Vector2[] spawnCoords, float[] inputmap, float ispeed, float acceleration, bool collision)
         {
             col = collision;
             objectname = name;
             baseSpeed = ispeed;
             speed = ispeed;
             acc = acceleration;
-            map = inputmap;
+            map = new float[4];
+            Array.Copy(inputmap, map, 4);
             if (collision)
             {
                 GameObject.collision.Add(this);
@@ -65,50 +67,47 @@ namespace GameCreatorGroupProject
             else
             {
                 isSpawned = true;
+                loc = new Vector2[spawnCoords.Length];
+                Array.Copy(spawnCoords, loc, spawnCoords.Length);
             }
         }
 
         //attempts to spawn object with given coordinates, returns true if successful, else false
-        public virtual bool spawn(double[][] spawnCoords)
+        public virtual bool spawn(Vector2[] spawnCoords)
         {
-            maxX = spawnCoords[0][0];
-            minX = spawnCoords[0][0];
-            maxY = spawnCoords[0][1];
-            minY = spawnCoords[0][1];
+            maxX = spawnCoords[0].X;
+            minX = maxX;
+            maxY = spawnCoords[0].Y;
+            minY = maxY;
             List<Segment> temp = new List<Segment>();
             //checks if each coordinate valid and sets values
-            for (int i = 0; i < spawnCoords.GetLength(0); i++)
+            for (int i = 0; i < spawnCoords.Length; i++)
             {
-                //if given spawn location is valid, make the object, else return false
-                if (!isvalid(spawnCoords[i][0], spawnCoords[i][1]))
-                {
-                    return false;
-                }
                 //creates segments from coordinates, connecting them together as vertices, with the last vertex connecting to the first
-                if (i + 1 < spawnCoords.GetLength(0))
+                if (i + 1 < spawnCoords.Length)
                 {
-                    temp.Add(new Segment(spawnCoords[i][0], spawnCoords[i][1], spawnCoords[i + 1][0], spawnCoords[i + 1][1]));
+                    temp.Add(new Segment(spawnCoords[i].X, spawnCoords[i].Y, spawnCoords[i + 1].X, spawnCoords[i + 1].Y));
                 }
                 else
                 {
-                    temp.Add(new Segment(spawnCoords[i][0], spawnCoords[i][1], spawnCoords[0][0], spawnCoords[0][1]));
+                    temp.Add(new Segment(spawnCoords[i].X, spawnCoords[i].Y, spawnCoords[0].X, spawnCoords[0].Y));
                 }
                 //finds maximum x and y values
-                if (spawnCoords[i][0] > maxX)
+                if (spawnCoords[i].X > maxX)
                 {
-                    maxX = spawnCoords[i][0];
+                    maxX = spawnCoords[i].X;
                 }
-                if (spawnCoords[i][0] < minX)
+                if (spawnCoords[i].X < minX)
                 {
-                    minX = spawnCoords[i][0];
+                    minX = spawnCoords[i].X;
                 }
-                if (spawnCoords[i][1] > maxY)
+                if (spawnCoords[i].Y > maxY)
                 {
-                    maxY = spawnCoords[i][1];
+                    maxY = spawnCoords[i].Y;
                 }
-                if (spawnCoords[i][1] < minY)
+                if (spawnCoords[i].Y < minY)
                 {
-                    minY = spawnCoords[i][1];
+                    minY = spawnCoords[i].Y;
                 }
             }
             //checks if intersects with any existing object
@@ -144,12 +143,12 @@ namespace GameCreatorGroupProject
                     }
                     bool valid = true;
                     //checks if the new coordinates are valid
-                    foreach (double[] c in loc)
+                    foreach (Vector2 c in loc)
                     {
-                        double x = c[0];
-                        double y = c[1];
+                        float x = c.X;
+                        float y = c.Y;
                         //checks if x and y coordinates will be valid after movement
-                        if (!isvalid(x, y + speed) || intersects(speed, "u", segs))
+                        if (intersects(speed, "u", segs))
                         {
                             valid = false;
                             break;
@@ -161,7 +160,7 @@ namespace GameCreatorGroupProject
                         //updates each relevant coordinate and segment location
                         for (int i = 0; i < loc.GetLength(0); i++)
                         {
-                            loc[i][1] += speed;
+                            loc[i].Y += speed;
                             segs[i].StartY += speed;
                             segs[i].EndY += speed;
                         }
@@ -183,12 +182,12 @@ namespace GameCreatorGroupProject
                         speed = baseSpeed;
                     }
                     bool valid = true;
-                    foreach (double[] c in loc)
+                    foreach (Vector2 c in loc)
                     {
-                        double x = c[0];
-                        double y = c[1];
+                        float x = c.X;
+                        float y = c.Y;
 
-                        if (!isvalid(x, y - speed) || intersects(speed, "d", segs))
+                        if (intersects(speed, "d", segs))
                         {
                             valid = false;
                             break;
@@ -221,12 +220,12 @@ namespace GameCreatorGroupProject
                         speed = baseSpeed;
                     }
                     bool valid = true;
-                    foreach (double[] c in loc)
+                    foreach (Vector2 c in loc)
                     {
-                        double x = c[0];
-                        double y = c[1];
+                        float x = c.X;
+                        float y = c.Y;
 
-                        if (!isvalid(x - speed, y) || intersects(speed, "l", segs))
+                        if (intersects(speed, "l", segs))
                         {
                             valid = false;
                             break;
@@ -259,12 +258,12 @@ namespace GameCreatorGroupProject
                         speed = baseSpeed;
                     }
                     bool valid = true;
-                    foreach (double[] c in loc)
+                    foreach (Vector2 c in loc)
                     {
-                        double x = c[0];
-                        double y = c[1];
+                        float x = c.X;
+                        float y = c.Y;
 
-                        if (!isvalid(x + speed, y) || intersects(speed, "r", segs))
+                        if (intersects(speed, "r", segs))
                         {
                             valid = false;
                             break;
@@ -290,7 +289,7 @@ namespace GameCreatorGroupProject
         }
 
         //chacks if segments in seg intersect with any collidable objects after given movement
-        private bool intersects(double speed, string dir, List<Segment> seg)
+        private bool intersects(float speed, string dir, List<Segment> seg)
         {
             //this object has no collision
             if (!col)
@@ -418,7 +417,8 @@ namespace GameCreatorGroupProject
 
 
         //check if location is valid, x coordinate, and y coordinate, max and min xy are the map boundaries
-        public virtual bool isvalid(double xc, double yc) {
+        //currently unused
+        public virtual bool isvalid(float xc, float yc) {
             if (!(xc < map[0] && xc > map[1] && yc < map[2] && yc > map[3]))
             {
                 return false;
@@ -462,69 +462,69 @@ namespace GameCreatorGroupProject
             objectname = name;
         }
 
-        public double[][] getLoc()
+        public Vector2[] getLoc()
         {
             return loc;
         }
 
-        public double[] getMap()
+        public float[] getMap()
         {
             return map;
         }
 
-        public void setMap(double[] map)
+        public void setMap(float[] map)
         {
             this.map = map;
         }
 
-        public double getAcc()
+        public float getAcc()
         {
             return acc;
         }
 
-        public void setAcc(double acceleration)
+        public void setAcc(float acceleration)
         {
             acc = acceleration;
         }
 
-        public double getBaseSpeed()
+        public float getBaseSpeed()
         {
             return baseSpeed;
         }
 
-        public void setBaseSpeed(double ispeed)
+        public void setBaseSpeed(float ispeed)
         {
             baseSpeed = ispeed;
         }
 
-        public double getSpeed()
+        public float getSpeed()
         {
             return speed;
         }
 
-        public void setSpeed(double speed)
+        public void setSpeed(float speed)
         {
             this.speed = speed;
         }
 
 
 
-        public double getMaxX()
+        public float getMaxX()
         {
             return maxX;
         }
 
-        public double getMinX()
+        public float getMinX()
         {
             return minX;
         }
 
-        public double getMaxY()
+        public float getMaxY()
         {
             return maxY;
         }
 
-        public double getMinY()
+        public float getMinY()
         {
             return minY;
         }
