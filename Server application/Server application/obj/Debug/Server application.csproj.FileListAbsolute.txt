@@ -1,9 +1,0 @@
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe.config
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.pdb
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server_application.Form1.resources
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.exe
-C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.pdb
