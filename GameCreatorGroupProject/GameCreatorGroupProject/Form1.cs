@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
@@ -22,6 +23,16 @@ namespace GameCreatorGroupProject
         // or exit without saving a brand new project.
         bool projectOpen = false;
 
+        // Debug flag; used to bypass some checks or show extra information
+        #if DEBUG
+            bool debug = true;
+#else
+            bool debug = false;
+#endif
+
+        //MainClient to be created when form is loaded
+        MainClient online;
+
         // Declare a ResourceImporter to make it easier to load and save resources
         ResourceImporter resImporter = new ResourceImporter();
 
@@ -33,11 +44,15 @@ namespace GameCreatorGroupProject
         private void itemStartServer_Click(object sender, EventArgs e)
         {
             // If no project is open, throw error and abandon function
-            if (!projectOpen)
+            if (!projectOpen && !debug)
             {
                 MessageBox.Show("Error: No currently open projects.");
                 return;
             }
+
+            //Connect to mainServer using ServerInfo
+            connect();
+
 
             // Create a server
             //ChatServer prjServer = new ChatServer();
@@ -189,7 +204,24 @@ namespace GameCreatorGroupProject
 
         private void itemConnect_Click(object sender, EventArgs e)
         {
+            online.requestChatServer();
+        }
 
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            online = new MainClient();
+        }
+
+        public void connect()
+        {
+            Thread t = new Thread(connectMain);
+            t.Start();
+        }
+
+        //connects the main client to the server
+        private void connectMain()
+        {
+            online.connectClient(ServerInfo.getServerIP());
         }
     }
 }
