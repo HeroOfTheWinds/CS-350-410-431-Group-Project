@@ -21,6 +21,7 @@ namespace GameCreatorGroupProject
         private readonly int port = 20113;
         private readonly byte serverType = 1;
         private uint serverID;
+        private bool dc;
 
         public ChatClient(uint serverID)
         {
@@ -36,6 +37,7 @@ namespace GameCreatorGroupProject
         public override void connectClient(string serverIP)
         {
             string message;
+            dc = false;
 
             using (client = new TcpClient(serverIP, port))
             {
@@ -52,7 +54,7 @@ namespace GameCreatorGroupProject
                     MessageBox.Show("A network error has occured.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 //reads messages
-                while (client.Connected)
+                while (client.Connected && !dc)
                 {
                     //possible issue if server has not yet read sent data
                     if (stream.DataAvailable)
@@ -88,8 +90,10 @@ namespace GameCreatorGroupProject
 
         public override void disconnectClient()
         {
+            dc = true;
             if (writer != null) { writer.Close(); }
             if (reader != null) { reader.Close(); }
+            if (client != null) { client.Close(); }
         }
     }
 }

@@ -15,6 +15,8 @@ namespace GameCreatorGroupProject
         //have some way for user to provide username
         private static string username = "";
 
+        private static List<TCPClient> clients = new List<TCPClient>();
+
         private TcpClient client = null;
         private NetworkStream stream = null;
         //handle incoming requests
@@ -25,6 +27,8 @@ namespace GameCreatorGroupProject
         private BinaryWriter staticWriter = null;
         private BinaryReader staticReader = null;
         private NetworkStream staticStream = null;
+
+        private bool dc;
 
         private Queue<TCPClient> available = new Queue<TCPClient>();
         //main port
@@ -65,6 +69,7 @@ namespace GameCreatorGroupProject
         //connects to specified chat server
         public void connectClient(string serverIP)
         {
+            dc = false;
             try
             {
                 staticClient = new TcpClient(serverIP, port);
@@ -99,7 +104,7 @@ namespace GameCreatorGroupProject
                         MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     //reads connection requests from server
-                    while (client.Connected)
+                    while (client.Connected && !dc)
                     {
                         //checks if server has sent a connection request
                         if (stream.DataAvailable)
@@ -125,6 +130,7 @@ namespace GameCreatorGroupProject
                             Thread t = new Thread(startClient);
                             t.Start(c);
                             available.Enqueue(c);
+                            clients.Add(c);
                         }
                     }
                     //tells user if client disconnected
@@ -133,7 +139,7 @@ namespace GameCreatorGroupProject
             }
             catch (Exception e)
             {
-                disconnectClient();
+                disconnect();
                 MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -187,12 +193,25 @@ namespace GameCreatorGroupProject
         }
 
         //disconnects the client
-        public void disconnectClient()
+        public void disconnect()
         {
+            dc = true;
+            foreach (TCPClient c in clients)
+            {
+                c.disconnectClient();
+            }
             if (writer != null) { writer.Close(); }
             if (reader != null) { reader.Close(); }
             if (staticWriter != null) { writer.Close(); }
             if (staticReader != null) { reader.Close(); }
+        }
+
+        public void disconnectClient(TCPClient c)
+        {
+            if (clients.Remove(c))
+            {
+                c.disconnectClient();
+            }
         }
 
         //starts chat server

@@ -247,7 +247,7 @@
             this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
             this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolChat.Name = "toolChat";
-            this.toolChat.Size = new System.Drawing.Size(77, 22);
+            this.toolChat.Size = new System.Drawing.Size(78, 22);
             this.toolChat.Text = "Team Chat";
             // 
             // itemStartServer
@@ -1503,7 +1503,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 145);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 141);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1514,7 +1514,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 145);
+            this.txtMessage.Location = new System.Drawing.Point(3, 141);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1529,7 +1529,7 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 136);
+            this.txtChat.Size = new System.Drawing.Size(1152, 132);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
@@ -1549,6 +1549,7 @@
             this.Name = "MainWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Nameless Game Creator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();

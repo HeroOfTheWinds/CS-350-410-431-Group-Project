@@ -353,6 +353,19 @@ namespace GameCreatorGroupProject
 
             bool ret = false;
 
+            float width;
+
+            if (dir.Equals("r") || dir.Equals("l"))
+            {
+                width = maxX - minX;
+            }
+            else
+            {
+                width = maxY - minY;
+            }
+
+            //for (float i = speed; (int)i > 0; i -= width)
+            
             //iterates through collidable objects in parallel
             Parallel.ForEach<GameObject>(collision, (o) =>
             {

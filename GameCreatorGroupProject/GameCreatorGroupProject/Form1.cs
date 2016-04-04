@@ -223,5 +223,10 @@ namespace GameCreatorGroupProject
         {
             online.connectClient(ServerInfo.getServerIP());
         }
+
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            online.disconnect();
+        }
     }
 }
