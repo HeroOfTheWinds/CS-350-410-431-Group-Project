@@ -146,7 +146,6 @@ namespace GameCreatorGroupProject
             {
                 throw new ArgumentNullException("No client to connect");
             }
-            //will this work without client type cast?
             ((TCPClient)connectClient).connectClient(ServerInfo.getServerIP());
         }
 

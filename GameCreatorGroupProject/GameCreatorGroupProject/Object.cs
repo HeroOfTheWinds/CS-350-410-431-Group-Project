@@ -68,7 +68,7 @@ namespace GameCreatorGroupProject
             //calculates coordinates based on offsets
             for (int i = 1; i < spawnCoords.Length; i++)
             {
-                spawnCoords[i] = vertexOffsets[i];
+                spawnCoords[i] = vertexOffsets[i - 1];
                 spawnCoords[i].X += referenceCoord.X;
                 spawnCoords[i].Y += referenceCoord.Y;
             }
@@ -160,16 +160,10 @@ namespace GameCreatorGroupProject
                     }
                     else
                     {
-                        foreach (Vector2 c in loc)
+                        //checks if collision after movement
+                        if (intersects(speed, "u", segs))
                         {
-                            float x = c.X;
-                            float y = c.Y;
-                            //checks if x and y coordinates will be valid after movement
-                            if (intersects(speed, "u", segs))
-                            {
-                                valid = false;
-                                break;
-                            }
+                            valid = false;
                         }
                     }
                     //modifies object location if valid
@@ -218,16 +212,9 @@ namespace GameCreatorGroupProject
                     }
                     else
                     {
-                        foreach (Vector2 c in loc)
+                        if (intersects(speed, "d", segs))
                         {
-                            float x = c.X;
-                            float y = c.Y;
-
-                            if (intersects(speed, "d", segs))
-                            {
-                                valid = false;
-                                break;
-                            }
+                            valid = false;
                         }
                     }
                     if (valid)
@@ -274,16 +261,9 @@ namespace GameCreatorGroupProject
                     }
                     else
                     {
-                        foreach (Vector2 c in loc)
+                        if (intersects(speed, "l", segs))
                         {
-                            float x = c.X;
-                            float y = c.Y;
-
-                            if (intersects(speed, "l", segs))
-                            {
-                                valid = false;
-                                break;
-                            }
+                            valid = false;
                         }
                     }
                     if (valid)
@@ -330,16 +310,9 @@ namespace GameCreatorGroupProject
                     }
                     else
                     {
-                        foreach (Vector2 c in loc)
+                        if (intersects(speed, "r", segs))
                         {
-                            float x = c.X;
-                            float y = c.Y;
-
-                            if (intersects(speed, "r", segs))
-                            {
-                                valid = false;
-                                break;
-                            }
+                            valid = false;
                         }
                     }
                     if (valid)
@@ -377,12 +350,11 @@ namespace GameCreatorGroupProject
             {
                 return false;
             }
-            //copies given list
-            List<Segment> temp = new List<Segment>(seg);
 
-            bool first = true;
-            //iterates through collidable objects
-            foreach (GameObject o in collision)
+            bool ret = false;
+
+            //iterates through collidable objects in parallel
+            Parallel.ForEach<GameObject>(collision, (o) =>
             {
                 if (this != o)
                 {
@@ -393,27 +365,26 @@ namespace GameCreatorGroupProject
                         if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
                             && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            foreach (Segment s in temp)
+                            foreach (Segment s in seg)
                             {
-                                //modifies segment in temp based on movement, if first iteration
-                                if (first)
-                                {
-                                    //modifies segments accordingly
-                                    s.move(speed, "u");
-                                }
-
+                                //modifies segment
+                                s.move(speed, "u");
                                 //compares with each collidable objects segments
                                 foreach (Segment l in o.getSegments())
                                 {
                                     //chacks if intersect
-                                    if (s.intersect(l))
+                                    if (s.intersect(l) || ret)
                                     {
-                                        return true;
+                                        //reverts segment
+                                        s.move(speed, "d");
+                                        ret = true;
+                                        return;
                                     }
                                 }
+                                //reverts segment
+                                s.move(speed, "d");
                             }
                             //indicates segments in temp have already been updated
-                            first = false;
                         }
                     }
                     //indicates movement in downward direction (see above comments)
@@ -422,21 +393,20 @@ namespace GameCreatorGroupProject
                         if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
                             && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            foreach (Segment s in temp)
+                            foreach (Segment s in seg)
                             {
-                                if (first)
-                                {
-                                    s.move(speed, "d");
-                                }
+                                s.move(speed, "d");
                                 foreach (Segment l in o.getSegments())
                                 {
-                                    if (s.intersect(l))
+                                    if (s.intersect(l) || ret)
                                     {
-                                        return true;
+                                        s.move(speed, "u");
+                                        ret = true;
+                                        return;
                                     }
                                 }
+                                s.move(speed, "u");
                             }
-                            first = false;
                         }
                     }
                     //indicates movement in left direction (see above comments)
@@ -445,21 +415,20 @@ namespace GameCreatorGroupProject
                         if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
                             && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            foreach (Segment s in temp)
+                            foreach (Segment s in seg)
                             {
-                                if (first)
-                                {
-                                    s.move(speed, "l");
-                                }
+                                s.move(speed, "l");
                                 foreach (Segment l in o.getSegments())
                                 {
-                                    if (s.intersect(l))
+                                    if (s.intersect(l) || ret)
                                     {
-                                        return true;
+                                        s.move(speed, "r");
+                                        ret = true;
+                                        return;
                                     }
                                 }
+                                s.move(speed, "r");
                             }
-                            first = false;
                         }
                     }
                     //indicates movement in right direction (see above comments)
@@ -468,21 +437,20 @@ namespace GameCreatorGroupProject
                         if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
                             && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            foreach (Segment s in temp)
+                            foreach (Segment s in seg)
                             {
-                                if (first)
-                                {
-                                    s.move(speed, "r");
-                                }
+                                s.move(speed, "r");
                                 foreach (Segment l in o.getSegments())
                                 {
-                                    if (s.intersect(l))
+                                    if (s.intersect(l) || ret)
                                     {
-                                        return true;
+                                        s.move(speed, "l");
+                                        ret = true;
+                                        return;
                                     }
                                 }
+                                s.move(speed, "l");
                             }
-                            first = false;
                         }
                     }
                     else
@@ -490,9 +458,9 @@ namespace GameCreatorGroupProject
                         throw new ArgumentException("invalid direction");
                     }
                 }
-            }
-            //returns false if no collision detected
-            return false;
+            });
+            //returns false if no collision detected, else true
+            return ret;
         }
 
         /*

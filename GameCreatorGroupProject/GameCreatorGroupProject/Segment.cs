@@ -16,6 +16,19 @@ namespace GameCreatorGroupProject
 
         private bool vert = false;
 
+        public Segment(Segment cpy)
+        {
+            startX = cpy.StartX;
+            endX = cpy.EndX;
+            startY = cpy.StartY;
+            endY = cpy.EndY;
+            m = cpy.getM();
+            b = cpy.getB();
+            lX = cpy.getLX();
+            hX = cpy.getHX();
+            vert = cpy.isVert();
+        }
+
         //creates a 2d segment with the specified start and end points
         public Segment(float startX, float startY, float endX, float endY)
         {
