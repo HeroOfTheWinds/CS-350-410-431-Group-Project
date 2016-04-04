@@ -1,23 +1,26 @@
-﻿namespace GameCreatorGroupProject
+﻿using System;
+
+namespace GameCreatorGroupProject
 {
+    //creates segments with points using y = mx + b equation format and provides methods for movement and intersection checking
     internal class Segment
     {
-        private double startX;
-        private double endX;
-        private double startY;
-        private double endY;
-        private double m;
-        private double b;
-        private double lX;
-        private double hX;
+        private float startX;
+        private float endX;
+        private float startY;
+        private float endY;
+        private float m;
+        private float b;
+        private float lX;
+        private float hX;
 
         private bool vert = false;
 
         //creates a 2d segment with the specified start and end points
-        public Segment(double startX, double startY, double endX, double endY)
+        public Segment(float startX, float startY, float endX, float endY)
         {
-            double run = startX - endX;
-            double rise = startY - endY;
+            float run = startX - endX;
+            float rise = startY - endY;
             //if equation valid, sets segments equation
             if(run != 0)
             {
@@ -50,64 +53,79 @@
         }
 
         //getter and setters
-        public double StartX
+        public float StartX
         {
             get
             {
                 return startX;
             }
-
-            set
-            {
-                startX = value;
-            }
         }
 
-        public double EndX
+        public float EndX
         {
             get
             {
                 return endX;
             }
-
-            set
-            {
-                endX = value;
-            }
         }
 
-        public double StartY
+        public float StartY
         {
             get
             {
                 return startY;
             }
-
-            set
-            {
-                startY = value;
-            }
         }
 
-        public double EndY
+        public float EndY
         {
             get
             {
                 return endY;
             }
-
-            set
-            {
-                endY = value;
-            }
         }
 
-        public double getM()
+        public void move(float speed, string dir)
+        {
+            //indicates movement in upward direction
+            if (dir.Equals("u"))
+            {
+                //modifies segments accordingly
+                startY += speed;
+                endY += speed;
+            }
+            //indicates movement in downward direction (see above comments)
+            else if (dir.Equals("d"))
+            {
+                startY -= speed;
+                endY -= speed;
+            }
+            //indicates movement in left direction (see above comments)
+            else if (dir.Equals("l"))
+            {
+                startX -= speed;
+                endX -= speed;
+            }
+            //indicates movement in right direction (see above comments)
+            else if (dir.Equals("r"))
+            {
+                startX += speed;
+                endX += speed;
+            }
+            else
+            {
+                throw new ArgumentException("invalid direction");
+            }
+            //recalculates y intercept
+            b = startY - m * startX;
+        }
+
+        public float getM()
         {
             return m;
         }
 
-        public double getB()
+        public float getB()
         {
             return b;
         }
@@ -115,7 +133,7 @@
         //checks if segments intersect on given interval
         public bool intersect(Segment inter)
         {
-            double interX;
+            float interX;
             //returns false if lines are parallel
             if (inter.getM() == m && inter.getB() == b)
             {
@@ -155,12 +173,12 @@
             return vert;
         }
 
-        public double getHX()
+        public float getHX()
         {
             return hX;
         }
 
-        public double getLX()
+        public float getLX()
         {
             return lX;
         }

@@ -13,3 +13,4 @@ C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\GameCreatorGroupProject\Game
 C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.xml
 C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
 C:\cygwin64\home\AquaC\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config

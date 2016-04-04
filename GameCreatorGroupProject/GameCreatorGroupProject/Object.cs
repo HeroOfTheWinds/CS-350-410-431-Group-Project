@@ -25,10 +25,14 @@ namespace GameCreatorGroupProject
         float[] map = new float[4];
 
         //indicates direction last moved
-        private bool uAcc;
-        private bool dAcc;
-        private bool rAcc;
-        private bool lAcc;
+        private bool uAcc = false;
+        private bool dAcc = false;
+        private bool rAcc = false;
+        private bool lAcc = false;
+
+        //indicates if collision on last movement
+        private bool collided = false;
+
         //location of objects vertices
         private Vector2[] loc;
         //line segments composing the object
@@ -44,8 +48,9 @@ namespace GameCreatorGroupProject
 
 
         //constructor takes as inputs, the name of the object, spawn location, map details as an array of floats that holds the maps size, the speed of the object, acceleration of the object, and whether object has collision.
-        //NOTE: spawCoords must be vertices in order, with the last vertex connecting to the first
-        public GameObject(String name, Vector2[] spawnCoords, float[] inputmap, float ispeed, float acceleration, bool collision)
+        //NOTE: vertexOffsets must be vertices in order, with the last vertex connecting to the first, and discludes the reference vertex
+        //referenceCoord must be provided with X and Y values in context of map coordinates; vertexOffsets must be provided with X and Y values as offsets of referenceCoord
+        public GameObject(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap, float ispeed, float acceleration, bool collision)
         {
             col = collision;
             objectname = name;
@@ -58,17 +63,19 @@ namespace GameCreatorGroupProject
             {
                 GameObject.collision.Add(this);
             }
+            Vector2[] spawnCoords = new Vector2[vertexOffsets.Length + 1];
+            spawnCoords[0] = referenceCoord;
+            //calculates coordinates based on offsets
+            for (int i = 1; i < spawnCoords.Length; i++)
+            {
+                spawnCoords[i] = vertexOffsets[i];
+                spawnCoords[i].X += referenceCoord.X;
+                spawnCoords[i].Y += referenceCoord.Y;
+            }
             //tells user if spawn failed
             if (!spawn(spawnCoords))
             {
-                MessageBox.Show("Spawn failed.", "Could not spawn object, invalid coordinates.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            //indicates if object was successfully spawned
-            else
-            {
-                isSpawned = true;
-                loc = new Vector2[spawnCoords.Length];
-                Array.Copy(spawnCoords, loc, spawnCoords.Length);
+                MessageBox.Show("Spawn failed.", "Could not spawn object, invalid coordinates.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -110,14 +117,16 @@ namespace GameCreatorGroupProject
                     minY = spawnCoords[i].Y;
                 }
             }
-            //checks if intersects with any existing object
-            if (intersects(0, "l", temp))
+            //checks if collision is set and intersects with any existing object (with 0 movement)
+            if (col && intersects(0f, "l", temp))
             {
                 return false;
             }
             //if all conditions met, sets object params and returns true
             isSpawned = true;
             segs = new List<Segment>(temp);
+            loc = new Vector2[spawnCoords.Length];
+            Array.Copy(spawnCoords, loc, spawnCoords.Length);
             return true;
 
         }
@@ -128,7 +137,7 @@ namespace GameCreatorGroupProject
             if (isSpawned)
             {
                 //get state of all keyboards on device
-                var state = OpenTK.Input.Keyboard.GetState();
+                var state = Keyboard.GetState();
                 //checks up key, if it is pressed it will check if location is valid then update location.
                 if (state[Key.Up])
                 {
@@ -143,16 +152,25 @@ namespace GameCreatorGroupProject
                     }
                     bool valid = true;
                     //checks if the new coordinates are valid
-                    foreach (Vector2 c in loc)
+                    if (collided && uAcc)
                     {
-                        float x = c.X;
-                        float y = c.Y;
-                        //checks if x and y coordinates will be valid after movement
-                        if (intersects(speed, "u", segs))
+                        //indicates invlaid if previous motion was in this direction, and there was a collision
+                        //NOTE: assumes other objects stationary, can remove if assumption changes
+                        valid = false;
+                    }
+                    else
+                    {
+                        foreach (Vector2 c in loc)
                         {
-                            valid = false;
-                            break;
-                        }    
+                            float x = c.X;
+                            float y = c.Y;
+                            //checks if x and y coordinates will be valid after movement
+                            if (intersects(speed, "u", segs))
+                            {
+                                valid = false;
+                                break;
+                            }
+                        }
                     }
                     //modifies object location if valid
                     if (valid)
@@ -161,9 +179,18 @@ namespace GameCreatorGroupProject
                         for (int i = 0; i < loc.GetLength(0); i++)
                         {
                             loc[i].Y += speed;
-                            segs[i].StartY += speed;
-                            segs[i].EndY += speed;
+                            segs[i].move(speed, "u");
                         }
+                        maxY += speed;
+                        minY += speed;
+                        uAcc = true;
+                        collided = false;
+                    }
+                    //else indicates collision was detected and cancels acceleration
+                    else
+                    {
+                        collided = true;
+                        uAcc = false;
                     }
                     //indicates that other directions are not accelerating
                     dAcc = false;
@@ -182,25 +209,43 @@ namespace GameCreatorGroupProject
                         speed = baseSpeed;
                     }
                     bool valid = true;
-                    foreach (Vector2 c in loc)
+                    //checks if the new coordinates are valid
+                    if (collided && dAcc)
                     {
-                        float x = c.X;
-                        float y = c.Y;
-
-                        if (intersects(speed, "d", segs))
+                        //indicates invlaid if previous motion was in this direction, and there was a collision
+                        //NOTE: assumes other objects stationary, can remove if assumption changes
+                        valid = false;
+                    }
+                    else
+                    {
+                        foreach (Vector2 c in loc)
                         {
-                            valid = false;
-                            break;
+                            float x = c.X;
+                            float y = c.Y;
+
+                            if (intersects(speed, "d", segs))
+                            {
+                                valid = false;
+                                break;
+                            }
                         }
                     }
                     if (valid)
                     {
                         for (int i = 0; i < loc.GetLength(0); i++)
                         {
-                            loc[i][1] -= speed;
-                            segs[i].StartY -= speed;
-                            segs[i].EndY -= speed;
+                            loc[i].Y -= speed;
+                            segs[i].move(speed, "d");
                         }
+                        maxY -= speed;
+                        minY -= speed;
+                        dAcc = true;
+                        collided = false;
+                    }
+                    else
+                    {
+                        collided = true;
+                        dAcc = false;
                     }
 
                     uAcc = false;
@@ -220,25 +265,43 @@ namespace GameCreatorGroupProject
                         speed = baseSpeed;
                     }
                     bool valid = true;
-                    foreach (Vector2 c in loc)
+                    //checks if the new coordinates are valid
+                    if (collided && lAcc)
                     {
-                        float x = c.X;
-                        float y = c.Y;
-
-                        if (intersects(speed, "l", segs))
+                        //indicates invlaid if previous motion was in this direction, and there was a collision
+                        //NOTE: assumes other objects stationary, can remove if assumption changes
+                        valid = false;
+                    }
+                    else
+                    {
+                        foreach (Vector2 c in loc)
                         {
-                            valid = false;
-                            break;
+                            float x = c.X;
+                            float y = c.Y;
+
+                            if (intersects(speed, "l", segs))
+                            {
+                                valid = false;
+                                break;
+                            }
                         }
                     }
                     if (valid)
                     {
                         for (int i = 0; i < loc.GetLength(0); i++)
                         {
-                            loc[i][0] -= speed;
-                            segs[i].StartX -= speed;
-                            segs[i].EndX -= speed;
+                            loc[i].X -= speed;
+                            segs[i].move(speed, "l");
                         }
+                        maxX -= speed;
+                        minX -= speed;
+                        lAcc = true;
+                        collided = false;
+                    }
+                    else
+                    {
+                        collided = true;
+                        lAcc = false;
                     }
 
                     uAcc = false;
@@ -258,25 +321,43 @@ namespace GameCreatorGroupProject
                         speed = baseSpeed;
                     }
                     bool valid = true;
-                    foreach (Vector2 c in loc)
+                    //checks if the new coordinates are valid
+                    if (collided && rAcc)
                     {
-                        float x = c.X;
-                        float y = c.Y;
-
-                        if (intersects(speed, "r", segs))
+                        //indicates invlaid if previous motion was in this direction, and there was a collision
+                        //NOTE: assumes other objects stationary, can remove if assumption changes
+                        valid = false;
+                    }
+                    else
+                    {
+                        foreach (Vector2 c in loc)
                         {
-                            valid = false;
-                            break;
+                            float x = c.X;
+                            float y = c.Y;
+
+                            if (intersects(speed, "r", segs))
+                            {
+                                valid = false;
+                                break;
+                            }
                         }
                     }
                     if (valid)
                     {
                         for (int i = 0; i < loc.GetLength(0); i++)
                         {
-                            loc[i][0] += speed;
-                            segs[i].StartX += speed;
-                            segs[i].EndX += speed;
+                            loc[i].X += speed;
+                            segs[i].move(speed, "r");
                         }
+                        maxX += speed;
+                        minX += speed;
+                        rAcc = true;
+                        collided = false;
+                    }
+                    else
+                    {
+                        collided = true;
+                        rAcc = false;
                     }
 
                     uAcc = false;
@@ -303,50 +384,50 @@ namespace GameCreatorGroupProject
             //iterates through collidable objects
             foreach (GameObject o in collision)
             {
-                //indicates movement in upwards direction
-                if (dir.Equals("u"))
+                if (this != o)
                 {
-                    //checks if objects intersect on two axis, else doesn't bother to check intersections
-                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
-                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
+                    //indicates movement in upwards direction
+                    if (dir.Equals("u"))
                     {
-                        foreach (Segment s in temp)
+                        //checks if objects intersect on two axis, else doesn't bother to check intersections
+                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
+                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            //modifies segment in temp based on movement, if first iteration
-                            if (first)
+                            foreach (Segment s in temp)
                             {
-                                //modifies segments accordingly
-                                s.StartY += speed;
-                                s.EndY += speed;
-                            }
-                                
-                            //compares with each collidable objects segments
-                            foreach (Segment l in o.getSegments())
-                            {
-                                //chacks if intersect
-                                if (s.intersect(l))
+                                //modifies segment in temp based on movement, if first iteration
+                                if (first)
                                 {
-                                    return true;
+                                    //modifies segments accordingly
+                                    s.move(speed, "u");
+                                }
+
+                                //compares with each collidable objects segments
+                                foreach (Segment l in o.getSegments())
+                                {
+                                    //chacks if intersect
+                                    if (s.intersect(l))
+                                    {
+                                        return true;
+                                    }
                                 }
                             }
+                            //indicates segments in temp have already been updated
+                            first = false;
                         }
-                        //indicates segments in temp have already been updated
-                        first = false;
                     }
-                }
-                //indicates movement in downward direction (see above comments)
-                else if (dir.Equals("d"))
-                {
-                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
-                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
+                    //indicates movement in downward direction (see above comments)
+                    else if (dir.Equals("d"))
                     {
-                        foreach (Segment s in temp)
+                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
+                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            if (first)
+                            foreach (Segment s in temp)
                             {
-                                s.StartY -= speed;
-                                s.EndY -= speed;
-                            }
+                                if (first)
+                                {
+                                    s.move(speed, "d");
+                                }
                                 foreach (Segment l in o.getSegments())
                                 {
                                     if (s.intersect(l))
@@ -355,67 +436,66 @@ namespace GameCreatorGroupProject
                                     }
                                 }
                             }
-                        first = false;
+                            first = false;
                         }
                     }
-                //indicates movement in left direction (see above comments)
-                else if (dir.Equals("l"))
-                {
-                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
-                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
-                        {
-                        foreach (Segment s in temp)
-                        {
-                            if (first)
-                            {
-                                s.StartX -= speed;
-                                s.EndX -= speed;
-                            }
-                            foreach (Segment l in o.getSegments())
-                            {
-                                if (s.intersect(l))
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                        first = false;
-                    }
-                }
-                //indicates movement in right direction (see above comments)
-                else if (dir.Equals("r"))
-                {
-                    if ((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX)
-                        && (maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY))
+                    //indicates movement in left direction (see above comments)
+                    else if (dir.Equals("l"))
                     {
-                        foreach (Segment s in temp)
+                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
+                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
                         {
-                            if (first)
+                            foreach (Segment s in temp)
                             {
-                                s.StartX += speed;
-                                s.EndX += speed;
-                            }
-                            foreach (Segment l in o.getSegments())
-                            {
-                                if (s.intersect(l))
+                                if (first)
                                 {
-                                    return true;
+                                    s.move(speed, "l");
+                                }
+                                foreach (Segment l in o.getSegments())
+                                {
+                                    if (s.intersect(l))
+                                    {
+                                        return true;
+                                    }
                                 }
                             }
+                            first = false;
                         }
-                        first = false;
                     }
-                }
-                else
-                {
-                    throw new ArgumentException("invalid direction");
+                    //indicates movement in right direction (see above comments)
+                    else if (dir.Equals("r"))
+                    {
+                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
+                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
+                        {
+                            foreach (Segment s in temp)
+                            {
+                                if (first)
+                                {
+                                    s.move(speed, "r");
+                                }
+                                foreach (Segment l in o.getSegments())
+                                {
+                                    if (s.intersect(l))
+                                    {
+                                        return true;
+                                    }
+                                }
+                            }
+                            first = false;
+                        }
+                    }
+                    else
+                    {
+                        throw new ArgumentException("invalid direction");
+                    }
                 }
             }
             //returns false if no collision detected
             return false;
         }
 
-
+        /*
         //check if location is valid, x coordinate, and y coordinate, max and min xy are the map boundaries
         //currently unused
         public virtual bool isvalid(float xc, float yc) {
@@ -426,6 +506,7 @@ namespace GameCreatorGroupProject
             return true;
             
         }
+        */
 
         //sets collision on and adds to collidable object list if not already in it
         public void setCollision()
