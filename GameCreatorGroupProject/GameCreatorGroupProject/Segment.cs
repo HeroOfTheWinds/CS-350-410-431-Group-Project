@@ -16,6 +16,7 @@ namespace GameCreatorGroupProject
 
         private bool vert = false;
 
+        //copy constructor
         public Segment(Segment cpy)
         {
             startX = cpy.StartX;
@@ -43,8 +44,8 @@ namespace GameCreatorGroupProject
             //else indicates vertical line
             else
             {
-                m = 0;
-                b = 0;
+                m = (float)Double.PositiveInfinity;
+                b = (float)Double.PositiveInfinity;
                 vert = true;
             }
 
@@ -129,8 +130,11 @@ namespace GameCreatorGroupProject
             {
                 throw new ArgumentException("invalid direction");
             }
-            //recalculates y intercept
-            b = startY - m * startX;
+            //recalculates y intercept if not vertical
+            if (!vert)
+            {
+                b = startY - m * startX;
+            }
         }
 
         public float getM()

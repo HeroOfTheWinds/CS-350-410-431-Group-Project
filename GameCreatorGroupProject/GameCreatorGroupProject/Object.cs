@@ -351,7 +351,7 @@ namespace GameCreatorGroupProject
                 return false;
             }
 
-            bool ret = false;
+            //bool ret = false;
 
             float width;
 
@@ -367,7 +367,7 @@ namespace GameCreatorGroupProject
             //for (float i = speed; (int)i > 0; i -= width)
             
             //iterates through collidable objects in parallel
-            Parallel.ForEach<GameObject>(collision, (o) =>
+            foreach (GameObject o in collision)
             {
                 if (this != o)
                 {
@@ -386,12 +386,11 @@ namespace GameCreatorGroupProject
                                 foreach (Segment l in o.getSegments())
                                 {
                                     //chacks if intersect
-                                    if (s.intersect(l) || ret)
+                                    if (s.intersect(l))
                                     {
                                         //reverts segment
                                         s.move(speed, "d");
-                                        ret = true;
-                                        return;
+                                        return true;
                                     }
                                 }
                                 //reverts segment
@@ -411,11 +410,10 @@ namespace GameCreatorGroupProject
                                 s.move(speed, "d");
                                 foreach (Segment l in o.getSegments())
                                 {
-                                    if (s.intersect(l) || ret)
+                                    if (s.intersect(l))
                                     {
                                         s.move(speed, "u");
-                                        ret = true;
-                                        return;
+                                        return true;
                                     }
                                 }
                                 s.move(speed, "u");
@@ -433,11 +431,10 @@ namespace GameCreatorGroupProject
                                 s.move(speed, "l");
                                 foreach (Segment l in o.getSegments())
                                 {
-                                    if (s.intersect(l) || ret)
+                                    if (s.intersect(l))
                                     {
                                         s.move(speed, "r");
-                                        ret = true;
-                                        return;
+                                        return true;
                                     }
                                 }
                                 s.move(speed, "r");
@@ -455,11 +452,10 @@ namespace GameCreatorGroupProject
                                 s.move(speed, "r");
                                 foreach (Segment l in o.getSegments())
                                 {
-                                    if (s.intersect(l) || ret)
+                                    if (s.intersect(l))
                                     {
                                         s.move(speed, "l");
-                                        ret = true;
-                                        return;
+                                        return true;
                                     }
                                 }
                                 s.move(speed, "l");
@@ -471,9 +467,9 @@ namespace GameCreatorGroupProject
                         throw new ArgumentException("invalid direction");
                     }
                 }
-            });
+            }
             //returns false if no collision detected, else true
-            return ret;
+            return false;
         }
 
         /*
