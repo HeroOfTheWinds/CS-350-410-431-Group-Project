@@ -16,7 +16,7 @@ namespace Server_application
     {
         private static uint currentID = 0;
         public static readonly object IDLock = new object();
-        private Dictionary<TcpClient, string> clientList = null;
+        private Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
         private bool running = true;
         private uint serverID = 0;
         //chat port

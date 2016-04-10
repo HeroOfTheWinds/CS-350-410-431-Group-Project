@@ -140,7 +140,7 @@ namespace Server_application
                                 {
                                     //creates reader and writer on requested clients stream
                                     NetworkStream cStream = connect.GetStream();
-                                    BinaryWriter cWriter = new BinaryWriter(stream);
+                                    BinaryWriter cWriter = new BinaryWriter(cStream);
                                     //checks the type of server connection request for
                                     switch (serType)
                                     {
