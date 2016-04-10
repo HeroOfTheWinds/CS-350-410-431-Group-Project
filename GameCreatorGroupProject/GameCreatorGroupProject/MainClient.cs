@@ -15,7 +15,7 @@ namespace GameCreatorGroupProject
         //have some way for user to provide username
         private static string username = "";
 
-        private static List<TCPClient> clients = new List<TCPClient>();
+        public static List<TCPClient> clients = new List<TCPClient>();
 
         private TcpClient client = null;
         private NetworkStream stream = null;
@@ -48,6 +48,7 @@ namespace GameCreatorGroupProject
             }
         }
 
+
         //returns this clients ID
         public static uint getThisClientID()
         {
@@ -67,8 +68,9 @@ namespace GameCreatorGroupProject
         }
 
         //connects to specified chat server
-        public void connectClient(string serverIP)
+        public TCPClient connectClient(string serverIP)
         {
+            TCPClient c = null;
             dc = false;
             try
             {
@@ -111,7 +113,7 @@ namespace GameCreatorGroupProject
                         {
                             //reads stream data
                             connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
-                            TCPClient c = null;
+                            c = null;
                             //creates requested client
                             //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
                             switch (connectInfo.Item1)
@@ -142,6 +144,7 @@ namespace GameCreatorGroupProject
                 disconnect();
                 MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            return c;
         }
 
 

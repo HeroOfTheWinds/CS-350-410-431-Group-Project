@@ -32,6 +32,7 @@ namespace GameCreatorGroupProject
 
         //MainClient to be created when form is loaded
         MainClient online;
+        TCPClient chat;
 
         // Declare a ResourceImporter to make it easier to load and save resources
         ResourceImporter resImporter = new ResourceImporter();
@@ -204,7 +205,8 @@ namespace GameCreatorGroupProject
 
         private void itemConnect_Click(object sender, EventArgs e)
         {
-            online.requestChatServer();
+            uint chatServerID = online.requestChatServer();
+            chat = MainClient.clients.ElementAt(0);
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -227,6 +229,13 @@ namespace GameCreatorGroupProject
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             online.disconnect();
+        }
+
+        private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string msg = "Hello World!";
+            object temp = msg;
+            chat.send(ref temp);
         }
     }
 }

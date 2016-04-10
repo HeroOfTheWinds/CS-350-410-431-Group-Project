@@ -64,7 +64,7 @@ namespace GameCreatorGroupProject
 
 
                         //add code to write message to chat interface
-
+                        MessageBox.Show(message);
 
                     }
 
