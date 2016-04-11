@@ -14,6 +14,9 @@ namespace Server_application
 {
     class ChatServer : TCPServer
     {
+        protected static TcpListener listener = null;
+        protected static bool listenerStarted = false;
+
         private static uint currentID = 0;
         public static readonly object IDLock = new object();
         private Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
@@ -54,16 +57,21 @@ namespace Server_application
         public override void startServer()
         {
             //attempts to start listener on chat port
-            try
+            if (!listenerStarted)
             {
-                listener = new TcpListener(IPAddress.Any, port);
-                listener.Start();
+                try
+                {
+                    listener = new TcpListener(IPAddress.Any, port);
+                    listener.Start();
+                    listenerStarted = true;
+                }
+                //displays error box if unable to start server
+                catch (SocketException e)
+                {
+                    MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            //displays error box if unable to start server
-            catch (SocketException e)
-            {
-                MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
             //server control loop
             while (running)
             {
@@ -106,10 +114,10 @@ namespace Server_application
                     //checks if data is available on the clients stream
                     if (inStream.DataAvailable)
                     {
+                        message = reader.ReadLine();
                         //sends data to all clients in chat
                         foreach (KeyValuePair<TcpClient, string> c in clientList)
                         {
-                            message = "";
                             string clientName;
                             
                             //creates StreamWriter for current outgoing client
@@ -117,7 +125,6 @@ namespace Server_application
                             writer = new StreamWriter(outStream);
                             //appends sender name to beginning of message
                             clientList.TryGetValue(thisClient, out clientName);
-                            message = reader.ReadLine();
                             //writes sender and message to outgoing stream
                             writer.WriteLine(clientName + ": " + message.ToString());
                             writer.Flush();
