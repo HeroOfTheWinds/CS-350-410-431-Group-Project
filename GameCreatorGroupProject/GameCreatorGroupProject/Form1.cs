@@ -34,6 +34,8 @@ namespace GameCreatorGroupProject
         MainClient online;
         TCPClient chat;
 
+        private uint chatServerID;
+
         // Declare a ResourceImporter to make it easier to load and save resources
         ResourceImporter resImporter = new ResourceImporter();
 
@@ -186,7 +188,7 @@ namespace GameCreatorGroupProject
             openResourceDialog.ShowDialog();
             // Restore filter to unfiltered state
             openResourceDialog.Filter = "All Files (*.*)|*.*";
-
+             
             // Grab user-selected path
             string projPath = openResourceDialog.FileName;
 
@@ -205,8 +207,11 @@ namespace GameCreatorGroupProject
 
         private void itemConnect_Click(object sender, EventArgs e)
         {
-            uint chatServerID = online.requestChatServer();
-            chat = MainClient.clients.ElementAt(0);
+            chatServerID = online.requestChatServer();
+            MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+            //online.connectClient(1, chatServerID, 1);
+            //chat = MainClient.clients.ElementAt(0);
+            //chat.connectClient(ServerInfo.getServerIP());
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -235,7 +240,24 @@ namespace GameCreatorGroupProject
         {
             string msg = "Hello World!";
             object temp = msg;
+            if (chat == null)
+                chat = online.getAvailable();
             chat.send(ref temp);
+        }
+
+        private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void addUserDebugToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            online.connectClient(1, chatServerID, 0);
+        }
+
+        private void addUserReleaseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            online.connectClient(1, chatServerID, 1);
         }
     }
 }
