@@ -238,11 +238,7 @@ namespace GameCreatorGroupProject
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string msg = "Hello World!";
-            object temp = msg;
-            if (chat == null)
-                chat = online.getAvailable();
-            chat.send(ref temp);
+
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
@@ -258,6 +254,62 @@ namespace GameCreatorGroupProject
         private void addUserReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             online.connectClient(1, chatServerID, 1);
+        }
+
+        private void sendDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string msg = "Hello World!";
+            object temp = msg;
+            if (chat == null)
+                chat = online.getAvailable();
+            chat.send(ref temp);
+        }
+
+        private void sendCustomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Form2 testDialog = new Form2())
+            {
+                testDialog.Text = "Send Message";
+                String msg;
+                testDialog.ShowDialog();
+                msg = testDialog.txt.ToString();
+                object temp = msg;
+                if (chat == null)
+                    chat = online.getAvailable();
+                if(chat != null)
+                    chat.send(ref temp);
+            }
+        }
+
+        private void test1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Test 1
+            //connect();
+            //Create 2 chat servers
+            chatServerID = online.requestChatServer();
+            uint chatServerID2 = online.requestChatServer();
+            //Add user1 to first
+            uint user1 = 1;
+            online.connectClient(1, chatServerID, user1);
+            //Add user2 to second
+            uint user2 = 2;
+            //online.connectClient(1, chatServerID2, user2);
+            //Send Message on first
+            String msg1 = "First!";
+            object temp1 = msg1;
+            TCPClient chat1 = null;
+            if (chat1 == null)
+                chat1 = online.getAvailable();
+            if (chat1 != null)
+                chat1.send(ref temp1);
+            //Send Different Message on second
+            TCPClient chat2 = null;
+            String msg2 = "Second!";
+            object temp2 = msg2;
+            if (chat2 == null)
+                chat2 = online.getAvailable();
+            if (chat2 != null)
+                chat2.send(ref temp2);
         }
     }
 }
