@@ -13,8 +13,6 @@ namespace Server_application
 {
     abstract class TCPServer
     {
-        protected TcpListener listener = null;
-
         //starts the server for use with the specified project
         abstract public void startServer();
 

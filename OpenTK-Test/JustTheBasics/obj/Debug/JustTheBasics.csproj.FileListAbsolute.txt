@@ -19,3 +19,6 @@ C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\OpenTK-Test\JustThe
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\OpenTK-Test\JustTheBasics\obj\Debug\JustTheBasics.csprojResolveAssemblyReference.cache
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\OpenTK-Test\JustTheBasics\obj\Debug\JustTheBasics.exe
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\OpenTK-Test\JustTheBasics\obj\Debug\JustTheBasics.pdb
+C:\Users\Jared\Documents\GitHub\mod13\OpenTK-Test\JustTheBasics\bin\Debug\JustTheBasics.exe.config
+C:\Users\Jared\Documents\GitHub\mod13\OpenTK-Test\JustTheBasics\obj\Debug\JustTheBasics.exe
+C:\Users\Jared\Documents\GitHub\mod13\OpenTK-Test\JustTheBasics\obj\Debug\JustTheBasics.pdb

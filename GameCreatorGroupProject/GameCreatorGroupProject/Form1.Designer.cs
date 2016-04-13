@@ -41,6 +41,7 @@
             this.itemStartServer = new System.Windows.Forms.ToolStripMenuItem();
             this.itemConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ModeControlTabs = new System.Windows.Forms.TabControl();
             this.ResourcesTab = new System.Windows.Forms.TabPage();
@@ -152,6 +153,9 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
             this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.addUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addUserDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addUserReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -242,12 +246,14 @@
             this.toolChat.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.itemStartServer,
             this.itemConnect,
-            this.itemDisconnect});
+            this.itemDisconnect,
+            this.sendMessageToolStripMenuItem,
+            this.addUserToolStripMenuItem});
             this.toolChat.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
             this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolChat.Name = "toolChat";
-            this.toolChat.Size = new System.Drawing.Size(78, 22);
+            this.toolChat.Size = new System.Drawing.Size(77, 22);
             this.toolChat.Text = "Team Chat";
             // 
             // itemStartServer
@@ -269,6 +275,13 @@
             this.itemDisconnect.Name = "itemDisconnect";
             this.itemDisconnect.Size = new System.Drawing.Size(177, 22);
             this.itemDisconnect.Text = "Disconnect...";
+            // 
+            // sendMessageToolStripMenuItem
+            // 
+            this.sendMessageToolStripMenuItem.Name = "sendMessageToolStripMenuItem";
+            this.sendMessageToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.sendMessageToolStripMenuItem.Text = "Send Message";
+            this.sendMessageToolStripMenuItem.Click += new System.EventHandler(this.sendMessageToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -1503,7 +1516,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 141);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 133);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1514,7 +1527,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 141);
+            this.txtMessage.Location = new System.Drawing.Point(3, 133);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1529,13 +1542,37 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 132);
+            this.txtChat.Size = new System.Drawing.Size(1152, 124);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
             // 
             this.folderPrjDir.Description = "Specify a folder to store the project in:";
             this.folderPrjDir.RootFolder = System.Environment.SpecialFolder.MyDocuments;
+            // 
+            // addUserToolStripMenuItem
+            // 
+            this.addUserToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addUserDebugToolStripMenuItem,
+            this.addUserReleaseToolStripMenuItem});
+            this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
+            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.addUserToolStripMenuItem.Text = "Add User";
+            this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
+            // 
+            // addUserDebugToolStripMenuItem
+            // 
+            this.addUserDebugToolStripMenuItem.Name = "addUserDebugToolStripMenuItem";
+            this.addUserDebugToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.addUserDebugToolStripMenuItem.Text = "Add User Debug";
+            this.addUserDebugToolStripMenuItem.Click += new System.EventHandler(this.addUserDebugToolStripMenuItem_Click);
+            // 
+            // addUserReleaseToolStripMenuItem
+            // 
+            this.addUserReleaseToolStripMenuItem.Name = "addUserReleaseToolStripMenuItem";
+            this.addUserReleaseToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.addUserReleaseToolStripMenuItem.Text = "Add User Release";
+            this.addUserReleaseToolStripMenuItem.Click += new System.EventHandler(this.addUserReleaseToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -1713,6 +1750,10 @@
         private System.Windows.Forms.ToolStripMenuItem itemStartServer;
         private System.Windows.Forms.ToolStripDropDownButton toolChat;
         private System.Windows.Forms.FolderBrowserDialog folderPrjDir;
+        private System.Windows.Forms.ToolStripMenuItem sendMessageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addUserToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addUserDebugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addUserReleaseToolStripMenuItem;
     }
 }
 

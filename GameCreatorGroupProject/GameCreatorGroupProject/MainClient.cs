@@ -11,9 +11,19 @@ namespace GameCreatorGroupProject
     internal class MainClient
     {
         //TEMPORARY, each program should have unique clientID
+#if DEBUG
         private static readonly uint thisClientID = 0;
+#else
+        private static readonly uint thisClientID = 1;
+#endif
+
         //have some way for user to provide username
-        private static string username = "";
+#if DEBUG
+        private static string username = "Debug";
+#else
+        private static string username = "Release";
+#endif
+
 
         public static List<TCPClient> clients = new List<TCPClient>();
 
@@ -68,7 +78,7 @@ namespace GameCreatorGroupProject
         }
 
         //connects to specified chat server
-        public TCPClient connectClient(string serverIP)
+        public void connectClient(string serverIP)
         {
             TCPClient c = null;
             dc = false;
@@ -113,7 +123,6 @@ namespace GameCreatorGroupProject
                         {
                             //reads stream data
                             connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
-                            c = null;
                             //creates requested client
                             //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
                             switch (connectInfo.Item1)
@@ -144,7 +153,6 @@ namespace GameCreatorGroupProject
                 disconnect();
                 MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return c;
         }
 
 

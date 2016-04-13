@@ -48,6 +48,7 @@ namespace GameCreatorGroupProject
                     reader = new StreamReader(stream);
                     //tells server clients username
                     writer.WriteLine(MainClient.getUsername());
+                    writer.Flush();
                 }
                 else
                 {

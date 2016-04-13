@@ -13,6 +13,9 @@ namespace Server_application
 {
     class MainServer : TCPServer
     {
+        protected static TcpListener listener = null;
+        protected static bool listenerStarted = false;
+
         //dictionary of connected clients by clientID
         private Dictionary<uint, TcpClient> clientList = new Dictionary<uint, TcpClient>();
         private bool running = true;
@@ -24,16 +27,19 @@ namespace Server_application
         public override void startServer()
         {
             //attempts to start listener on chat port
-            try
+            if (!listenerStarted)
             {
-                //possible issues with conflicts if multiple chat servers running, to be fixed later
-                listener = new TcpListener(IPAddress.Any, port);
-                listener.Start();
-            }
-            //displays error box if unable to start server
-            catch (SocketException e)
-            {
-                MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    //possible issues with conflicts if multiple chat servers running, to be fixed later
+                    listener = new TcpListener(IPAddress.Any, port);
+                    listener.Start();
+                }
+                //displays error box if unable to start server
+                catch (SocketException e)
+                {
+                    MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             //main server control
             while (running)
