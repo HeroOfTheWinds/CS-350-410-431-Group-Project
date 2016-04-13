@@ -181,6 +181,7 @@ namespace JustTheBasics
                     objLists.Push(o);
                 }
             }
+
             // Loop over each list in the stack and draw them
             while (objLists.Count > 0)
             {
@@ -209,7 +210,15 @@ namespace JustTheBasics
                         v.Position.X -= 5f / Width;
                     }
                     */
-                    go.Update();
+
+
+                    if(go.getSpeed() != 0)
+                    {
+                        go.Update();
+                    }
+
+
+
                     //float saveX = v.Position.X;
                     //float saveY = v.Position.Y;
 

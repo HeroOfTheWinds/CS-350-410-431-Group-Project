@@ -377,8 +377,12 @@ namespace JustTheBasics
                     if (dir.Equals("u"))
                     {
                         //checks if objects intersect on two axis, else doesn't bother to check intersections
-                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
-                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
+                        //backup logic (wrong)
+                        /*
+                        if (((maxX < o.getMaxX() && maxX > o.getMinX()) || (minX > o.getMinX() && minX < o.getMaxX()))
+                            && ((maxY + speed < o.getMaxY() && maxY + speed > o.getMinY()) || (minY + speed > o.getMinY() && minY + speed < o.getMaxY())))
+                        */
+                        if ((maxX > o.getMinX() && minX < o.getMaxX()) && (maxY + speed > o.getMinY() && minY + speed < o.getMaxY()))
                         {
                             foreach (Segment s in seg)
                             {
@@ -404,8 +408,7 @@ namespace JustTheBasics
                     //indicates movement in downward direction (see above comments)
                     else if (dir.Equals("d"))
                     {
-                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
-                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
+                        if ((maxX > o.getMinX() && minX < o.getMaxX()) && (maxY - speed > o.getMinY() && minY - speed < o.getMaxY()))
                         {
                             foreach (Segment s in seg)
                             {
@@ -425,8 +428,7 @@ namespace JustTheBasics
                     //indicates movement in left direction (see above comments)
                     else if (dir.Equals("l"))
                     {
-                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
-                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
+                        if ((maxX - speed > o.getMinX() && minX - speed < o.getMaxX()) && (maxY > o.getMinY() && minY < o.getMaxY()))
                         {
                             foreach (Segment s in seg)
                             {
@@ -446,8 +448,7 @@ namespace JustTheBasics
                     //indicates movement in right direction (see above comments)
                     else if (dir.Equals("r"))
                     {
-                        if (((maxX < o.getMaxX() && maxX > o.minX) || (minX > o.getMinX() && minX < o.maxX))
-                            && ((maxY < o.getMaxY() && maxY > o.minY) || (minY > o.getMinY() && minY < o.maxY)))
+                        if ((maxX + speed > o.getMinX() && minX + speed < o.getMaxX()) && (maxY > o.getMinY() && minY < o.getMaxY()))
                         {
                             foreach (Segment s in seg)
                             {
@@ -568,12 +569,12 @@ namespace JustTheBasics
         }
 
 
-
+        
         public float getMaxX()
         {
             return maxX;
         }
-
+        
         public float getMinX()
         {
             return minX;
