@@ -86,7 +86,7 @@ namespace JustTheBasics
 
             // Create a new GameObject
             Vector2 startPos = new Vector2(16, 16);
-            Vector2[] spawn = new Vector2[] { new Vector2(0, 16), new Vector2(16, 16), new Vector2(16, 0) };
+            Vector2[] spawn = new Vector2[] { new Vector2(0, 32), new Vector2(32, 32), new Vector2(32, 0) };
             
             float[] map = new float[] { 0f, 0f, Width, Height };
             GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 1.0f, 0f, true, tc);
@@ -106,7 +106,7 @@ namespace JustTheBasics
 
             // Create a new GameObject
             Vector2 sPos2 = new Vector2(128, 128);
-            Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 32), new Vector2(32, 32), new Vector2(32, 0) };
+            Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
 
             GameObject objBricks = new GameObject("Bricks", sPos2, spawnBrick, map, 0.0f, 0.0f, true, bc);
 
@@ -188,40 +188,12 @@ namespace JustTheBasics
                 GameObject go = objLists.Pop();
                 {
                     Sprite v = go.sprite;
-                    /*
-                    //get state of all keyboards on device
-                    var state = OpenTK.Input.Keyboard.GetState();
-                    //checks up key, if it is pressed it will update location.
-                    if (state[Key.Up])
-                    {
-                        // Set the sprite's position
-                        v.Position.Y += 5f / Height;
-                    }
-                    if (state[Key.Down])
-                    {
-                        v.Position.Y -= 5f / Height;
-                    }
-                    if (state[Key.Right])
-                    {
-                        v.Position.X += 5f / Width;
-                    }
-                    if (state[Key.Left])
-                    {
-                        v.Position.X -= 5f / Width;
-                    }
-                    */
-
-
+                    // Remove this later once we have functions other than movement in Update()
                     if(go.getSpeed() != 0)
                     {
                         go.Update();
                     }
-
-
-
-                    //float saveX = v.Position.X;
-                    //float saveY = v.Position.Y;
-
+                    
                     v.Position.X = go.getMinX() / Width;
                     v.Position.Y = go.getMinY() / Height;
 
