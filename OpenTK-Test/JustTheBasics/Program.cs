@@ -50,6 +50,9 @@ namespace JustTheBasics
         // Dictionary to store background images
         Dictionary<string, Background> BGs = new Dictionary<string, Background>();
 
+        // Dictionary for background tiles
+        Dictionary<string, BGTile> BGTiles = new Dictionary<string, BGTile>();
+
         // Default constructor that sets window size to 512x512 and adds some antialiasing (the GraphicsMode part)
         public Game() : base(800, 600, new OpenTK.Graphics.GraphicsMode(32, 24, 0, 4))
         {
@@ -85,11 +88,11 @@ namespace JustTheBasics
             tc.TextureID = textures["LifeIcon.png"];
 
             // Create a new GameObject
-            Vector2 startPos = new Vector2(16, 16);
-            Vector2[] spawn = new Vector2[] { new Vector2(0, 32), new Vector2(32, 32), new Vector2(32, 0) };
+            Vector2 startPos = new Vector2(64, 64);
+            Vector2[] spawn = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
             
             float[] map = new float[] { 0f, 0f, Width, Height };
-            GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 1.0f, 0f, true, tc);
+            GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 4.0f, 0f, true, tc);
 
             // Add the sprite to our list of active Sprites
             objects[1].Add(objPlayer);
@@ -106,18 +109,53 @@ namespace JustTheBasics
 
             // Create a new GameObject
             Vector2 sPos2 = new Vector2(128, 128);
-            Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
+            Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 128), new Vector2(128, 128), new Vector2(128, 0) };
 
             GameObject objBricks = new GameObject("Bricks", sPos2, spawnBrick, map, 0.0f, 0.0f, true, bc);
 
             // Add the sprite to our list of active Sprites
             objects[2].Add(objBricks);
 
+            // Make some invisible walls
+            int wallX = 0;
+            int wallY = 0;
+            textures.Add("NoImage.png", loadImage("NoImage.png", out wallX, out wallY, true));
+            for (int i = 0; i < 1600; i += 64)
+            {
+                Sprite ws = new Sprite();
+                ws.Width = wallX;
+                ws.Height = wallY;
+                ws.TextureID = textures["NoImage.png"];
+                Vector2[] spawnWall = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
+                GameObject wall = new GameObject("Wall" + i.ToString(), new Vector2(i, 0f), spawnWall, map, 0f, 0f, true, ws);
+                objects[2].Add(wall);
+            }
+
             // Create a background
             Background bg = new Background();
             textures.Add("circuit.png", loadImage("CircuitBOTTOM.png", bg, true));
             bg.TextureID = textures["circuit.png"];
             BGs.Add("circuit", bg);
+
+            // Create background tiles
+            int tilesetSizeX = 0;
+            int tilesetSizeY = 0;
+            textures.Add("Tile_Set_2.png", loadImage("Tile_Set_2.png", out tilesetSizeX, out tilesetSizeY, true));
+            for (int i = 0; i < 1600; i += 64)
+            {
+                BGTile bgt = new BGTile();
+                bgt.Width = tilesetSizeX;
+                bgt.Height = tilesetSizeY;
+                bgt.TextureID = textures["Tile_Set_2.png"];
+                bgt.Position = new Vector3(i/(float)Width, 0, 0);
+                bgt.index = new Vector2((i/64)%2 + 1, 1);
+                bgt.tSize = 64;
+                BGTiles.Add("Tile"+i.ToString(), bgt);
+                // Update the matrix used to calculate the Sprite's visuals
+                bgt.CalculateModelMatrix();
+                // Offset it by our viewport matrix (for things like scrolling levels)
+                bgt.ModelViewProjectionMatrix = bgt.ModelMatrix;// * ortho;
+            }
         }
 
         // This function overrides the base OnLoad function
@@ -167,6 +205,16 @@ namespace JustTheBasics
                 colors.AddRange(bg.GetColorData().ToList());
                 vertcount += bg.VertCount;
                 texcoords.AddRange(bg.GetTextureCoords());
+            }
+            // Set up rendering for background tiles
+            foreach (BGTile bgt in BGTiles.Values)
+            {
+                // Populate the previously defined lists
+                verts.AddRange(bgt.GetVerts(Width, Height).ToList());
+                inds.AddRange(bgt.GetIndices(vertcount).ToList());
+                colors.AddRange(bgt.GetColorData().ToList());
+                vertcount += bgt.VertCount;
+                texcoords.AddRange(bgt.GetTextureCoords());
             }
 
             // Stack for LIFO behavior in drawing sprites
@@ -294,6 +342,29 @@ namespace JustTheBasics
                 GL.DrawElements(BeginMode.Quads, bg.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
                 // Increment our index counter by the number of indices processed
                 indiceat += bg.IndiceCount;
+            }
+
+            // Loop over every background tile and render it
+            foreach (BGTile bgt in BGTiles.Values)
+            {
+                // Tell OpenTK to associate the given texture to the VBO we're drawing
+                GL.BindTexture(TextureTarget.Texture2D, bgt.TextureID);
+
+                // Allow tiling of images
+
+                // Send our projection matrix to the GLSL shader
+                GL.UniformMatrix4(shaders[activeShader].GetUniform("modelview"), false, ref bgt.ModelViewProjectionMatrix);
+
+                // If shader uses textures, send the image to the shader code for processing
+                if (shaders[activeShader].GetAttribute("maintexture") != -1)
+                {
+                    GL.Uniform1(shaders[activeShader].GetAttribute("maintexture"), bgt.TextureID);
+                }
+
+                // Draw a square/rectangle
+                GL.DrawElements(BeginMode.Quads, bgt.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
+                // Increment our index counter by the number of indices processed
+                indiceat += bgt.IndiceCount;
             }
 
             // Loop over every GameObject in the game
@@ -436,6 +507,24 @@ namespace JustTheBasics
             }
             catch (FileNotFoundException e)
             {
+                return -1;
+            }
+        }
+        // Another overload, does the same as above, but also takes two ints
+        // into as arguments, so that it can return the height and width of the sprite.
+        int loadImage(string filename, out int x, out int y, bool tile = false)
+        {
+            try
+            {
+                Bitmap file = new Bitmap(filename);
+                x = file.Width;
+                y = file.Height;
+                return loadImage(file, tile);
+            }
+            catch (FileNotFoundException e)
+            {
+                x = 0;
+                y = 0;
                 return -1;
             }
         }

@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Background.cs" />
+    <Compile Include="BGTile.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Program.cs" />
@@ -81,6 +82,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LifeIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NoImage.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Tile_Set_2.png">
