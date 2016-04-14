@@ -2,3 +2,4 @@ C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupPro
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csprojResolveAssemblyReference.cache
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
+C:\Users\Jared\Documents\GitHub\mod14\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config

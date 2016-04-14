@@ -82,70 +82,94 @@ namespace GameCreatorGroupProject
         {
             TCPClient c = null;
             dc = false;
+            Tuple<byte, uint> connectInfo = null;
             try
             {
-                staticClient = new TcpClient(serverIP, port);
-                staticStream = staticClient.GetStream();
-                staticReader = new BinaryReader(staticStream);
-                staticWriter = new BinaryWriter(staticStream);
-                //indicates to server this is the outgoing request client
-                staticWriter.Write((byte)0);
-                //tells server clientID
-                staticWriter.Write(thisClientID);
-                staticWriter.Flush();
-
-                Tuple<byte, uint> connectInfo = null;
-                using (client = new TcpClient(serverIP, port))
+                using (staticClient = new TcpClient())
                 {
-                    if (client.Connected)
+                    //attempts to connect with 5 second timeout
+                    IAsyncResult re = client.BeginConnect(serverIP, port, null, null);
+                    bool connectede = re.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+                    if (connectede)
                     {
-                        Program.connected = true;
-                        stream = client.GetStream();
-                        writer = new BinaryWriter(stream);
-                        reader = new BinaryReader(stream);
-                        //indicates to server this is the incoming request client
-                        writer.Write((byte)1);
+                        staticStream = staticClient.GetStream();
+                        staticReader = new BinaryReader(staticStream);
+                        staticWriter = new BinaryWriter(staticStream);
+                        //indicates to server this is the outgoing request client
+                        staticWriter.Write((byte)0);
                         //tells server clientID
-                        writer.Write(thisClientID);
-                        writer.Flush();
-                        MessageBox.Show("Connected to the main server at " + ServerInfo.getServerIP().ToString() + "!");
+                        staticWriter.Write(thisClientID);
+                        staticWriter.Flush();
                     }
                     else
                     {
+                        client.EndConnect(re);
                         //shows error box if could not connect
-                        MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Connection timeout.", "Unable to connect to server, connection request timed out.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
                     }
-                    //reads connection requests from server
-                    while (client.Connected && !dc)
+                    using (client = new TcpClient())
                     {
-                        //checks if server has sent a connection request
-                        if (stream.DataAvailable)
+                        //attempts to connect with 5 second timeout
+                        IAsyncResult r = client.BeginConnect(serverIP, port, null, null);
+                        bool connected = r.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+                        if (connected)
                         {
-                            //reads stream data
-                            connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
-                            //creates requested client
-                            //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
-                            switch (connectInfo.Item1)
-                            {
-                                case 1:
-                                    c = new ChatClient(connectInfo.Item2);
-                                    break;
-                                case 2:
-                                    c = new ResourceClient(connectInfo.Item2);
-                                    break;
-                                case 3:
-                                    c = new RTCClient(connectInfo.Item2);
-                                    break;
-                            }
-                            //connects client to server in new thread
-                            Thread t = new Thread(startClient);
-                            t.Start(c);
-                            available.Enqueue(c);
-                            clients.Add(c);
+                            Program.connected = true;
+                            stream = client.GetStream();
+                            writer = new BinaryWriter(stream);
+                            reader = new BinaryReader(stream);
+                            //indicates to server this is the incoming request client
+                            writer.Write((byte)1);
+                            //tells server clientID
+                            writer.Write(thisClientID);
+                            writer.Flush();
+                            MessageBox.Show("Connected to the main server at " + ServerInfo.getServerIP().ToString() + "!");
                         }
+                        else
+                        {
+                            client.EndConnect(r);
+                            //shows error box if could not connect
+                            MessageBox.Show("Connection timeout.", "Unable to connect to server, connection request timed out.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            return;
+                        }
+                        
+                    
+                        //reads connection requests from server
+                        //checks if both clients are still connected, and if disconnect was called
+                        while (client.Connected && staticClient.Connected && !dc)
+                        {
+                            //checks if server has sent a connection request
+                            if (stream.DataAvailable)
+                            {
+                                //reads stream data
+                                connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
+                                //creates requested client
+                                //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
+                                switch (connectInfo.Item1)
+                                {
+                                    case 1:
+                                        c = new ChatClient(connectInfo.Item2);
+                                        break;
+                                    case 2:
+                                        c = new ResourceClient(connectInfo.Item2);
+                                        break;
+                                    case 3:
+                                        c = new RTCClient(connectInfo.Item2);
+                                        break;
+                                }
+                                //connects client to server in new thread
+                                Thread t = new Thread(startClient);
+                                //gives thread enhanced priority to attempt to connect as quickly as possible
+                                t.Priority = ThreadPriority.AboveNormal;
+                                t.Start(c);
+                                available.Enqueue(c);
+                                clients.Add(c);
+                            }
+                        }
+                        //tells user if client disconnected
+                        MessageBox.Show("Disconnected.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-                    //tells user if client disconnected
-                    MessageBox.Show("Disconnected.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception e)
@@ -185,8 +209,8 @@ namespace GameCreatorGroupProject
                     //connects this client
                     if (!connectClient(type, serverID, thisClientID))
                     {
-                        //throws an exception if this client not in server side client list, probably an issue with the server app
-                        throw new notConnectedException("Main client not in server's connection list");
+                        //tells user if unable to connect to their own server
+                        MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     
                 }

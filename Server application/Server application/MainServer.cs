@@ -147,6 +147,8 @@ namespace Server_application
                                     //creates reader and writer on requested clients stream
                                     NetworkStream cStream = connect.GetStream();
                                     BinaryWriter cWriter = new BinaryWriter(cStream);
+                                    //indicates whether client successfully connected
+                                    bool success = false;
                                     //checks the type of server connection request for
                                     switch (serType)
                                     {
@@ -157,13 +159,17 @@ namespace Server_application
                                             {
                                                 //tells chat servers listener that incoming request is for server with specified ID
                                                 ChatServer.setCurrentID(serverID);
+                                                ChatServer.setExpectedClient(clientID);
                                                 //tells chat server that a connection is expected
-                                                ChatServer.setConnectExpected();
+                                                ChatServer.connectExpected.Set();
                                                 //tells client to connect
                                                 cWriter.Write(serType);
                                                 cWriter.Write(serverID);
                                                 //waits for client to connect to unlock, connectExpected set to false when it does
-                                                while (ChatServer.getConnectExpected() && connect.Connected) { }
+                                                success = ChatServer.connected.Wait(TimeSpan.FromSeconds(5));
+                                                //ensures values reset regardless of outcome
+                                                ChatServer.connectExpected.Reset();
+                                                ChatServer.connected.Reset();
                                             }
                                             break;
                                         //connection request for resource server
@@ -172,10 +178,14 @@ namespace Server_application
                                             lock (ResourceServer.IDLock)
                                             {
                                                 ResourceServer.setCurrentID(serverID);
-                                                ResourceServer.setConnectExpected();
+                                                ResourceServer.setExpectedClient(clientID);
+                                                ResourceServer.connectExpected.Set();
                                                 cWriter.Write(serType);
                                                 cWriter.Write(serverID);
-                                                while (ResourceServer.getConnectExpected() && connect.Connected) { }
+                                                success = ResourceServer.connected.Wait(TimeSpan.FromSeconds(5));
+                                                //ensures values reset regardless of outcome
+                                                ResourceServer.connectExpected.Reset();
+                                                ResourceServer.connected.Reset();
                                             }
                                             break;
                                         //connection request for real time collaboration server
@@ -184,15 +194,19 @@ namespace Server_application
                                             lock (RTCServer.IDLock)
                                             {
                                                 RTCServer.setCurrentID(serverID);
-                                                RTCServer.setConnectExpected();
+                                                RTCServer.setExpectedClient(clientID);
+                                                RTCServer.connectExpected.Set();
                                                 cWriter.Write(serType);
                                                 cWriter.Write(serverID);
-                                                while (RTCServer.getConnectExpected() && connect.Connected) { }
+                                                success = RTCServer.connected.Wait(TimeSpan.FromSeconds(5));
+                                                //ensures values reset regardless of outcome
+                                                RTCServer.connectExpected.Reset();
+                                                RTCServer.connected.Reset();
                                             }
                                             break;
                                     }
                                     //checks if requested client still connected
-                                    if (connect.Connected)
+                                    if (connect.Connected && success)
                                     {
                                         //tells requester client successfully connected if it is
                                         writer.Write(true);
