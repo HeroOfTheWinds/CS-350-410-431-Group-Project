@@ -92,7 +92,7 @@ namespace JustTheBasics
             Vector2[] spawn = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
             
             float[] map = new float[] { 0f, 0f, Width, Height };
-            GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 4.0f, 0f, true, tc);
+            GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 10.0f, 2f, true, tc);
 
             // Add the sprite to our list of active Sprites
             objects[1].Add(objPlayer);
@@ -108,7 +108,7 @@ namespace JustTheBasics
             bc.TextureID = textures["Bricks.png"];
 
             // Create a new GameObject
-            Vector2 sPos2 = new Vector2(128, 128);
+            Vector2 sPos2 = new Vector2(128, 64);
             Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 128), new Vector2(128, 128), new Vector2(128, 0) };
 
             GameObject objBricks = new GameObject("Bricks", sPos2, spawnBrick, map, 0.0f, 0.0f, true, bc);

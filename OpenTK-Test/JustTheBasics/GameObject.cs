@@ -31,7 +31,7 @@ namespace JustTheBasics
         private bool lAcc = false;
 
         //indicates if collision on last movement
-        private bool collided = false;
+        //private bool collided = false;
 
         //location of objects vertices
         private Vector2[] loc;
@@ -153,6 +153,9 @@ namespace JustTheBasics
                         speed = baseSpeed;
                     }
                     bool valid = true;
+                    //this doesnt do anything, condition can never be met duh
+                    //gonna leave this out unless I fix blocking at high speeds, because rechecking fixes this for acceleration
+                    /*
                     //checks if the new coordinates are valid
                     if (collided && uAcc)
                     {
@@ -162,12 +165,13 @@ namespace JustTheBasics
                     }
                     else
                     {
-                        //checks if collision after movement
-                        if (intersects(speed, "u", segs))
-                        {
-                            valid = false;
-                        }
+                    */
+                    //checks if collision after movement
+                    if (intersects(speed, "u", segs))
+                    {
+                        valid = false;
                     }
+                    //}
                     //modifies object location if valid
                     if (valid)
                     {
@@ -180,12 +184,12 @@ namespace JustTheBasics
                         maxY += speed;
                         minY += speed;
                         uAcc = true;
-                        collided = false;
+                        //collided = false;
                     }
                     //else indicates collision was detected and cancels acceleration
                     else
                     {
-                        collided = true;
+                        //collided = true;
                         uAcc = false;
                     }
                     //indicates that other directions are not accelerating
@@ -205,6 +209,7 @@ namespace JustTheBasics
                         speed = baseSpeed;
                     }
                     bool valid = true;
+                    /*
                     //checks if the new coordinates are valid
                     if (collided && dAcc)
                     {
@@ -214,11 +219,12 @@ namespace JustTheBasics
                     }
                     else
                     {
-                        if (intersects(speed, "d", segs))
-                        {
-                            valid = false;
-                        }
+                    */
+                    if (intersects(speed, "d", segs))
+                    {
+                        valid = false;
                     }
+                    //}
                     if (valid)
                     {
                         for (int i = 0; i < loc.GetLength(0); i++)
@@ -229,11 +235,11 @@ namespace JustTheBasics
                         maxY -= speed;
                         minY -= speed;
                         dAcc = true;
-                        collided = false;
+                        //collided = false;
                     }
                     else
                     {
-                        collided = true;
+                        //collided = true;
                         dAcc = false;
                     }
 
@@ -254,6 +260,8 @@ namespace JustTheBasics
                         speed = baseSpeed;
                     }
                     bool valid = true;
+                    
+                    /*
                     //checks if the new coordinates are valid
                     if (collided && lAcc)
                     {
@@ -261,13 +269,15 @@ namespace JustTheBasics
                         //NOTE: assumes other objects stationary, can remove if assumption changes
                         valid = false;
                     }
+                    
                     else
                     {
-                        if (intersects(speed, "l", segs))
-                        {
-                            valid = false;
-                        }
+                    */
+                    if (intersects(speed, "l", segs))
+                    {
+                        valid = false;
                     }
+                    //}
                     if (valid)
                     {
                         for (int i = 0; i < loc.GetLength(0); i++)
@@ -278,11 +288,11 @@ namespace JustTheBasics
                         maxX -= speed;
                         minX -= speed;
                         lAcc = true;
-                        collided = false;
+                        //collided = false;
                     }
                     else
                     {
-                        collided = true;
+                        //collided = true;
                         lAcc = false;
                     }
 
@@ -303,6 +313,7 @@ namespace JustTheBasics
                         speed = baseSpeed;
                     }
                     bool valid = true;
+                    /*
                     //checks if the new coordinates are valid
                     if (collided && rAcc)
                     {
@@ -312,11 +323,12 @@ namespace JustTheBasics
                     }
                     else
                     {
-                        if (intersects(speed, "r", segs))
-                        {
-                            valid = false;
-                        }
+                    */
+                    if (intersects(speed, "r", segs))
+                    {
+                        valid = false;
                     }
+                    //}
                     if (valid)
                     {
                         for (int i = 0; i < loc.GetLength(0); i++)
@@ -327,11 +339,11 @@ namespace JustTheBasics
                         maxX += speed;
                         minX += speed;
                         rAcc = true;
-                        collided = false;
+                        //collided = false;
                     }
                     else
                     {
-                        collided = true;
+                        //collided = true;
                         rAcc = false;
                     }
 
@@ -345,7 +357,7 @@ namespace JustTheBasics
         }
 
         //chacks if segments in seg intersect with any collidable objects after given movement
-        private bool intersects(float speed, string dir, List<Segment> seg)
+        private bool intersects(float tspeed, string dir, List<Segment> seg)
         {
             //this object has no collision
             if (!col)
@@ -365,109 +377,117 @@ namespace JustTheBasics
             {
                 width = maxY - minY;
             }
+            //this is wrong
+            //also i know its a pain, but change the parameter name speed and all the speed variables to ensure integrity
+            float ospeed = 0;
 
-            //for (float i = speed; (int)i > 0; i -= width)
-
-            //iterates through collidable objects in parallel
-            foreach (GameObject o in collision)
+            for (float i = 1; ospeed < tspeed; i++)
             {
-                if (this != o)
+                if ((ospeed = i*width - 1) > tspeed)
                 {
-                    //indicates movement in upwards direction
-                    if (dir.Equals("u"))
+                    ospeed = tspeed;
+                }
+                //iterates through collidable objects in parallel
+                foreach (GameObject o in collision)
+                {
+                    if (this != o)
                     {
-                        //checks if objects intersect on two axis, else doesn't bother to check intersections
-                        //backup logic (wrong)
-                        /*
-                        if (((maxX < o.getMaxX() && maxX > o.getMinX()) || (minX > o.getMinX() && minX < o.getMaxX()))
-                            && ((maxY + speed < o.getMaxY() && maxY + speed > o.getMinY()) || (minY + speed > o.getMinY() && minY + speed < o.getMaxY())))
-                        */
-                        if ((maxX > o.getMinX() && minX < o.getMaxX()) && (maxY + speed > o.getMinY() && minY + speed < o.getMaxY()))
+                        //indicates movement in upwards direction
+                        if (dir.Equals("u"))
                         {
-                            foreach (Segment s in seg)
+                            //checks if objects intersect on two axis, else doesn't bother to check intersections
+                            //backup logic (wrong)
+                            /*
+                            if (((maxX < o.getMaxX() && maxX > o.getMinX()) || (minX > o.getMinX() && minX < o.getMaxX()))
+                                && ((maxY + ospeed < o.getMaxY() && maxY + ospeed > o.getMinY()) || (minY + ospeed > o.getMinY() && minY + ospeed < o.getMaxY())))
+                            */
+                            if ((maxX > o.getMinX() && minX < o.getMaxX()) && (maxY + ospeed > o.getMinY() && minY + ospeed < o.getMaxY()))
                             {
-                                //modifies segment
-                                s.move(speed, "u");
-                                //compares with each collidable objects segments
-                                foreach (Segment l in o.getSegments())
+                                foreach (Segment s in seg)
                                 {
-                                    //chacks if intersect
-                                    if (s.intersect(l))
+                                    //modifies segment
+                                    s.move(ospeed, "u");
+                                    //compares with each collidable objects segments
+                                    foreach (Segment l in o.getSegments())
                                     {
-                                        //reverts segment
-                                        s.move(speed, "d");
-                                        return true;
+                                        //chacks if intersect
+                                        if (s.intersect(l))
+                                        {
+                                            //reverts segment
+                                            s.move(ospeed, "d");
+                                            return true;
+                                        }
                                     }
+                                    //reverts segment
+                                    s.move(ospeed, "d");
                                 }
-                                //reverts segment
-                                s.move(speed, "d");
-                            }
-                            //indicates segments in temp have already been updated
-                        }
-                    }
-                    //indicates movement in downward direction (see above comments)
-                    else if (dir.Equals("d"))
-                    {
-                        if ((maxX > o.getMinX() && minX < o.getMaxX()) && (maxY - speed > o.getMinY() && minY - speed < o.getMaxY()))
-                        {
-                            foreach (Segment s in seg)
-                            {
-                                s.move(speed, "d");
-                                foreach (Segment l in o.getSegments())
-                                {
-                                    if (s.intersect(l))
-                                    {
-                                        s.move(speed, "u");
-                                        return true;
-                                    }
-                                }
-                                s.move(speed, "u");
+                                //indicates segments in temp have already been updated
                             }
                         }
-                    }
-                    //indicates movement in left direction (see above comments)
-                    else if (dir.Equals("l"))
-                    {
-                        if ((maxX - speed > o.getMinX() && minX - speed < o.getMaxX()) && (maxY > o.getMinY() && minY < o.getMaxY()))
+                        //indicates movement in downward direction (see above comments)
+                        else if (dir.Equals("d"))
                         {
-                            foreach (Segment s in seg)
+                            if ((maxX > o.getMinX() && minX < o.getMaxX()) && (maxY - ospeed > o.getMinY() && minY - ospeed < o.getMaxY()))
                             {
-                                s.move(speed, "l");
-                                foreach (Segment l in o.getSegments())
+                                foreach (Segment s in seg)
                                 {
-                                    if (s.intersect(l))
+                                    s.move(ospeed, "d");
+                                    foreach (Segment l in o.getSegments())
                                     {
-                                        s.move(speed, "r");
-                                        return true;
+                                        if (s.intersect(l))
+                                        {
+                                            s.move(ospeed, "u");
+                                            return true;
+                                        }
                                     }
+                                    s.move(ospeed, "u");
                                 }
-                                s.move(speed, "r");
                             }
                         }
-                    }
-                    //indicates movement in right direction (see above comments)
-                    else if (dir.Equals("r"))
-                    {
-                        if ((maxX + speed > o.getMinX() && minX + speed < o.getMaxX()) && (maxY > o.getMinY() && minY < o.getMaxY()))
+                        //indicates movement in left direction (see above comments)
+                        else if (dir.Equals("l"))
                         {
-                            foreach (Segment s in seg)
+                            if ((maxX - ospeed > o.getMinX() && minX - ospeed < o.getMaxX()) && (maxY > o.getMinY() && minY < o.getMaxY()))
                             {
-                                s.move(speed, "r");
-                                foreach (Segment l in o.getSegments())
+                                foreach (Segment s in seg)
                                 {
-                                    if (s.intersect(l))
+                                    s.move(ospeed, "l");
+                                    foreach (Segment l in o.getSegments())
                                     {
-                                        s.move(speed, "l");
-                                        return true;
+                                        if (s.intersect(l))
+                                        {
+                                            s.move(ospeed, "r");
+                                            return true;
+                                        }
                                     }
+                                    s.move(ospeed, "r");
                                 }
-                                s.move(speed, "l");
                             }
                         }
-                    }
-                    else
-                    {
-                        throw new ArgumentException("invalid direction");
+                        //indicates movement in right direction (see above comments)
+                        else if (dir.Equals("r"))
+                        {
+                            if ((maxX + ospeed > o.getMinX() && minX + ospeed < o.getMaxX()) && (maxY > o.getMinY() && minY < o.getMaxY()))
+                            {
+                                foreach (Segment s in seg)
+                                {
+                                    s.move(ospeed, "r");
+                                    foreach (Segment l in o.getSegments())
+                                    {
+                                        if (s.intersect(l))
+                                        {
+                                            s.move(ospeed, "l");
+                                            return true;
+                                        }
+                                    }
+                                    s.move(ospeed, "l");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new ArgumentException("invalid direction");
+                        }
                     }
                 }
             }
