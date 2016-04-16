@@ -171,12 +171,21 @@ namespace JustTheBasics
         }
 
         //checks if segments intersect on given interval
-        public bool intersect(Segment inter)
+        //axis indicates axis of movemnt, true being x, flase being y
+        public bool intersect(Segment inter, bool xaxis)
         {
             float interX;
             //returns false if lines are parallel
             if (inter.getM() == m && inter.getB() == b)
             {
+                if((m == 0 && xaxis) && (lY == inter.getLY() && (startX < inter.getHX() && startX > inter.getLX())))
+                {
+                    return true;
+                }
+                else if((vert && !xaxis) && (lX == inter.getLX() && (startY < inter.getHY() && startY > inter.getLY())))
+                {
+                    return true;
+                }
                 return false;
             }
             //if one of the segments is verticle, chacks if second segment intersects it

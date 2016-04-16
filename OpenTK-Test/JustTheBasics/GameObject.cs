@@ -367,6 +367,8 @@ namespace JustTheBasics
 
             //bool ret = false;
 
+            //change this to use the thinnest object in the relative direction
+            //or calculate object with smallest width that collision is possible with, prolly parallel for
             float width;
 
             if (dir.Equals("r") || dir.Equals("l"))
@@ -377,10 +379,9 @@ namespace JustTheBasics
             {
                 width = maxY - minY;
             }
-            //this is wrong
-            //also i know its a pain, but change the parameter name speed and all the speed variables to ensure integrity
             float ospeed = 0;
 
+            //change to parallel for loop
             for (float i = 1; ospeed < tspeed; i++)
             {
                 if ((ospeed = i*width - 1) > tspeed)
@@ -411,7 +412,7 @@ namespace JustTheBasics
                                     foreach (Segment l in o.getSegments())
                                     {
                                         //chacks if intersect
-                                        if (s.intersect(l))
+                                        if (s.intersect(l, false))
                                         {
                                             //reverts segment
                                             s.move(ospeed, "d");
@@ -434,7 +435,7 @@ namespace JustTheBasics
                                     s.move(ospeed, "d");
                                     foreach (Segment l in o.getSegments())
                                     {
-                                        if (s.intersect(l))
+                                        if (s.intersect(l, false))
                                         {
                                             s.move(ospeed, "u");
                                             return true;
@@ -454,7 +455,7 @@ namespace JustTheBasics
                                     s.move(ospeed, "l");
                                     foreach (Segment l in o.getSegments())
                                     {
-                                        if (s.intersect(l))
+                                        if (s.intersect(l, true))
                                         {
                                             s.move(ospeed, "r");
                                             return true;
@@ -474,7 +475,7 @@ namespace JustTheBasics
                                     s.move(ospeed, "r");
                                     foreach (Segment l in o.getSegments())
                                     {
-                                        if (s.intersect(l))
+                                        if (s.intersect(l, true))
                                         {
                                             s.move(ospeed, "l");
                                             return true;
