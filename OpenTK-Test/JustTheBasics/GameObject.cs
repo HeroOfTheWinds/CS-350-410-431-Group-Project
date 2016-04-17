@@ -43,6 +43,9 @@ namespace JustTheBasics
         private float maxY;
         private float minY;
 
+        private float xWidth;
+        private float yWidth;
+
         //indicates if object has been spawned
         private bool isSpawned = false;
 
@@ -118,6 +121,10 @@ namespace JustTheBasics
                     minY = spawnCoords[i].Y;
                 }
             }
+            //calculates objects width on both axis
+            xWidth = maxX - minX;
+            yWidth = maxY - minY;
+
             //checks if collision is set and intersects with any existing object (with 0 movement)
             if (col && intersects(0f, "l", temp))
             {
@@ -367,24 +374,30 @@ namespace JustTheBasics
 
             //bool ret = false;
 
-            //change this to use the thinnest object in the relative direction
-            //or calculate object with smallest width that collision is possible with, prolly parallel for
-            float width;
+            // finds least width in collision bounds, initializing to this object's width on respective axis
+            float minWidth = dir.Equals("r") || dir.Equals("l") ? xWidth : yWidth;
 
-            if (dir.Equals("r") || dir.Equals("l"))
+            foreach (GameObject o in collision)
             {
-                width = maxX - minX;
+                //checks if possible to pass over object on movement and finds min width in range
+                //maybe you should change normal calcs to this, slightly more efficient
+                if ((dir.Equals("r") && minX < o.getMaxX() && maxX + tspeed > o.getMinX() && o.getXWidth() < minWidth) ||
+                    (dir.Equals("l") && maxX > o.getMinX() && minX - tspeed < o.getMaxX() && o.getXWidth() < minWidth))
+                {
+                    minWidth = o.getXWidth();
+                }
+                if ((dir.Equals("u") && minY < o.getMaxY() && maxY + tspeed > o.getMinY() && o.getYWidth() < minWidth) ||
+                    (dir.Equals("d") && maxY > o.getMinY() && minY - tspeed < o.getMaxY() && o.getYWidth() < minWidth))
+                {
+                    minWidth = o.getYWidth();
+                }
             }
-            else
-            {
-                width = maxY - minY;
-            }
+
             float ospeed = 0;
 
-            //change to parallel for loop
             for (float i = 1; ospeed < tspeed; i++)
             {
-                if ((ospeed = i*width - 1) > tspeed)
+                if ((ospeed = i*minWidth - 1) > tspeed)
                 {
                     ospeed = tspeed;
                 }
@@ -412,6 +425,8 @@ namespace JustTheBasics
                                     foreach (Segment l in o.getSegments())
                                     {
                                         //chacks if intersect
+                                        //backup, flawed
+                                        //if ((s.getM() == 0 && l.getM() == 0 && s.getHY() > l.getHY() && s.getHY() - ospeed <= l.getHY())
                                         if (s.intersect(l, false))
                                         {
                                             //reverts segment
@@ -435,6 +450,7 @@ namespace JustTheBasics
                                     s.move(ospeed, "d");
                                     foreach (Segment l in o.getSegments())
                                     {
+                                        //if ((s.getM() == 0 && l.getM() == 0 && s.getHY() < l.getHY() && s.getHY() + ospeed >= l.getHY())
                                         if (s.intersect(l, false))
                                         {
                                             s.move(ospeed, "u");
@@ -455,6 +471,7 @@ namespace JustTheBasics
                                     s.move(ospeed, "l");
                                     foreach (Segment l in o.getSegments())
                                     {
+                                        //if ((Single.IsPositiveInfinity(s.getM()) && Single.IsPositiveInfinity(l.getM()) && s.getHX() < l.getHX() && s.getHX() + ospeed >= l.getHX())
                                         if (s.intersect(l, true))
                                         {
                                             s.move(ospeed, "r");
@@ -475,6 +492,7 @@ namespace JustTheBasics
                                     s.move(ospeed, "r");
                                     foreach (Segment l in o.getSegments())
                                     {
+                                        //if ((Single.IsPositiveInfinity(s.getM()) && Single.IsPositiveInfinity(l.getM()) && s.getHX() > l.getHX() && s.getHX() - ospeed <= l.getHX())
                                         if (s.intersect(l, true))
                                         {
                                             s.move(ospeed, "l");
@@ -609,6 +627,16 @@ namespace JustTheBasics
         public float getMinY()
         {
             return minY;
+        }
+
+        public float getYWidth()
+        {
+            return yWidth;
+        }
+
+        public float getXWidth()
+        {
+            return xWidth;
         }
 
 

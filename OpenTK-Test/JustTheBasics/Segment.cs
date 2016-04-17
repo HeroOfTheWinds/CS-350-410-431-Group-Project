@@ -49,8 +49,8 @@ namespace JustTheBasics
             //else indicates vertical line
             else
             {
-                m = (float)Double.PositiveInfinity;
-                b = (float)Double.PositiveInfinity;
+                m = Single.PositiveInfinity;
+                b = Single.PositiveInfinity;
                 vert = true;
             }
 
@@ -171,12 +171,12 @@ namespace JustTheBasics
         }
 
         //checks if segments intersect on given interval
-        //axis indicates axis of movemnt, true being x, flase being y
+        //xaxis indicates direction of movement respective to x axis
         public bool intersect(Segment inter, bool xaxis)
         {
             float interX;
             //returns false if lines are parallel
-            if (inter.getM() == m && inter.getB() == b)
+            if ((inter.getM() == m && inter.getB() == b) || (Single.IsPositiveInfinity(inter.getM()) && Single.IsPositiveInfinity(m)))
             {
                 if((m == 0 && xaxis) && (lY == inter.getLY() && (startX < inter.getHX() && startX > inter.getLX())))
                 {
