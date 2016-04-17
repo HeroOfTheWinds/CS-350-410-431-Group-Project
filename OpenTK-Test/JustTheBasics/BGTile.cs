@@ -15,6 +15,8 @@ namespace JustTheBasics
         // Member variables
         // Var for storing position (in pixels) on the screen
         public Vector3 Position = Vector3.Zero;
+        public Vector3 absPosition = Vector3.Zero; // absolute position in pixels
+
         // Store the factor by which the image is magnified or shrunk
         public Vector3 Scale = Vector3.One;
 
