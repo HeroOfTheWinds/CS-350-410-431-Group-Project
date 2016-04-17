@@ -381,13 +381,13 @@ namespace JustTheBasics
             {
                 //checks if possible to pass over object on movement and finds min width in range
                 //maybe you should change normal calcs to this, slightly more efficient
-                if ((dir.Equals("r") && minX < o.getMaxX() && maxX + tspeed > o.getMinX() && o.getXWidth() < minWidth) ||
-                    (dir.Equals("l") && maxX > o.getMinX() && minX - tspeed < o.getMaxX() && o.getXWidth() < minWidth))
+                if ((dir.Equals("r") && minX < o.getMaxX() && maxX + tspeed > o.getMinX() && o.getXWidth() > 0 && o.getXWidth() < minWidth) ||
+                    (dir.Equals("l") && maxX > o.getMinX() && minX - tspeed < o.getMaxX() && o.getXWidth() > 0 && o.getXWidth() < minWidth))
                 {
                     minWidth = o.getXWidth();
                 }
-                if ((dir.Equals("u") && minY < o.getMaxY() && maxY + tspeed > o.getMinY() && o.getYWidth() < minWidth) ||
-                    (dir.Equals("d") && maxY > o.getMinY() && minY - tspeed < o.getMaxY() && o.getYWidth() < minWidth))
+                if ((dir.Equals("u") && minY < o.getMaxY() && maxY + tspeed > o.getMinY() && o.getYWidth() > 0 && o.getYWidth() < minWidth) ||
+                    (dir.Equals("d") && maxY > o.getMinY() && minY - tspeed < o.getMaxY() && o.getYWidth() > 0 && o.getYWidth() < minWidth))
                 {
                     minWidth = o.getYWidth();
                 }
