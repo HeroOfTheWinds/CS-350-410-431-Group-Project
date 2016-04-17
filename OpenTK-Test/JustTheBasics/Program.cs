@@ -148,6 +148,7 @@ namespace JustTheBasics
                 bgt.Height = tilesetSizeY;
                 bgt.TextureID = textures["Tile_Set_2.png"];
                 bgt.Position = new Vector3(i/(float)Width, 0, 0);
+                bgt.absPosition = new Vector3(i, 0, 0);
                 bgt.index = new Vector2((i/64)%2 + 1, 1);
                 bgt.tSize = 64;
                 BGTiles.Add("Tile"+i.ToString(), bgt);
@@ -417,20 +418,28 @@ namespace JustTheBasics
         // Override for resizing the window, not much should be changed here.
         protected override void OnResize(EventArgs e)
         {
-
             base.OnResize(e);
 
             ortho = Matrix4.CreateOrthographic(ClientSize.Width, ClientSize.Height, 1.0f, 64f);
             CurrentView.Size = new SizeF(ClientSize.Width, ClientSize.Height);
-            
+
             //GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
-            
+
             //Matrix4 projection = Matrix4.CreateOrthographic(Width, Height, 1.0f, 64f);
 
             //GL.MatrixMode(MatrixMode.Projection);
 
             //GL.LoadMatrix(ref ortho);
-            
+
+            // Set up rendering for background tiles
+            foreach (BGTile bgt in BGTiles.Values)
+            {
+                bgt.Position.X = bgt.absPosition.X / ClientSize.Width;
+                // Update the matrix used to calculate the Sprite's visuals
+                bgt.CalculateModelMatrix();
+                // Offset it by our viewport matrix (for things like scrolling levels)
+                bgt.ModelViewProjectionMatrix = bgt.ModelMatrix;// * ortho;
+            }
         }
 
         // Function to generate a texture ID for later reference, associated with each bitmap we load
