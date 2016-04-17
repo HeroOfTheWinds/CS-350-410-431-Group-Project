@@ -34,6 +34,9 @@ namespace GameCreatorGroupProject
         MainClient online;
         TCPClient chat;
 
+        //private string sprloc = null;
+        private Image spr = null;
+
         private uint chatServerID;
 
         // Declare a ResourceImporter to make it easier to load and save resources
@@ -258,6 +261,67 @@ namespace GameCreatorGroupProject
         private void addUserReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             online.connectClient(1, chatServerID, 1);
+        }
+
+        private void radioSprite_MouseDown_1(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void btnSetSprite_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                spr = Image.FromFile(cmbSprite.Text);
+                CollisionDesigner.spr = spr;
+                picSpriteView.Image = spr;
+                radioBox.Enabled = true;
+                radioSprite.Enabled = true;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Invalid Sprite.", "Invalid sprite selection.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            if (d.ShowDialog() == DialogResult.OK)
+            {
+                cmbSprite.Text = d.FileName;
+                //sprloc = d.FileName;
+            }
+        }
+
+        private void radioSprite_Click(object sender, EventArgs e)
+        {
+            listObjects.Enabled = true;
+            btnAddObject.Enabled = true;
+            btnRemoveObject.Enabled = true;
+        }
+
+        private void btnAddObject_Click(object sender, EventArgs e)
+        {
+            CollisionDesigner d = new CollisionDesigner();
+            d.ShowDialog(this);
+        }
+
+        private void radioBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioBox_Click(object sender, EventArgs e)
+        {
+            listObjects.Enabled = false;
+            btnAddObject.Enabled = false;
+            btnRemoveObject.Enabled = false;
+        }
+
+        private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

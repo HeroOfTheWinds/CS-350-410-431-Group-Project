@@ -51,6 +51,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChatClient.cs" />
+    <Compile Include="CollisionDesigner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollisionDesigner.Designer.cs">
+      <DependentUpon>CollisionDesigner.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     <Compile Include="Segment.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="TCPClient.cs" />
+    <EmbeddedResource Include="CollisionDesigner.resx">
+      <DependentUpon>CollisionDesigner.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
