@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic;
 using System.IO;
+using OpenTK;
+using System.Text.RegularExpressions;
 
 namespace GameCreatorGroupProject
 {
@@ -36,6 +38,8 @@ namespace GameCreatorGroupProject
 
         //private string sprloc = null;
         private Image spr = null;
+        private Vector2[] cOffsets = null;
+        private Vector2[] bOffsets = null;
 
         private uint chatServerID;
 
@@ -296,15 +300,35 @@ namespace GameCreatorGroupProject
 
         private void radioSprite_Click(object sender, EventArgs e)
         {
-            listObjects.Enabled = true;
-            btnAddObject.Enabled = true;
-            btnRemoveObject.Enabled = true;
+            CollisionDesigner d = new CollisionDesigner();
+            d.ShowDialog(this);
+            cOffsets = CollisionDesigner.offsets;
+            //have something ask for width and height and scale off that
         }
 
         private void btnAddObject_Click(object sender, EventArgs e)
         {
-            CollisionDesigner d = new CollisionDesigner();
-            d.ShowDialog(this);
+            OpenFileDialog d = new OpenFileDialog();
+            if (d.ShowDialog() == DialogResult.OK)
+            {
+                //file must end in .gob, can change if want
+                Regex ob = new Regex(@".*\.gob$");
+                Regex c = new Regex(@".*\.goc$");
+                if (ob.Match(d.FileName).Success)
+                {
+                    //parse file for validity, print error if incorrect, else add to object collection
+                    File.Copy(d.FileName, project.getResourceDir());
+                }
+                else if (c.Match(d.FileName).Success)
+                {
+                    //parse file for validity, print error if incorrect, else add to object collection
+                    File.Copy(d.FileName, project.getResourceDir());
+                }
+                else
+                {
+                    MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void radioBox_CheckedChanged(object sender, EventArgs e)
@@ -314,14 +338,41 @@ namespace GameCreatorGroupProject
 
         private void radioBox_Click(object sender, EventArgs e)
         {
-            listObjects.Enabled = false;
-            btnAddObject.Enabled = false;
-            btnRemoveObject.Enabled = false;
+            //have things to ask for width and height and make box from that
         }
 
         private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSaveObj_Click(object sender, EventArgs e)
+        {
+            if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || txtObjectName.Text.Equals(""))
+            {
+                MessageBox.Show("Game objects must have a valid sprite, collision box, and name to be saved.", "Unable to generate game object.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                string file = project.getResourceDir() + txtObjectName.Text + ".gob";
+                if (File.Exists(file))
+                {
+                    int i = 0;
+                    while (File.Exists(file + i.ToString()))
+                    {
+                        i++;
+                    }
+                    file = file + i.ToString();
+                }
+                //write stuff to file
+            }
+            
+        }
+
+        private void btnRemoveObject_Click(object sender, EventArgs e)
+        {
+            //something like this
+            //File.Delete(listObjects.SelectedItem.)
         }
     }
 }

@@ -537,6 +537,7 @@
             this.btnSaveObj.TabIndex = 8;
             this.btnSaveObj.Text = "Save Object";
             this.btnSaveObj.UseVisualStyleBackColor = false;
+            this.btnSaveObj.Click += new System.EventHandler(this.btnSaveObj_Click);
             // 
             // txtObjectName
             // 
@@ -952,18 +953,17 @@
             // btnRemoveObject
             // 
             this.btnRemoveObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveObject.Enabled = false;
             this.btnRemoveObject.Location = new System.Drawing.Point(98, 447);
             this.btnRemoveObject.Name = "btnRemoveObject";
             this.btnRemoveObject.Size = new System.Drawing.Size(86, 23);
             this.btnRemoveObject.TabIndex = 6;
             this.btnRemoveObject.Text = "Remove";
             this.btnRemoveObject.UseVisualStyleBackColor = true;
+            this.btnRemoveObject.Click += new System.EventHandler(this.btnRemoveObject_Click);
             // 
             // btnAddObject
             // 
             this.btnAddObject.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnAddObject.Enabled = false;
             this.btnAddObject.Location = new System.Drawing.Point(6, 447);
             this.btnAddObject.Name = "btnAddObject";
             this.btnAddObject.Size = new System.Drawing.Size(86, 23);
@@ -977,7 +977,6 @@
             this.listObjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listObjects.BackColor = System.Drawing.SystemColors.Control;
-            this.listObjects.Enabled = false;
             this.listObjects.FormattingEnabled = true;
             this.listObjects.Location = new System.Drawing.Point(6, 29);
             this.listObjects.Name = "listObjects";
@@ -1567,7 +1566,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 125);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 121);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1578,7 +1577,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 125);
+            this.txtMessage.Location = new System.Drawing.Point(3, 121);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1593,7 +1592,7 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 116);
+            this.txtChat.Size = new System.Drawing.Size(1152, 112);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir

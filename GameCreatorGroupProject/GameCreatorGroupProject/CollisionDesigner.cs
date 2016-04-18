@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTK;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,7 +13,7 @@ namespace GameCreatorGroupProject
 {
     public partial class CollisionDesigner : Form
     {
-        
+        private bool saved = false;
 
         public CollisionDesigner()
         {
@@ -66,6 +67,30 @@ namespace GameCreatorGroupProject
                 }
             }
             panel1.Invalidate();
+        }
+
+        private void CollisionDesigner_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!saved)
+            {
+                DialogResult d = MessageBox.Show("Would you like to close the designer?\nCurrent design will be lost.", "", MessageBoxButtons.YesNo);
+                if (d == DialogResult.No)
+                {
+                    e.Cancel = true;
+                }
+            }
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            offsets = new Vector2[points.Count - 1];
+            for (int i = 1; i < points.Count; i++)
+            {
+                offsets[i - 1] = new Vector2(points[i].Item1.X - points[0].Item1.X, points[i].Item1.Y - points[0].Item1.Y);
+            }
+            saved = true;
+            Close();
         }
     }
 }
