@@ -18,6 +18,9 @@ namespace JustTheBasics
         // Var to hold time since last frame
         float dTime = 0.0f;
 
+        // Background color used when no image is available
+        Color clearColor = Color.Black;
+
         // These pertain to what the user can see at a given time
         public RectangleF CurrentView = new RectangleF(0, 0, 800, 600);
         private Matrix4 ortho;
@@ -48,10 +51,10 @@ namespace JustTheBasics
         Dictionary<string, int> textures = new Dictionary<string, int>();
 
         // Dictionary to store background images
-        Dictionary<string, Background> BGs = new Dictionary<string, Background>();
+        List<Background> BGs = new List<Background>();
 
         // Dictionary for background tiles
-        Dictionary<string, BGTile> BGTiles = new Dictionary<string, BGTile>();
+        List<BGTile> BGTiles = new List<BGTile>();
 
         // Default constructor that sets window size to 512x512 and adds some antialiasing (the GraphicsMode part)
         public Game() : base(800, 600, new OpenTK.Graphics.GraphicsMode(32, 24, 0, 4))
@@ -135,7 +138,7 @@ namespace JustTheBasics
             Background bg = new Background();
             textures.Add("circuit.png", loadImage("CircuitBOTTOM.png", bg, true));
             bg.TextureID = textures["circuit.png"];
-            BGs.Add("circuit", bg);
+            BGs.Add(bg);
 
             // Create background tiles
             int tilesetSizeX = 0;
@@ -151,7 +154,7 @@ namespace JustTheBasics
                 bgt.absPosition = new Vector3(i, 0, 0);
                 bgt.index = new Vector2((i/64)%2 + 1, 1);
                 bgt.tSize = 64;
-                BGTiles.Add("Tile"+i.ToString(), bgt);
+                BGTiles.Add(bgt);
                 // Update the matrix used to calculate the Sprite's visuals
                 bgt.CalculateModelMatrix();
                 // Offset it by our viewport matrix (for things like scrolling levels)
@@ -172,7 +175,7 @@ namespace JustTheBasics
 
             Title = "Hello OpenTK!";
 
-            GL.ClearColor(Color.Black); // Yech, but at least it makes it easy to see mistakes.
+            GL.ClearColor(clearColor); // Yech, but at least it makes it easy to see mistakes.
             GL.PointSize(5f);
         }
 
@@ -198,7 +201,7 @@ namespace JustTheBasics
             int vertcount = 0;
 
             // Set up rendering for backgrounds
-            foreach (Background bg in BGs.Values)
+            foreach (Background bg in BGs)
             {
                 // Populate the previously defined lists
                 verts.AddRange(bg.GetVerts().ToList());
@@ -208,7 +211,7 @@ namespace JustTheBasics
                 texcoords.AddRange(bg.GetTextureCoords());
             }
             // Set up rendering for background tiles
-            foreach (BGTile bgt in BGTiles.Values)
+            foreach (BGTile bgt in BGTiles)
             {
                 // Populate the previously defined lists
                 verts.AddRange(bgt.GetVerts(Width, Height).ToList());
@@ -323,7 +326,7 @@ namespace JustTheBasics
             int indiceat = 0;
 
             // Loop over every background and render it
-            foreach (Background bg in BGs.Values)
+            foreach (Background bg in BGs)
             {
                 // Tell OpenTK to associate the given texture to the VBO we're drawing
                 GL.BindTexture(TextureTarget.Texture2D, bg.TextureID);
@@ -346,7 +349,7 @@ namespace JustTheBasics
             }
 
             // Loop over every background tile and render it
-            foreach (BGTile bgt in BGTiles.Values)
+            foreach (BGTile bgt in BGTiles)
             {
                 // Tell OpenTK to associate the given texture to the VBO we're drawing
                 GL.BindTexture(TextureTarget.Texture2D, bgt.TextureID);
@@ -432,7 +435,7 @@ namespace JustTheBasics
             //GL.LoadMatrix(ref ortho);
 
             // Set up rendering for background tiles
-            foreach (BGTile bgt in BGTiles.Values)
+            foreach (BGTile bgt in BGTiles)
             {
                 bgt.Position.X = bgt.absPosition.X / ClientSize.Width;
                 // Update the matrix used to calculate the Sprite's visuals
@@ -537,7 +540,54 @@ namespace JustTheBasics
                 return -1;
             }
         }
+
+        // Function that loads the data for a room after clearing data from last room
+        void loadRoom(Room newRoom)
+        {
+            // If we have time later, add functionality to preserve persistent objects
+
+            // Delete all objects, backgrounds, and tiles
+            objects.Clear();
+            BGs.Clear();
+            BGTiles.Clear();
+
+            // Set new window/room properties
+            Width = newRoom.viewX;
+            Height = newRoom.viewY;
+            clearColor = newRoom.bcolor;
+
+            // Load gamesObjects into room, taking their z-depth to slot them into the correct slot in our dictionary
+            // Also set their starting positions
+            foreach (Vector3 vec in newRoom.Objects.Keys)
+            {
+                // Check if our dictionary has an entry for the current draw depth yet
+                if (!objects.ContainsKey((int) vec.Z))
+                {
+                    // It doesn't, so create a new list for depth Z
+                    objects.Add((int)vec.Z, new List<GameObject>());
+                    // Add this object to the new list
+                    objects[(int)vec.Z].Add(newRoom.Objects[vec]);
+                }
+                else
+                {
+                    // Add this object to the correct list
+                    objects[(int)vec.Z].Add(newRoom.Objects[vec]);
+                }
+            }
+
+            // Load new backgrounds
+            foreach (Background bg in newRoom.BG)
+            {
+                BGs.Add(bg);
+            }
+
+            foreach (BGTile bgt in newRoom.Tiles)
+            {
+                BGTiles.Add(bgt);
+            }
+        }
     }
+
 
     // Small class that basically is a Main() function and just runs the game.
     class Program
