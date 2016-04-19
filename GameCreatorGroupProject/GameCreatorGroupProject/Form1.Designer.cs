@@ -42,6 +42,9 @@
             this.itemConnect = new System.Windows.Forms.ToolStripMenuItem();
             this.itemDisconnect = new System.Windows.Forms.ToolStripMenuItem();
             this.sendMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addUserDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addUserReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ModeControlTabs = new System.Windows.Forms.TabControl();
             this.ResourcesTab = new System.Windows.Forms.TabPage();
@@ -67,6 +70,7 @@
             this.gboxBehaviorCode = new System.Windows.Forms.GroupBox();
             this.txtObjectCode = new System.Windows.Forms.TextBox();
             this.gboxSprite = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.radioSprite = new System.Windows.Forms.RadioButton();
             this.radioDisk = new System.Windows.Forms.RadioButton();
             this.radioBox = new System.Windows.Forms.RadioButton();
@@ -153,9 +157,6 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
             this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
-            this.addUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addUserDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addUserReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -253,7 +254,7 @@
             this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
             this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolChat.Name = "toolChat";
-            this.toolChat.Size = new System.Drawing.Size(77, 22);
+            this.toolChat.Size = new System.Drawing.Size(78, 22);
             this.toolChat.Text = "Team Chat";
             // 
             // itemStartServer
@@ -282,6 +283,30 @@
             this.sendMessageToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.sendMessageToolStripMenuItem.Text = "Send Message";
             this.sendMessageToolStripMenuItem.Click += new System.EventHandler(this.sendMessageToolStripMenuItem_Click);
+            // 
+            // addUserToolStripMenuItem
+            // 
+            this.addUserToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addUserDebugToolStripMenuItem,
+            this.addUserReleaseToolStripMenuItem});
+            this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
+            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.addUserToolStripMenuItem.Text = "Add User";
+            this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
+            // 
+            // addUserDebugToolStripMenuItem
+            // 
+            this.addUserDebugToolStripMenuItem.Name = "addUserDebugToolStripMenuItem";
+            this.addUserDebugToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.addUserDebugToolStripMenuItem.Text = "Add User Debug";
+            this.addUserDebugToolStripMenuItem.Click += new System.EventHandler(this.addUserDebugToolStripMenuItem_Click);
+            // 
+            // addUserReleaseToolStripMenuItem
+            // 
+            this.addUserReleaseToolStripMenuItem.Name = "addUserReleaseToolStripMenuItem";
+            this.addUserReleaseToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.addUserReleaseToolStripMenuItem.Text = "Add User Release";
+            this.addUserReleaseToolStripMenuItem.Click += new System.EventHandler(this.addUserReleaseToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -512,6 +537,7 @@
             this.btnSaveObj.TabIndex = 8;
             this.btnSaveObj.Text = "Save Object";
             this.btnSaveObj.UseVisualStyleBackColor = false;
+            this.btnSaveObj.Click += new System.EventHandler(this.btnSaveObj_Click);
             // 
             // txtObjectName
             // 
@@ -572,6 +598,7 @@
             // 
             this.gboxSprite.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gboxSprite.Controls.Add(this.button1);
             this.gboxSprite.Controls.Add(this.radioSprite);
             this.gboxSprite.Controls.Add(this.radioDisk);
             this.gboxSprite.Controls.Add(this.radioBox);
@@ -588,10 +615,23 @@
             this.gboxSprite.TabStop = false;
             this.gboxSprite.Text = "Sprites:";
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button1.Location = new System.Drawing.Point(557, 17);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Browse";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // radioSprite
             // 
             this.radioSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioSprite.AutoSize = true;
+            this.radioSprite.Enabled = false;
             this.radioSprite.Location = new System.Drawing.Point(191, 52);
             this.radioSprite.Name = "radioSprite";
             this.radioSprite.Size = new System.Drawing.Size(84, 17);
@@ -599,11 +639,14 @@
             this.radioSprite.TabStop = true;
             this.radioSprite.Text = "Sprite-based";
             this.radioSprite.UseVisualStyleBackColor = true;
+            this.radioSprite.Click += new System.EventHandler(this.radioSprite_Click);
+            this.radioSprite.MouseDown += new System.Windows.Forms.MouseEventHandler(this.radioSprite_MouseDown_1);
             // 
             // radioDisk
             // 
             this.radioDisk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioDisk.AutoSize = true;
+            this.radioDisk.Enabled = false;
             this.radioDisk.Location = new System.Drawing.Point(139, 52);
             this.radioDisk.Name = "radioDisk";
             this.radioDisk.Size = new System.Drawing.Size(46, 17);
@@ -616,6 +659,7 @@
             // 
             this.radioBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.radioBox.AutoSize = true;
+            this.radioBox.Enabled = false;
             this.radioBox.Location = new System.Drawing.Point(90, 52);
             this.radioBox.Name = "radioBox";
             this.radioBox.Size = new System.Drawing.Size(43, 17);
@@ -623,6 +667,8 @@
             this.radioBox.TabStop = true;
             this.radioBox.Text = "Box";
             this.radioBox.UseVisualStyleBackColor = true;
+            this.radioBox.CheckedChanged += new System.EventHandler(this.radioBox_CheckedChanged);
+            this.radioBox.Click += new System.EventHandler(this.radioBox_Click);
             // 
             // lblCollisionMask
             // 
@@ -649,12 +695,13 @@
             // 
             this.btnSetSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetSprite.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSetSprite.Location = new System.Drawing.Point(557, 15);
+            this.btnSetSprite.Location = new System.Drawing.Point(557, 52);
             this.btnSetSprite.Name = "btnSetSprite";
             this.btnSetSprite.Size = new System.Drawing.Size(75, 23);
             this.btnSetSprite.TabIndex = 2;
             this.btnSetSprite.Text = "Set";
             this.btnSetSprite.UseVisualStyleBackColor = true;
+            this.btnSetSprite.Click += new System.EventHandler(this.btnSetSprite_Click);
             // 
             // cmbSprite
             // 
@@ -912,6 +959,7 @@
             this.btnRemoveObject.TabIndex = 6;
             this.btnRemoveObject.Text = "Remove";
             this.btnRemoveObject.UseVisualStyleBackColor = true;
+            this.btnRemoveObject.Click += new System.EventHandler(this.btnRemoveObject_Click);
             // 
             // btnAddObject
             // 
@@ -922,6 +970,7 @@
             this.btnAddObject.TabIndex = 5;
             this.btnAddObject.Text = "Add";
             this.btnAddObject.UseVisualStyleBackColor = true;
+            this.btnAddObject.Click += new System.EventHandler(this.btnAddObject_Click);
             // 
             // listObjects
             // 
@@ -933,6 +982,7 @@
             this.listObjects.Name = "listObjects";
             this.listObjects.Size = new System.Drawing.Size(178, 407);
             this.listObjects.TabIndex = 4;
+            this.listObjects.SelectedIndexChanged += new System.EventHandler(this.listObjects_SelectedIndexChanged);
             // 
             // RoomEditorTab
             // 
@@ -1516,7 +1566,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 133);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 121);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1527,7 +1577,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 133);
+            this.txtMessage.Location = new System.Drawing.Point(3, 121);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1542,37 +1592,13 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 124);
+            this.txtChat.Size = new System.Drawing.Size(1152, 112);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
             // 
             this.folderPrjDir.Description = "Specify a folder to store the project in:";
             this.folderPrjDir.RootFolder = System.Environment.SpecialFolder.MyDocuments;
-            // 
-            // addUserToolStripMenuItem
-            // 
-            this.addUserToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addUserDebugToolStripMenuItem,
-            this.addUserReleaseToolStripMenuItem});
-            this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
-            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.addUserToolStripMenuItem.Text = "Add User";
-            this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
-            // 
-            // addUserDebugToolStripMenuItem
-            // 
-            this.addUserDebugToolStripMenuItem.Name = "addUserDebugToolStripMenuItem";
-            this.addUserDebugToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.addUserDebugToolStripMenuItem.Text = "Add User Debug";
-            this.addUserDebugToolStripMenuItem.Click += new System.EventHandler(this.addUserDebugToolStripMenuItem_Click);
-            // 
-            // addUserReleaseToolStripMenuItem
-            // 
-            this.addUserReleaseToolStripMenuItem.Name = "addUserReleaseToolStripMenuItem";
-            this.addUserReleaseToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.addUserReleaseToolStripMenuItem.Text = "Add User Release";
-            this.addUserReleaseToolStripMenuItem.Click += new System.EventHandler(this.addUserReleaseToolStripMenuItem_Click);
             // 
             // MainWindow
             // 
@@ -1754,6 +1780,7 @@
         private System.Windows.Forms.ToolStripMenuItem addUserToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addUserDebugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addUserReleaseToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
     }
 }
 

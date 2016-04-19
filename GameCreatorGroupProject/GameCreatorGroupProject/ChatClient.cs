@@ -39,20 +39,39 @@ namespace GameCreatorGroupProject
             string message;
             dc = false;
 
-            using (client = new TcpClient(serverIP, port))
+            using (client = new TcpClient())
             {
-                if (client.Connected)
+                //attempts to connect with 5 second timeout
+                IAsyncResult r = client.BeginConnect(serverIP, port, null, null);
+                bool connected = r.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+                if (connected)
                 {
                     stream = client.GetStream();
                     writer = new StreamWriter(stream);
                     reader = new StreamReader(stream);
+                    //verifies client with server
+                    writer.WriteLine(MainClient.getThisClientID());
+                    writer.WriteLine(serverID);
+                    writer.Flush();
+                    //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
+                    if (reader.ReadLine().Equals("err"))
+                    {
+                        disconnectClient();
+                        MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    //resets priority after connected
+                    Thread.CurrentThread.Priority = ThreadPriority.Normal;
                     //tells server clients username
                     writer.WriteLine(MainClient.getUsername());
                     writer.Flush();
                 }
                 else
                 {
-                    MessageBox.Show("A network error has occured.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    client.EndConnect(r);
+                    //shows error box if could not connect
+                    MessageBox.Show("Connection timeout.", "Unable to connect to server, connection request timed out.", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
                 }
                 //reads messages
                 while (client.Connected && !dc)

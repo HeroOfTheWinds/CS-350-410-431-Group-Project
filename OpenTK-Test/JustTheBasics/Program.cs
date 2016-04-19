@@ -18,6 +18,9 @@ namespace JustTheBasics
         // Var to hold time since last frame
         float dTime = 0.0f;
 
+        // Background color used when no image is available
+        Color clearColor = Color.Black;
+
         // These pertain to what the user can see at a given time
         public RectangleF CurrentView = new RectangleF(0, 0, 800, 600);
         private Matrix4 ortho;
@@ -48,7 +51,10 @@ namespace JustTheBasics
         Dictionary<string, int> textures = new Dictionary<string, int>();
 
         // Dictionary to store background images
-        Dictionary<string, Background> BGs = new Dictionary<string, Background>();
+        List<Background> BGs = new List<Background>();
+
+        // Dictionary for background tiles
+        List<BGTile> BGTiles = new List<BGTile>();
 
         // Default constructor that sets window size to 512x512 and adds some antialiasing (the GraphicsMode part)
         public Game() : base(800, 600, new OpenTK.Graphics.GraphicsMode(32, 24, 0, 4))
@@ -85,11 +91,11 @@ namespace JustTheBasics
             tc.TextureID = textures["LifeIcon.png"];
 
             // Create a new GameObject
-            Vector2 startPos = new Vector2(16, 16);
-            Vector2[] spawn = new Vector2[] { new Vector2(0, 16), new Vector2(16, 16), new Vector2(16, 0) };
+            Vector2 startPos = new Vector2(64, 64);
+            Vector2[] spawn = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
             
             float[] map = new float[] { 0f, 0f, Width, Height };
-            GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 1.0f, 0f, true, tc);
+            GameObject objPlayer = new GameObject("Player", startPos, spawn, map, 10.0f, 2f, true, tc);
 
             // Add the sprite to our list of active Sprites
             objects[1].Add(objPlayer);
@@ -105,19 +111,55 @@ namespace JustTheBasics
             bc.TextureID = textures["Bricks.png"];
 
             // Create a new GameObject
-            Vector2 sPos2 = new Vector2(128, 128);
-            Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 32), new Vector2(32, 32), new Vector2(32, 0) };
+            Vector2 sPos2 = new Vector2(128, 64);
+            Vector2[] spawnBrick = new Vector2[] { new Vector2(0, 128), new Vector2(128, 128), new Vector2(128, 0) };
 
             GameObject objBricks = new GameObject("Bricks", sPos2, spawnBrick, map, 0.0f, 0.0f, true, bc);
 
             // Add the sprite to our list of active Sprites
             objects[2].Add(objBricks);
 
+            // Make some invisible walls
+            int wallX = 0;
+            int wallY = 0;
+            textures.Add("NoImage.png", loadImage("NoImage.png", out wallX, out wallY, true));
+            for (int i = 0; i < 1600; i += 64)
+            {
+                Sprite ws = new Sprite();
+                ws.Width = wallX;
+                ws.Height = wallY;
+                ws.TextureID = textures["NoImage.png"];
+                Vector2[] spawnWall = new Vector2[] { new Vector2(0, 64), new Vector2(64, 64), new Vector2(64, 0) };
+                GameObject wall = new GameObject("Wall" + i.ToString(), new Vector2(i, 0f), spawnWall, map, 0f, 0f, true, ws);
+                objects[2].Add(wall);
+            }
+
             // Create a background
             Background bg = new Background();
             textures.Add("circuit.png", loadImage("CircuitBOTTOM.png", bg, true));
             bg.TextureID = textures["circuit.png"];
-            BGs.Add("circuit", bg);
+            BGs.Add(bg);
+
+            // Create background tiles
+            int tilesetSizeX = 0;
+            int tilesetSizeY = 0;
+            textures.Add("Tile_Set_2.png", loadImage("Tile_Set_2.png", out tilesetSizeX, out tilesetSizeY, true));
+            for (int i = 0; i < 1600; i += 64)
+            {
+                BGTile bgt = new BGTile();
+                bgt.Width = tilesetSizeX;
+                bgt.Height = tilesetSizeY;
+                bgt.TextureID = textures["Tile_Set_2.png"];
+                bgt.Position = new Vector3(i/(float)Width, 0, 0);
+                bgt.absPosition = new Vector3(i, 0, 0);
+                bgt.index = new Vector2((i/64)%2 + 1, 1);
+                bgt.tSize = 64;
+                BGTiles.Add(bgt);
+                // Update the matrix used to calculate the Sprite's visuals
+                bgt.CalculateModelMatrix();
+                // Offset it by our viewport matrix (for things like scrolling levels)
+                bgt.ModelViewProjectionMatrix = bgt.ModelMatrix;// * ortho;
+            }
         }
 
         // This function overrides the base OnLoad function
@@ -133,7 +175,7 @@ namespace JustTheBasics
 
             Title = "Hello OpenTK!";
 
-            GL.ClearColor(Color.Black); // Yech, but at least it makes it easy to see mistakes.
+            GL.ClearColor(clearColor); // Yech, but at least it makes it easy to see mistakes.
             GL.PointSize(5f);
         }
 
@@ -159,7 +201,7 @@ namespace JustTheBasics
             int vertcount = 0;
 
             // Set up rendering for backgrounds
-            foreach (Background bg in BGs.Values)
+            foreach (Background bg in BGs)
             {
                 // Populate the previously defined lists
                 verts.AddRange(bg.GetVerts().ToList());
@@ -167,6 +209,16 @@ namespace JustTheBasics
                 colors.AddRange(bg.GetColorData().ToList());
                 vertcount += bg.VertCount;
                 texcoords.AddRange(bg.GetTextureCoords());
+            }
+            // Set up rendering for background tiles
+            foreach (BGTile bgt in BGTiles)
+            {
+                // Populate the previously defined lists
+                verts.AddRange(bgt.GetVerts(Width, Height).ToList());
+                inds.AddRange(bgt.GetIndices(vertcount).ToList());
+                colors.AddRange(bgt.GetColorData().ToList());
+                vertcount += bgt.VertCount;
+                texcoords.AddRange(bgt.GetTextureCoords());
             }
 
             // Stack for LIFO behavior in drawing sprites
@@ -181,38 +233,19 @@ namespace JustTheBasics
                     objLists.Push(o);
                 }
             }
+
             // Loop over each list in the stack and draw them
             while (objLists.Count > 0)
             {
                 GameObject go = objLists.Pop();
                 {
                     Sprite v = go.sprite;
-                    /*
-                    //get state of all keyboards on device
-                    var state = OpenTK.Input.Keyboard.GetState();
-                    //checks up key, if it is pressed it will update location.
-                    if (state[Key.Up])
+                    // Remove this later once we have functions other than movement in Update()
+                    if(go.getSpeed() != 0)
                     {
-                        // Set the sprite's position
-                        v.Position.Y += 5f / Height;
+                        go.Update();
                     }
-                    if (state[Key.Down])
-                    {
-                        v.Position.Y -= 5f / Height;
-                    }
-                    if (state[Key.Right])
-                    {
-                        v.Position.X += 5f / Width;
-                    }
-                    if (state[Key.Left])
-                    {
-                        v.Position.X -= 5f / Width;
-                    }
-                    */
-                    go.Update();
-                    //float saveX = v.Position.X;
-                    //float saveY = v.Position.Y;
-
+                    
                     v.Position.X = go.getMinX() / Width;
                     v.Position.Y = go.getMinY() / Height;
 
@@ -293,7 +326,7 @@ namespace JustTheBasics
             int indiceat = 0;
 
             // Loop over every background and render it
-            foreach (Background bg in BGs.Values)
+            foreach (Background bg in BGs)
             {
                 // Tell OpenTK to associate the given texture to the VBO we're drawing
                 GL.BindTexture(TextureTarget.Texture2D, bg.TextureID);
@@ -313,6 +346,29 @@ namespace JustTheBasics
                 GL.DrawElements(BeginMode.Quads, bg.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
                 // Increment our index counter by the number of indices processed
                 indiceat += bg.IndiceCount;
+            }
+
+            // Loop over every background tile and render it
+            foreach (BGTile bgt in BGTiles)
+            {
+                // Tell OpenTK to associate the given texture to the VBO we're drawing
+                GL.BindTexture(TextureTarget.Texture2D, bgt.TextureID);
+
+                // Allow tiling of images
+
+                // Send our projection matrix to the GLSL shader
+                GL.UniformMatrix4(shaders[activeShader].GetUniform("modelview"), false, ref bgt.ModelViewProjectionMatrix);
+
+                // If shader uses textures, send the image to the shader code for processing
+                if (shaders[activeShader].GetAttribute("maintexture") != -1)
+                {
+                    GL.Uniform1(shaders[activeShader].GetAttribute("maintexture"), bgt.TextureID);
+                }
+
+                // Draw a square/rectangle
+                GL.DrawElements(BeginMode.Quads, bgt.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
+                // Increment our index counter by the number of indices processed
+                indiceat += bgt.IndiceCount;
             }
 
             // Loop over every GameObject in the game
@@ -365,20 +421,28 @@ namespace JustTheBasics
         // Override for resizing the window, not much should be changed here.
         protected override void OnResize(EventArgs e)
         {
-
             base.OnResize(e);
 
             ortho = Matrix4.CreateOrthographic(ClientSize.Width, ClientSize.Height, 1.0f, 64f);
             CurrentView.Size = new SizeF(ClientSize.Width, ClientSize.Height);
-            
+
             //GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
-            
+
             //Matrix4 projection = Matrix4.CreateOrthographic(Width, Height, 1.0f, 64f);
 
             //GL.MatrixMode(MatrixMode.Projection);
 
             //GL.LoadMatrix(ref ortho);
-            
+
+            // Set up rendering for background tiles
+            foreach (BGTile bgt in BGTiles)
+            {
+                bgt.Position.X = bgt.absPosition.X / ClientSize.Width;
+                // Update the matrix used to calculate the Sprite's visuals
+                bgt.CalculateModelMatrix();
+                // Offset it by our viewport matrix (for things like scrolling levels)
+                bgt.ModelViewProjectionMatrix = bgt.ModelMatrix;// * ortho;
+            }
         }
 
         // Function to generate a texture ID for later reference, associated with each bitmap we load
@@ -458,7 +522,72 @@ namespace JustTheBasics
                 return -1;
             }
         }
+        // Another overload, does the same as above, but also takes two ints
+        // into as arguments, so that it can return the height and width of the sprite.
+        int loadImage(string filename, out int x, out int y, bool tile = false)
+        {
+            try
+            {
+                Bitmap file = new Bitmap(filename);
+                x = file.Width;
+                y = file.Height;
+                return loadImage(file, tile);
+            }
+            catch (FileNotFoundException e)
+            {
+                x = 0;
+                y = 0;
+                return -1;
+            }
+        }
+
+        // Function that loads the data for a room after clearing data from last room
+        void loadRoom(Room newRoom)
+        {
+            // If we have time later, add functionality to preserve persistent objects
+
+            // Delete all objects, backgrounds, and tiles
+            objects.Clear();
+            BGs.Clear();
+            BGTiles.Clear();
+
+            // Set new window/room properties
+            Width = newRoom.viewX;
+            Height = newRoom.viewY;
+            clearColor = newRoom.bcolor;
+
+            // Load gamesObjects into room, taking their z-depth to slot them into the correct slot in our dictionary
+            // Also set their starting positions
+            foreach (Vector3 vec in newRoom.Objects.Keys)
+            {
+                // Check if our dictionary has an entry for the current draw depth yet
+                if (!objects.ContainsKey((int) vec.Z))
+                {
+                    // It doesn't, so create a new list for depth Z
+                    objects.Add((int)vec.Z, new List<GameObject>());
+                    // Add this object to the new list
+                    objects[(int)vec.Z].Add(newRoom.Objects[vec]);
+                }
+                else
+                {
+                    // Add this object to the correct list
+                    objects[(int)vec.Z].Add(newRoom.Objects[vec]);
+                }
+            }
+
+            // Load new backgrounds
+            foreach (Background bg in newRoom.BG)
+            {
+                BGs.Add(bg);
+            }
+
+            foreach (BGTile bgt in newRoom.Tiles)
+            {
+                BGTiles.Add(bgt);
+            }
+        }
     }
+
 
     // Small class that basically is a Main() function and just runs the game.
     class Program

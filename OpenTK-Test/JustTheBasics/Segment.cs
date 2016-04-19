@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace JustTheBasics
 {
@@ -13,6 +14,8 @@ namespace JustTheBasics
         private float b;
         private float lX;
         private float hX;
+        private float lY;
+        private float hY;
 
         private bool vert = false;
 
@@ -26,6 +29,8 @@ namespace JustTheBasics
             m = cpy.getM();
             b = cpy.getB();
             lX = cpy.getLX();
+            hY = cpy.getHY();
+            lY = cpy.getLY();
             hX = cpy.getHX();
             vert = cpy.isVert();
         }
@@ -44,8 +49,8 @@ namespace JustTheBasics
             //else indicates vertical line
             else
             {
-                m = (float)Double.PositiveInfinity;
-                b = (float)Double.PositiveInfinity;
+                m = Single.PositiveInfinity;
+                b = Single.PositiveInfinity;
                 vert = true;
             }
 
@@ -63,6 +68,16 @@ namespace JustTheBasics
             {
                 hX = startX;
                 lX = endX;
+            }
+            if (startY < endY)
+            {
+                lY = startY;
+                hY = endY;
+            }
+            else
+            {
+                hY = startY;
+                lY = endY;
             }
         }
 
@@ -107,24 +122,32 @@ namespace JustTheBasics
                 //modifies segments accordingly
                 startY += speed;
                 endY += speed;
+                hY += speed;
+                lY += speed;
             }
             //indicates movement in downward direction (see above comments)
             else if (dir.Equals("d"))
             {
                 startY -= speed;
                 endY -= speed;
+                hY -= speed;
+                lY -= speed;
             }
             //indicates movement in left direction (see above comments)
             else if (dir.Equals("l"))
             {
                 startX -= speed;
                 endX -= speed;
+                hX -= speed;
+                lX -= speed;
             }
             //indicates movement in right direction (see above comments)
             else if (dir.Equals("r"))
             {
                 startX += speed;
                 endX += speed;
+                hX += speed;
+                lX += speed;
             }
             else
             {
@@ -148,25 +171,36 @@ namespace JustTheBasics
         }
 
         //checks if segments intersect on given interval
-        public bool intersect(Segment inter)
+        //xaxis indicates direction of movement respective to x axis
+        public bool intersect(Segment inter, bool xaxis)
         {
             float interX;
             //returns false if lines are parallel
-            if (inter.getM() == m && inter.getB() == b)
+            if ((inter.getM() == m && inter.getB() == b) || (Single.IsPositiveInfinity(inter.getM()) && Single.IsPositiveInfinity(m)))
             {
+                if((m == 0 && xaxis) && (lY == inter.getLY() && (startX < inter.getHX() && startX > inter.getLX())))
+                {
+                    return true;
+                }
+                else if((vert && !xaxis) && (lX == inter.getLX() && (startY < inter.getHY() && startY > inter.getLY())))
+                {
+                    return true;
+                }
                 return false;
             }
             //if one of the segments is verticle, chacks if second segment intersects it
             if (vert)
             {
-                if (startX < inter.getHX() && startX > inter.getLX())
+                //makes sure the segments intersect on the x and y axis
+                if ((startX < inter.getHX() && startX > inter.getLX()) && (hY > inter.getLY() && lY < inter.getHY()))
                 {
                     return true;
                 }
             }
             else if (inter.isVert())
             {
-                if (inter.startX < hX && inter.startX > lX)
+                //makes sure the segments intersect on the x and y axis
+                if ((inter.startX < hX && inter.startX > lX) && (inter.getHY() > lY && inter.getLY() < hY))
                 {
                     return true;
                 }
@@ -198,6 +232,16 @@ namespace JustTheBasics
         public float getLX()
         {
             return lX;
+        }
+
+        public float getHY()
+        {
+            return hY;
+        }
+
+        public float getLY()
+        {
+            return lY;
         }
 
     }

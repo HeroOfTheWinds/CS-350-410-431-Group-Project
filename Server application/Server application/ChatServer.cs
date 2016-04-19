@@ -18,13 +18,16 @@ namespace Server_application
         protected static bool listenerStarted = false;
 
         private static uint currentID = 0;
+        private static uint expectedClient = 0;
+
         public static readonly object IDLock = new object();
         private Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
         private bool running = true;
         private uint serverID = 0;
         //chat port
         private readonly int port = 20113;
-        private static bool connectExpected = false;
+        public static ManualResetEventSlim connectExpected = new ManualResetEventSlim(false);
+        public static ManualResetEventSlim connected = new ManualResetEventSlim(false);
 
 
         public ChatServer(uint serverID)
@@ -32,17 +35,24 @@ namespace Server_application
             this.serverID = serverID;
         }
 
-
-        public static void setConnectExpected()
+/*
+        public static void setConnectExpected(bool expected)
         {
-            connectExpected = true;
+            if(expected)
+            {
+                connectExpected.Set();
+            }
+            else
+            {
+                connectExpected.Reset();
+            }
         }
 
         public static bool getConnectExpected()
         {
-            return connectExpected;
+            return connectExpected.IsSet;
         }
-
+*/
         public static uint getCurrentID()
         {
             return currentID;
@@ -80,18 +90,26 @@ namespace Server_application
                 {
                     //connects to client
                     TcpClient client = listener.AcceptTcpClient();
+                    //reads info from the client to ensure the proper client is attempting to connect
+                    StreamReader reader = new StreamReader(client.GetStream());
+                    StreamWriter writer = new StreamWriter(client.GetStream());
                     //if client attempting to connect directly without going through main server, denies connection (closes clients stream)
-                    if (!connectExpected)
+                    //may also occur if connection attempted aftr timeout
+                    if (!(connectExpected.IsSet && reader.ReadLine().Equals(expectedClient.ToString()) && reader.ReadLine().Equals(currentID.ToString())))
                     {
+                        writer.WriteLine("err");
                         client.GetStream().Close();
                         client.Close();
                     }
                     //else spawns new thread for handling data transmission to other clients
                     else
                     {
+                        //reports to client if successfully connected
+                        writer.WriteLine("success");
+                        connectExpected.Reset();
                         Thread t = new Thread(transmitter);
                         t.Start(client);
-                        connectExpected = false;
+                        connected.Set();
                     }
                 }
             }
@@ -102,7 +120,7 @@ namespace Server_application
         {
             using (TcpClient thisClient = (TcpClient)client)
             {
-                NetworkStream inStream = (thisClient).GetStream();
+                NetworkStream inStream = thisClient.GetStream();
                 string message = "";
                 StreamReader reader = new StreamReader(inStream);
                 //adds client to clientList, client name sent in clients stream
@@ -147,6 +165,11 @@ namespace Server_application
         {
             if (listener != null) { listener.Stop(); }
             running = false;
+        }
+
+        public static void setExpectedClient(uint clientID)
+        {
+            expectedClient = clientID;
         }
     }
 
