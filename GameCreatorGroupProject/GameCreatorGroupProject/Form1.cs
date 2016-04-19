@@ -34,7 +34,7 @@ namespace GameCreatorGroupProject
 
         //MainClient to be created when form is loaded
         MainClient online;
-        TCPClient chat;
+        private TCPClient chat;
 
         //private string sprloc = null;
         private Image spr = null;
@@ -216,6 +216,12 @@ namespace GameCreatorGroupProject
         {
             chatServerID = online.requestChatServer();
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+
+            chat = online.getAvailable();
+
+            ChatWindow cw = new ChatWindow(chat);
+            cw.Show();
+
             //online.connectClient(1, chatServerID, 1);
             //chat = MainClient.clients.ElementAt(0);
             //chat.connectClient(ServerInfo.getServerIP());

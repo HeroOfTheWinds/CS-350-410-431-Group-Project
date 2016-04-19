@@ -12,9 +12,16 @@ namespace GameCreatorGroupProject
 {
     public partial class ChatWindow : Form
     {
+        private TCPClient chat;
+
         public ChatWindow()
         {
             InitializeComponent();
+        }
+
+        public ChatWindow(TCPClient c)
+        {
+            this.chat = c;
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
