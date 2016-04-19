@@ -38,6 +38,7 @@ namespace GameCreatorGroupProject
 
         //private string sprloc = null;
         private Image spr = null;
+        private string sprp = null;
         private Vector2[] cOffsets = null;
         private Vector2[] bOffsets = null;
 
@@ -282,6 +283,7 @@ namespace GameCreatorGroupProject
         {
             try
             {
+                sprp = cmbSprite.Text;
                 spr = Image.FromFile(cmbSprite.Text);
                 CollisionDesigner.spr = spr;
                 picSpriteView.Image = spr;
@@ -297,6 +299,7 @@ namespace GameCreatorGroupProject
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "All Graphics Types|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
             if (d.ShowDialog() == DialogResult.OK)
             {
                 cmbSprite.Text = d.FileName;
@@ -315,6 +318,7 @@ namespace GameCreatorGroupProject
         private void btnAddObject_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "Game Object Files|*.gob;*.goc|Game Object Data Files (*.gob)|*.gob|Game Object Code Files (*.goc)|*.goc";
             if (d.ShowDialog() == DialogResult.OK)
             {
                 //file must end in .gob, can change if want
@@ -322,9 +326,37 @@ namespace GameCreatorGroupProject
                 Regex c = new Regex(@".*\.goc$");
                 if (ob.Match(d.FileName).Success)
                 {
-                    //parse file for validity, print error if incorrect, else add to object collection
+                    //parses file for validity
+                    using(BinaryReader reader = new BinaryReader(File.Open(d.FileName, FileMode.Open)))
+                    {
+                        try
+                        {
+                            int elem;
+                            reader.ReadString();
+                            reader.ReadString();
+                            elem = reader.ReadInt32();
+                            for (int i = 0; i < elem; i++)
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
+                            //I think this will work? Makes sure this is the end of the file.
+                            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        
+                    }
+                    //add to object collection (left pane)
                     File.Copy(d.FileName, project.getResourceDir());
                 }
+
                 else if (c.Match(d.FileName).Success)
                 {
                     //parse file for validity, print error if incorrect, else add to object collection
@@ -354,7 +386,7 @@ namespace GameCreatorGroupProject
 
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
-            if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || txtObjectName.Text.Equals(""))
+            if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || (!radioSprite.Checked && !radioBox.Checked) || txtObjectName.Text.Equals(""))
             {
                 MessageBox.Show("Game objects must have a valid sprite, collision box, and name to be saved.", "Unable to generate game object.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -363,14 +395,44 @@ namespace GameCreatorGroupProject
                 string file = project.getResourceDir() + txtObjectName.Text + ".gob";
                 if (File.Exists(file))
                 {
+                    DialogResult d = MessageBox.Show("Object of given name already exists.\nWould you like to overwrite the object?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (d == DialogResult.No)
+                    {
+                        return;
+                    }
+                    /*
                     int i = 0;
                     while (File.Exists(file + i.ToString()))
                     {
                         i++;
                     }
                     file = file + i.ToString();
+                    */
                 }
-                //write stuff to file
+                using (BinaryWriter write = new BinaryWriter(File.Open(file, FileMode.Create)))
+                {
+                    write.Write(txtObjectName.Text);
+                    write.Write(sprp);
+                    if (radioBox.Checked)
+                    {
+                        write.Write(bOffsets.Length);
+                        foreach (Vector2 v in bOffsets)
+                        {
+                            write.Write(v.X);
+                            write.Write(v.Y);
+                        }
+                    }
+                    
+                    else if(radioSprite.Checked)
+                    {
+                        write.Write(cOffsets.Length);
+                        foreach (Vector2 v in cOffsets)
+                        {
+                            write.Write(v.X);
+                            write.Write(v.Y);
+                        }
+                    }
+                }
             }
             
         }

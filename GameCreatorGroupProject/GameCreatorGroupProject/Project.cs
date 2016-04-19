@@ -78,7 +78,7 @@ namespace GameCreatorGroupProject
                 {
                     File.Delete(prjFolder + "/ProjectData.prj");
                 }
-                catch (IOException e)
+                catch (IOException)
                 {
                     // Return an error number so the caller can display a message
                     return 55;
