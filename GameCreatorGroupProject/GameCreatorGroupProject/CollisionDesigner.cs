@@ -84,13 +84,24 @@ namespace GameCreatorGroupProject
 
         private void button1_Click(object sender, EventArgs e)
         {
-            offsets = new Vector2[points.Count - 1];
-            for (int i = 1; i < points.Count; i++)
+            if (points.Count > 2)
             {
-                offsets[i - 1] = new Vector2(points[i].Item1.X - points[0].Item1.X, points[i].Item1.Y - points[0].Item1.Y);
+                offsets = new Vector2[points.Count - 1];
+                for (int i = 1; i < points.Count; i++)
+                {
+                    offsets[i - 1] = new Vector2(points[i].Item1.X - points[0].Item1.X, points[i].Item1.Y - points[0].Item1.Y);
+                }
+                saved = true;
+                Close();
             }
-            saved = true;
-            Close();
+            else
+            {
+                DialogResult d = MessageBox.Show("Collision objects must have at least 3 points.\nWould you like to continue?", "Invalid design", MessageBoxButtons.YesNo);
+                if (d == DialogResult.No)
+                {
+                    Close();
+                }
+            }
         }
     }
 }

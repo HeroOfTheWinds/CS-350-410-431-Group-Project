@@ -19,7 +19,7 @@ namespace GameCreatorGroupProject
         private StreamReader reader = null;
         //chat port
         private readonly int port = 20113;
-        private readonly byte serverType = 1;
+        public static readonly byte serverType = 1;
         private uint serverID;
         private bool dc;
 

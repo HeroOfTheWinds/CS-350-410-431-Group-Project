@@ -42,6 +42,8 @@ namespace GameCreatorGroupProject
         private Vector2[] cOffsets = null;
         private Vector2[] bOffsets = null;
 
+        private List<string> objects = new List<string>();
+
         private uint chatServerID;
 
         // Declare a ResourceImporter to make it easier to load and save resources
@@ -230,7 +232,58 @@ namespace GameCreatorGroupProject
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            bool invalid;
             online = new MainClient();
+            listObjects.DataSource = objects;
+            foreach (string s in Directory.GetFiles(project.getResourceDir()))
+            {
+                invalid = false;
+                Regex ob = new Regex(@"(.*)\.gob$");
+                Regex c = new Regex(@"(.*)\.goc$");
+                Match obm;
+                Match cm;
+                if((obm = ob.Match(s)).Success)
+                {
+                    //parses file for validity
+                    using (BinaryReader reader = new BinaryReader(File.Open(s, FileMode.Open)))
+                    {
+                        try
+                        {
+                            int elem;
+                            reader.ReadString();
+                            reader.ReadString();
+                            elem = reader.ReadInt32();
+                            for (int i = 0; i < elem; i++)
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
+                            //I think this will work? Makes sure this is the end of the file.
+                            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            invalid = true;
+                        }
+
+                    }
+                    if (!invalid)
+                    {
+                        //is index 1 right? all examples suggest it is, whats at 0?
+                        objects.Add(obm.Groups[1].Value);
+                    }
+                    
+                }
+                else if ((cm = c.Match(s)).Success)
+                {
+                    //pars file for validity
+
+                    objects.Add(cm.Groups[1].Value);
+                }
+            }
         }
 
         public void connect()
@@ -322,9 +375,11 @@ namespace GameCreatorGroupProject
             if (d.ShowDialog() == DialogResult.OK)
             {
                 //file must end in .gob, can change if want
-                Regex ob = new Regex(@".*\.gob$");
-                Regex c = new Regex(@".*\.goc$");
-                if (ob.Match(d.FileName).Success)
+                Regex ob = new Regex(@"(.*)\.gob$");
+                Regex c = new Regex(@"(.*)\.goc$");
+                Match obm;
+                Match cm;
+                if ((obm = ob.Match(d.FileName)).Success)
                 {
                     //parses file for validity
                     using(BinaryReader reader = new BinaryReader(File.Open(d.FileName, FileMode.Open)))
@@ -353,13 +408,24 @@ namespace GameCreatorGroupProject
                         }
                         
                     }
-                    //add to object collection (left pane)
-                    File.Copy(d.FileName, project.getResourceDir());
+                    
+                    try
+                    {
+                        File.Copy(d.FileName, project.getResourceDir());
+                    }
+                    catch (IOException)
+                    {
+                        MessageBox.Show("Object of the same name already exists.", "Object exists.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    objects.Add(obm.Groups[1].Value);
                 }
 
-                else if (c.Match(d.FileName).Success)
+                else if ((cm = c.Match(d.FileName)).Success)
                 {
-                    //parse file for validity, print error if incorrect, else add to object collection
+                    //parse file for validity, print error if incorrect
+                    //also check if already exists
+                    objects.Add(cm.Groups[1].Value);
                     File.Copy(d.FileName, project.getResourceDir());
                 }
                 else
