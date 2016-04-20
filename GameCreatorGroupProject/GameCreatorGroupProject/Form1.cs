@@ -34,7 +34,7 @@ namespace GameCreatorGroupProject
 
         //MainClient to be created when form is loaded
         MainClient online;
-        private TCPClient chat;
+        private ChatClient chat;
 
         //private string sprloc = null;
         private Image spr = null;
@@ -217,14 +217,10 @@ namespace GameCreatorGroupProject
             chatServerID = online.requestChatServer();
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
 
-            chat = online.getAvailable();
+            chat = (ChatClient) online.getAvailable();
 
-            ChatWindow cw = new ChatWindow(chat);
+            ChatWindow cw = new ChatWindow(chat, online);
             cw.Show();
-
-            //online.connectClient(1, chatServerID, 1);
-            //chat = MainClient.clients.ElementAt(0);
-            //chat.connectClient(ServerInfo.getServerIP());
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -254,7 +250,7 @@ namespace GameCreatorGroupProject
             string msg = "Hello World!";
             object temp = msg;
             if (chat == null)
-                chat = online.getAvailable();
+                chat = (ChatClient) online.getAvailable();
             chat.send(ref temp);
         }
 

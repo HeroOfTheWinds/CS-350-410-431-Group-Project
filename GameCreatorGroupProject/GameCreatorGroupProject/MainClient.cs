@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace GameCreatorGroupProject
 {
-    internal class MainClient
+    public class MainClient
     {
         //TEMPORARY, each program should have unique clientID
 #if DEBUG
