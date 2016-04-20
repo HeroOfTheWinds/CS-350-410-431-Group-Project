@@ -213,27 +213,8 @@ namespace GameCreatorGroupProject
             {
                 listResources.Items.Add(resName);
             }
-        }
 
-        private void itemConnect_Click(object sender, EventArgs e)
-        {
-            chatServerID = online.requestChatServer();
-            MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
-
-            chat = online.getAvailable();
-
-            ChatWindow cw = new ChatWindow(chat);
-            cw.Show();
-
-            //online.connectClient(1, chatServerID, 1);
-            //chat = MainClient.clients.ElementAt(0);
-            //chat.connectClient(ServerInfo.getServerIP());
-        }
-
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
             bool invalid;
-            online = new MainClient();
             listObjects.DataSource = objects;
             foreach (string s in Directory.GetFiles(project.getResourceDir()))
             {
@@ -242,7 +223,7 @@ namespace GameCreatorGroupProject
                 Regex c = new Regex(@"(.*)\.goc$");
                 Match obm;
                 Match cm;
-                if((obm = ob.Match(s)).Success)
+                if ((obm = ob.Match(s)).Success)
                 {
                     //parses file for validity
                     using (BinaryReader reader = new BinaryReader(File.Open(s, FileMode.Open)))
@@ -275,7 +256,7 @@ namespace GameCreatorGroupProject
                         //is index 1 right? all examples suggest it is, whats at 0?
                         objects.Add(obm.Groups[1].Value);
                     }
-                    
+
                 }
                 else if ((cm = c.Match(s)).Success)
                 {
@@ -284,6 +265,26 @@ namespace GameCreatorGroupProject
                     objects.Add(cm.Groups[1].Value);
                 }
             }
+        }
+
+        private void itemConnect_Click(object sender, EventArgs e)
+        {
+            chatServerID = online.requestChatServer();
+            MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+
+            chat = online.getAvailable();
+
+            ChatWindow cw = new ChatWindow(chat);
+            cw.Show();
+
+            //online.connectClient(1, chatServerID, 1);
+            //chat = MainClient.clients.ElementAt(0);
+            //chat.connectClient(ServerInfo.getServerIP());
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            online = new MainClient();
         }
 
         public void connect()
