@@ -554,7 +554,20 @@ namespace GameCreatorGroupProject
                     }
                 }
             }
-            
+            if (!txtObjectName.Text.Equals(""))
+            {
+                string file1 = project.getResourceDir() + txtObjectName.Text + ".goc:";
+                if (File.Exists(file1))
+                {
+                    int i = 0;
+                    while (File.Exists(file1 + i.ToString()))
+                    {
+                        i++;
+                    }
+                    file1 = file1 + i.ToString();
+                }
+            }
+
         }
 
         private void btnRemoveObject_Click(object sender, EventArgs e)
