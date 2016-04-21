@@ -46,7 +46,7 @@ namespace GameCreatorGroupProject
             }
 
             // Update the project's list of resources
-            if (!project.Resources.ContainsKey(name))
+            if (!project.Resources.ContainsKey(name + ext))
             {
                 project.Resources.Add(name + ext, dest);
             }

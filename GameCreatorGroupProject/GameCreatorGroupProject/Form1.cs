@@ -164,6 +164,7 @@ namespace GameCreatorGroupProject
                             int elem;
                             reader.ReadString();
                             reader.ReadString();
+                            reader.ReadBoolean();
                             elem = reader.ReadInt32();
                             for (int i = 0; i < elem; i++)
                             {
@@ -238,24 +239,28 @@ namespace GameCreatorGroupProject
             */
 
             // Look up item in the resource list to get path and display in the preview pane.
-            picPreview.ImageLocation = project.Resources[listResources.SelectedItem.ToString()];
+            try
+            {
+                picPreview.ImageLocation = project.Resources[listResources.SelectedItem.ToString()];
 
-            // Set the file property display to the right of the preview
-            // Clear previous lists for new display
-            listFPVals.Items.Clear();
-            listFProperties.Items.Clear();
+                // Set the file property display to the right of the preview
+                // Clear previous lists for new display
+                listFPVals.Items.Clear();
+                listFProperties.Items.Clear();
 
-            // Add File Name property
-            listFProperties.Items.Add("File name:");
-            listFPVals.Items.Add(Path.GetFileName(project.Resources[listResources.SelectedItem.ToString()]).ToString());
+                // Add File Name property
+                listFProperties.Items.Add("File name:");
+                listFPVals.Items.Add(Path.GetFileName(project.Resources[listResources.SelectedItem.ToString()]).ToString());
 
-            // Add Creation Date property
-            listFProperties.Items.Add("Date created:");
-            listFPVals.Items.Add(File.GetCreationTime((project.Resources[listResources.SelectedItem.ToString()]).ToString()));
+                // Add Creation Date property
+                listFProperties.Items.Add("Date created:");
+                listFPVals.Items.Add(File.GetCreationTime((project.Resources[listResources.SelectedItem.ToString()]).ToString()));
 
-            // Add File Size property
-            listFProperties.Items.Add("File size:");
-            listFPVals.Items.Add((new FileInfo((project.Resources[listResources.SelectedItem.ToString()])).Length.ToString() + " bytes"));
+                // Add File Size property
+                listFProperties.Items.Add("File size:");
+                listFPVals.Items.Add((new FileInfo((project.Resources[listResources.SelectedItem.ToString()])).Length.ToString() + " bytes"));
+            }
+            catch (Exception) { }
         }
 
 
@@ -316,14 +321,13 @@ namespace GameCreatorGroupProject
                 {
                     listResources.Items.Add(resName);
                 }
-                */
-
+                
                 foreach (string resPath in project.Resources.Values)
                 {
                     // Fill up the sprite selection box in the Object Designer window
                     cmbSprite.Items.Add(resPath);
                 }
-
+                */
                 bool invalid;
                 //listObjects.DataSource = objects;
                 foreach (KeyValuePair<string, string> k in project.Resources)
@@ -342,6 +346,7 @@ namespace GameCreatorGroupProject
                                 int elem;
                                 reader.ReadString();
                                 reader.ReadString();
+                                reader.ReadBoolean();
                                 elem = reader.ReadInt32();
                                 for (int i = 0; i < elem; i++)
                                 {
@@ -584,6 +589,7 @@ namespace GameCreatorGroupProject
                             int elem;
                             reader.ReadString();
                             reader.ReadString();
+                            reader.readBoolean();
                             elem = reader.ReadInt32();
                             for (int i = 0; i < elem; i++)
                             {
@@ -651,15 +657,73 @@ namespace GameCreatorGroupProject
 
         private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //went a bit crazy with these eh? there shouldnt be anything in here if no projects selected
-            /*
-            // If no project is open, throw error and abandon function
-            if (!projectOpen)
+            Regex ob = new Regex(@".*\.gob$");
+            //Regex c = new Regex(@".*\.goc$");
+            string item = listObjects.GetItemText(listObjects.SelectedItem);
+
+            if (ob.Match(item).Success)
             {
-                MessageBox.Show("Error: No currently open projects.");
-                return;
+                DialogResult d = MessageBox.Show("Load selected object?\nUnsaved object data will be deleted", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if (d == DialogResult.Yes)
+                {
+                    using (BinaryReader reader = new BinaryReader(File.Open(project.Resources[item], FileMode.Open)))
+                    {
+                        try
+                        {
+                            int elem;
+                            txtObjectName.Text = reader.ReadString();
+                            cmbSprite.Text = reader.ReadString();
+                            bool type;
+                            if (type = reader.ReadBoolean())
+                            {
+                                radioSprite.Checked = true;
+                            }
+                            else
+                            {
+                                radioBox.Checked = true;
+                            }
+                            elem = reader.ReadInt32();
+                            if (type)
+                            {
+                                cOffsets = new Vector2[elem];
+                                for (int i = 0; i < elem; i++)
+                                {
+
+                                    cOffsets[i] = new Vector2(reader.ReadInt32(), reader.ReadInt32());
+                                }
+                            }
+                            else
+                            {
+                                bOffsets = new Vector2[elem];
+                                for (int i = 0; i < elem; i++)
+                                {
+
+                                    bOffsets[i] = new Vector2(reader.ReadInt32(), reader.ReadInt32());
+                                }
+                            }
+                            //I think this will work? Makes sure this is the end of the file.
+                            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                }
+
             }
-            */
+            else
+            {
+                DialogResult d = MessageBox.Show("Load selected object code?\nUnsaved object code will be deleted", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                if (d == DialogResult.Yes)
+                {
+                    //parse and inject file stuff into form for .goc files
+                }
+            }
         }
 
 
@@ -703,6 +767,8 @@ namespace GameCreatorGroupProject
                     write.Write(sprp);
                     if (radioBox.Checked)
                     {
+                        //indicates if custom collision box
+                        write.Write(false);
                         write.Write(bOffsets.Length);
                         foreach (Vector2 v in bOffsets)
                         {
@@ -713,6 +779,7 @@ namespace GameCreatorGroupProject
                     
                     else if(radioSprite.Checked)
                     {
+                        write.Write(true);
                         write.Write(cOffsets.Length);
                         foreach (Vector2 v in cOffsets)
                         {
@@ -735,7 +802,6 @@ namespace GameCreatorGroupProject
                     file1 = file1 + i.ToString();
                 }
             }
-
         }
 
 
@@ -791,20 +857,32 @@ namespace GameCreatorGroupProject
 
         private void btnRemoveResource_Click(object sender, EventArgs e)
         {
-            if (listResources.SelectedValue != null)
+            if (listResources.SelectedItem != null)
             {
                 DialogResult d = MessageBox.Show("Are you sure you want to remove this resource?\nResource will be permanently deleted.", "", MessageBoxButtons.YesNoCancel);
                 if (d == DialogResult.Yes)
                 {
                     string selected = listResources.GetItemText(listResources.SelectedItem);
-                    if (File.Exists(project.Resources[selected]))
+                    if (project.Resources.ContainsKey(selected))
                     {
-                        File.Delete(project.Resources[selected]);
+                        if (File.Exists(project.Resources[selected]))
+                        {
+                            File.Delete(project.Resources[selected]);
+                        }
+                        
+                        project.Resources.Remove(selected);
                     }
+//also need to delete from other elements if valid
                     listResources.Items.Remove(listResources.SelectedItem);
+                    
                 }
             }
             
+        }
+
+        private void listObjects_SelectedValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
