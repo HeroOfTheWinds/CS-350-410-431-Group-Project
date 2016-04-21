@@ -17,6 +17,7 @@ namespace GameCreatorGroupProject
 {
     public partial class MainWindow : Form
     {
+
         // Create an empty Project instance
         Project project = new Project();
 
@@ -42,7 +43,9 @@ namespace GameCreatorGroupProject
         private Vector2[] cOffsets = null;
         private Vector2[] bOffsets = null;
 
-        private List<string> objects = new List<string>();
+        private bool initcmb = false;
+
+        //private List<string> objects = new List<string>();
 
         private uint chatServerID;
 
@@ -53,6 +56,9 @@ namespace GameCreatorGroupProject
         {
             InitializeComponent();
         }
+
+
+
 
         private void itemStartServer_Click(object sender, EventArgs e)
         {
@@ -76,6 +82,9 @@ namespace GameCreatorGroupProject
             return;
         }
 
+
+
+
         // This function is called whenever the user clicks File>New on the tool bar.
         private void itemNew_Click(object sender, EventArgs e)
         {
@@ -85,21 +94,21 @@ namespace GameCreatorGroupProject
             // Get the folder from the user
             folderPrjDir.ShowDialog();
 
-            string targetPath = folderPrjDir.SelectedPath + "/" + newName;
+            string targetPath = folderPrjDir.SelectedPath + @"\" + newName;
 
             // Create the project directory if necessary.
-            if (!System.IO.Directory.Exists(targetPath))
+            if (!Directory.Exists(targetPath))
             {
-                System.IO.Directory.CreateDirectory(targetPath);
+                Directory.CreateDirectory(targetPath);
             }
 
             // Generate the path to the resources folder
-            string resPath = targetPath + "/Resources";
+            string resPath = targetPath + @"\Resources";
 
             // Create Resources directory if it doesn't exist
-            if (!System.IO.Directory.Exists(resPath))
+            if (!Directory.Exists(resPath))
             {
-                System.IO.Directory.CreateDirectory(resPath);
+                Directory.CreateDirectory(resPath);
             }
 
             // Create a new project instance
@@ -121,6 +130,9 @@ namespace GameCreatorGroupProject
         
             return;
         }
+
+
+
 
         // This function is called when the user clicks the Add button in the Resource Manager.
         private void btnAddResource_Click(object sender, EventArgs e)
@@ -149,15 +161,21 @@ namespace GameCreatorGroupProject
             cmbSprite.Items.Add(project.Resources[newName]);
         }
 
+
+
+
         // Show the preview of the image when selected, and its file properties
         private void listResources_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //went a bit crazy with these eh? there shouldnt be anything in here if no projects selected
+            /*
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
                 MessageBox.Show("Error: No currently open projects.");
                 return;
             }
+            */
 
             // Look up item in the resource list to get path and display in the preview pane.
             picPreview.ImageLocation = project.Resources[listResources.SelectedItem.ToString()];
@@ -180,6 +198,9 @@ namespace GameCreatorGroupProject
             listFPVals.Items.Add((new FileInfo((project.Resources[listResources.SelectedItem.ToString()])).Length.ToString() + " bytes"));
         }
 
+
+
+
         private void itemSave_Click(object sender, EventArgs e)
         {
             // If no project is open, throw error and abandon function
@@ -199,10 +220,16 @@ namespace GameCreatorGroupProject
             }
         }
 
+
+
+
         private void itemExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+
+
+
 
         private void itemOpen_Click(object sender, EventArgs e)
         {
@@ -235,14 +262,20 @@ namespace GameCreatorGroupProject
             }
 
             bool invalid;
-            listObjects.DataSource = objects;
+            //listObjects.DataSource = objects;
             foreach (string s in Directory.GetFiles(project.getResourceDir()))
             {
                 invalid = false;
-                Regex ob = new Regex(@"(.*)\.gob$");
-                Regex c = new Regex(@"(.*)\.goc$");
+                Regex ob = new Regex(@".*\\(.*)\.gob$");
+                Regex c = new Regex(@".*\\(.*)\.goc$");
+
+                //Regex img = new Regex(@".*\\(.*)(\.png|\.jpg|\.jpeg|\.bmp|\.tif|\.tiff|\.gif|\.exif)");
+
                 Match obm;
                 Match cm;
+
+                //Match im;
+
                 if ((obm = ob.Match(s)).Success)
                 {
                     //parses file for validity
@@ -274,24 +307,36 @@ namespace GameCreatorGroupProject
                     if (!invalid)
                     {
                         //is index 1 right? all examples suggest it is, whats at 0?
-                        objects.Add(obm.Groups[1].Value);
-                        listObjects.DataSource = null;
-                        listObjects.DataSource = objects;
+                        listObjects.Items.Add(obm.Groups[1].Value);
                     }
 
                 }
                 else if ((cm = c.Match(s)).Success)
                 {
-                    //pars file for validity
+                    //parse file for validity
 
-                    objects.Add(cm.Groups[1].Value);
-                    listObjects.DataSource = null;
-                    listObjects.DataSource = objects;
+                    listObjects.Items.Add(cm.Groups[1].Value);
+                }
+                /*
+                else if ((im = img.Match(s)).Success)
+                {
+                    listResources.Items.Add(im.Groups[1]);
+                    cmbSprite.Items.Add(s);
+                }
+                */
+
+                foreach (KeyValuePair<string, string> k in project.Resources)
+                {
+                    listResources.Items.Add(k.Key);
+                    cmbSprite.Items.Add(k.Value);
                 }
             }
 
             projectOpen = true;
         }
+
+
+
 
         private void itemConnect_Click(object sender, EventArgs e)
         {
@@ -308,10 +353,19 @@ namespace GameCreatorGroupProject
             //chat.connectClient(ServerInfo.getServerIP());
         }
 
+
+
+
         private void MainWindow_Load(object sender, EventArgs e)
         {
             online = new MainClient();
+
+            cmbSprite.Text = "Please load a resource to select sprite.";
+            initcmb = true;
         }
+
+
+
 
         public void connect()
         {
@@ -319,16 +373,39 @@ namespace GameCreatorGroupProject
             t.Start();
         }
 
+
+
+
         //connects the main client to the server
         private void connectMain()
         {
             online.connectClient(ServerInfo.getServerIP());
         }
 
+
+
+
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             online.disconnect();
+            if (projectOpen)
+            {
+                e.Cancel = true;
+                DialogResult d = MessageBox.Show("Would you like to save the project?\nSelecting no will discard any unsaved data.", "", MessageBoxButtons.YesNoCancel);
+                if (d == DialogResult.Yes)
+                {
+                    project.SaveProject();
+                }
+                if (d == DialogResult.No)
+                {
+                    e.Cancel = false;
+                }
+            }
+            
         }
+
+
+
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -344,21 +421,33 @@ namespace GameCreatorGroupProject
             
         }
 
+
+
+
         private void addUserDebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
             online.connectClient(1, chatServerID, 0);
         }
+
+
+
 
         private void addUserReleaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             online.connectClient(1, chatServerID, 1);
         }
 
+
+
+
         private void radioSprite_MouseDown_1(object sender, MouseEventArgs e)
         {
             
         }
 
+
+
+        /*
         private void btnSetSprite_Click(object sender, EventArgs e)
         {
             try
@@ -375,6 +464,9 @@ namespace GameCreatorGroupProject
                 MessageBox.Show("Invalid Sprite.", "Invalid sprite selection.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
+
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -386,6 +478,9 @@ namespace GameCreatorGroupProject
                 //sprloc = d.FileName;
             }
         }
+        */
+
+
 
         private void radioSprite_Click(object sender, EventArgs e)
         {
@@ -395,27 +490,29 @@ namespace GameCreatorGroupProject
             //have something ask for width and height and scale off that
         }
 
+
+
+
 //have to add object to box
         private void btnAddObject_Click(object sender, EventArgs e)
         {
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
-<<<<<<< HEAD
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-=======
-                MessageBox.Show("Error: No currently open projects.");
->>>>>>> 15d800e49384b6428bbdb59f147d67a02fdfd35c
                 return;
             }
+
+
+
 
             OpenFileDialog d = new OpenFileDialog();
             d.Filter = "Game Object Files|*.gob;*.goc|Game Object Data Files (*.gob)|*.gob|Game Object Code Files (*.goc)|*.goc";
             if (d.ShowDialog() == DialogResult.OK)
             {
                 //file must end in .gob, can change if want
-                Regex ob = new Regex(@"(.*)\.gob$");
-                Regex c = new Regex(@"(.*)\.goc$");
+                Regex ob = new Regex(@".*\\(.*)\.gob$");
+                Regex c = new Regex(@".*\\(.*)\.goc$");
                 Match obm;
                 Match cm;
                 if ((obm = ob.Match(d.FileName)).Success)
@@ -457,19 +554,15 @@ namespace GameCreatorGroupProject
                         MessageBox.Show("Object of the same name already exists.", "Object exists.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    objects.Add(obm.Groups[1].Value);
-                    listObjects.DataSource = null;
-                    listObjects.DataSource = objects;
+                    listObjects.Items.Add(obm.Groups[1].Value);
                 }
 
                 else if ((cm = c.Match(d.FileName)).Success)
                 {
                     //parse file for validity, print error if incorrect
                     //also check if already exists
-                    objects.Add(cm.Groups[1].Value);
+                    listObjects.Items.Add(cm.Groups[1].Value);
                     File.Copy(d.FileName, project.getResourceDir());
-                    listObjects.DataSource = null;
-                    listObjects.DataSource = objects;
                 }
                 else
                 {
@@ -478,36 +571,47 @@ namespace GameCreatorGroupProject
             }
         }
 
+
+
+
         private void radioBox_CheckedChanged(object sender, EventArgs e)
         {
 
         }
+
+
+
 
         private void radioBox_Click(object sender, EventArgs e)
         {
             //have things to ask for width and height and make box from that
         }
 
+
+
+
         private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //went a bit crazy with these eh? there shouldnt be anything in here if no projects selected
+            /*
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
                 MessageBox.Show("Error: No currently open projects.");
                 return;
             }
+            */
         }
+
+
+
 
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
-<<<<<<< HEAD
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-=======
-                MessageBox.Show("Error: No currently open projects.");
->>>>>>> 15d800e49384b6428bbdb59f147d67a02fdfd35c
                 return;
             }
 
@@ -562,10 +666,55 @@ namespace GameCreatorGroupProject
             
         }
 
+
+
+
         private void btnRemoveObject_Click(object sender, EventArgs e)
         {
             //something like this
             //File.Delete(listObjects.SelectedItem.)
+        }
+
+        private void cmbSprite_SelectedValueChanged(object sender, EventArgs e)
+        {
+            //cmbSprite.Text = cmbSprite.SelectedText;
+           
+        }
+
+        private void cmbSprite_TextChanged(object sender, EventArgs e)
+        {
+            if (initcmb)
+            {
+                try
+                {
+                    sprp = cmbSprite.Text;
+                    spr = Image.FromFile(cmbSprite.Text);
+                    CollisionDesigner.spr = spr;
+                    picSpriteView.Image = spr;
+                    radioBox.Enabled = true;
+                    radioSprite.Enabled = true;
+                }
+
+                catch (Exception)
+                {
+                    MessageBox.Show("Invalid Sprite.", "Invalid sprite selection.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)
+            {
+                int errNum = project.SaveProject();
+
+                if (errNum == 55)
+                {
+                    // File was open in another application, tell user we failed.
+                    MessageBox.Show("File still open in another process. Could not save.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }
