@@ -157,6 +157,7 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
             this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -741,6 +742,7 @@
             this.gboxEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gboxEvents.Controls.Add(this.vScrollBar1);
             this.gboxEvents.Controls.Add(this.btnOnStep);
             this.gboxEvents.Controls.Add(this.btnTestVar);
             this.gboxEvents.Controls.Add(this.btnOnDestruct);
@@ -748,9 +750,9 @@
             this.gboxEvents.Controls.Add(this.btnAlarm);
             this.gboxEvents.Controls.Add(this.btnCollision);
             this.gboxEvents.Controls.Add(this.btnInput);
-            this.gboxEvents.Location = new System.Drawing.Point(3, 296);
+            this.gboxEvents.Location = new System.Drawing.Point(3, 232);
             this.gboxEvents.Name = "gboxEvents";
-            this.gboxEvents.Size = new System.Drawing.Size(222, 109);
+            this.gboxEvents.Size = new System.Drawing.Size(222, 173);
             this.gboxEvents.TabIndex = 1;
             this.gboxEvents.TabStop = false;
             this.gboxEvents.Text = "Events";
@@ -847,7 +849,7 @@
             this.gboxActions.Controls.Add(this.btnInstantiate);
             this.gboxActions.Location = new System.Drawing.Point(3, 4);
             this.gboxActions.Name = "gboxActions";
-            this.gboxActions.Size = new System.Drawing.Size(223, 83);
+            this.gboxActions.Size = new System.Drawing.Size(223, 222);
             this.gboxActions.TabIndex = 0;
             this.gboxActions.TabStop = false;
             this.gboxActions.Text = "Actions";
@@ -1601,6 +1603,13 @@
             this.folderPrjDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.folderPrjDir.SelectedPath = "System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments)";
             // 
+            // vScrollBar1
+            // 
+            this.vScrollBar1.Location = new System.Drawing.Point(198, 10);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(17, 163);
+            this.vScrollBar1.TabIndex = 8;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1782,6 +1791,7 @@
         private System.Windows.Forms.ToolStripMenuItem addUserDebugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addUserReleaseToolStripMenuItem;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.VScrollBar vScrollBar1;
     }
 }
 

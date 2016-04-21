@@ -107,8 +107,14 @@ namespace GameCreatorGroupProject
             project.setDirectory(targetPath);
             project.setResourceDir(resPath);
 
-            // Save to file
-            project.SaveProject();
+            // Save the project
+            int errNum = project.SaveProject();
+
+            if (errNum == 55)
+            {
+                // File was open in another application, tell user we failed.
+                MessageBox.Show("Error: File still open in another process. Could not save.");
+            }
 
             // Set variable to say there is an open project.
             projectOpen = true;
@@ -140,11 +146,19 @@ namespace GameCreatorGroupProject
 
             // Show resource in list view
             listResources.Items.Add(newName);
+            cmbSprite.Items.Add(project.Resources[newName]);
         }
 
         // Show the preview of the image when selected, and its file properties
         private void listResources_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
             // Look up item in the resource list to get path and display in the preview pane.
             picPreview.ImageLocation = project.Resources[listResources.SelectedItem.ToString()];
 
@@ -214,6 +228,12 @@ namespace GameCreatorGroupProject
                 listResources.Items.Add(resName);
             }
 
+            foreach (string resPath in project.Resources.Values)
+            {
+                // Fill up the sprite selection box in the Object Designer window
+                cmbSprite.Items.Add(resPath);
+            }
+
             bool invalid;
             listObjects.DataSource = objects;
             foreach (string s in Directory.GetFiles(project.getResourceDir()))
@@ -265,6 +285,8 @@ namespace GameCreatorGroupProject
                     objects.Add(cm.Groups[1].Value);
                 }
             }
+
+            projectOpen = true;
         }
 
         private void itemConnect_Click(object sender, EventArgs e)
@@ -371,6 +393,13 @@ namespace GameCreatorGroupProject
 
         private void btnAddObject_Click(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
             OpenFileDialog d = new OpenFileDialog();
             d.Filter = "Game Object Files|*.gob;*.goc|Game Object Data Files (*.gob)|*.gob|Game Object Code Files (*.goc)|*.goc";
             if (d.ShowDialog() == DialogResult.OK)
@@ -448,11 +477,23 @@ namespace GameCreatorGroupProject
 
         private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
         }
 
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
             if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || (!radioSprite.Checked && !radioBox.Checked) || txtObjectName.Text.Equals(""))
             {
                 MessageBox.Show("Game objects must have a valid sprite, collision box, and name to be saved.", "Unable to generate game object.", MessageBoxButtons.OK, MessageBoxIcon.Error);
