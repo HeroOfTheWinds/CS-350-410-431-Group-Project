@@ -501,10 +501,6 @@ namespace GameCreatorGroupProject
             if (!projectOpen)
             {
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-<<<<<<< HEAD
-=======
-                MessageBox.Show("Error: No currently open projects.");
->>>>>>> b11f2c711bd683e8659f7357625c6f631372346e
                 return;
             }
 
@@ -617,10 +613,6 @@ namespace GameCreatorGroupProject
             if (!projectOpen)
             {
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-<<<<<<< HEAD
-=======
-                MessageBox.Show("Error: No currently open projects.");
->>>>>>> b11f2c711bd683e8659f7357625c6f631372346e
                 return;
             }
 
