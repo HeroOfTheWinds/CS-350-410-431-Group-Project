@@ -132,6 +132,7 @@ namespace GameCreatorGroupProject
                 return;
             }
 
+            openResourceDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
             // Get the path to the resource from the user
             openResourceDialog.ShowDialog();
 
@@ -401,11 +402,8 @@ namespace GameCreatorGroupProject
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
-<<<<<<< HEAD
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-=======
                 MessageBox.Show("Error: No currently open projects.");
->>>>>>> 15d800e49384b6428bbdb59f147d67a02fdfd35c
                 return;
             }
 
@@ -503,11 +501,8 @@ namespace GameCreatorGroupProject
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
-<<<<<<< HEAD
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-=======
                 MessageBox.Show("Error: No currently open projects.");
->>>>>>> 15d800e49384b6428bbdb59f147d67a02fdfd35c
                 return;
             }
 
