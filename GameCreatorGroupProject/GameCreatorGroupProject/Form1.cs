@@ -274,6 +274,8 @@ namespace GameCreatorGroupProject
                     {
                         //is index 1 right? all examples suggest it is, whats at 0?
                         objects.Add(obm.Groups[1].Value);
+                        listObjects.DataSource = null;
+                        listObjects.DataSource = objects;
                     }
                     
                 }
@@ -282,6 +284,8 @@ namespace GameCreatorGroupProject
                     //pars file for validity
 
                     objects.Add(cm.Groups[1].Value);
+                    listObjects.DataSource = null;
+                    listObjects.DataSource = objects;
                 }
             }
         }
@@ -368,8 +372,16 @@ namespace GameCreatorGroupProject
             //have something ask for width and height and scale off that
         }
 
+//have to add object to box
         private void btnAddObject_Click(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             OpenFileDialog d = new OpenFileDialog();
             d.Filter = "Game Object Files|*.gob;*.goc|Game Object Data Files (*.gob)|*.gob|Game Object Code Files (*.goc)|*.goc";
             if (d.ShowDialog() == DialogResult.OK)
@@ -419,6 +431,8 @@ namespace GameCreatorGroupProject
                         return;
                     }
                     objects.Add(obm.Groups[1].Value);
+                    listObjects.DataSource = null;
+                    listObjects.DataSource = objects;
                 }
 
                 else if ((cm = c.Match(d.FileName)).Success)
@@ -427,6 +441,8 @@ namespace GameCreatorGroupProject
                     //also check if already exists
                     objects.Add(cm.Groups[1].Value);
                     File.Copy(d.FileName, project.getResourceDir());
+                    listObjects.DataSource = null;
+                    listObjects.DataSource = objects;
                 }
                 else
                 {
@@ -452,13 +468,20 @@ namespace GameCreatorGroupProject
 
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || (!radioSprite.Checked && !radioBox.Checked) || txtObjectName.Text.Equals(""))
             {
                 MessageBox.Show("Game objects must have a valid sprite, collision box, and name to be saved.", "Unable to generate game object.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                string file = project.getResourceDir() + txtObjectName.Text + ".gob";
+                string file = project.getResourceDir() + @"\" + txtObjectName.Text + ".gob";
                 if (File.Exists(file))
                 {
                     DialogResult d = MessageBox.Show("Object of given name already exists.\nWould you like to overwrite the object?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
