@@ -144,6 +144,7 @@ namespace GameCreatorGroupProject
                 return;
             }
 
+            openResourceDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
             // Get the path to the resource from the user
             openResourceDialog.ShowDialog();
 
@@ -500,6 +501,10 @@ namespace GameCreatorGroupProject
             if (!projectOpen)
             {
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+<<<<<<< HEAD
+=======
+                MessageBox.Show("Error: No currently open projects.");
+>>>>>>> b11f2c711bd683e8659f7357625c6f631372346e
                 return;
             }
 
@@ -612,6 +617,10 @@ namespace GameCreatorGroupProject
             if (!projectOpen)
             {
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+<<<<<<< HEAD
+=======
+                MessageBox.Show("Error: No currently open projects.");
+>>>>>>> b11f2c711bd683e8659f7357625c6f631372346e
                 return;
             }
 
@@ -663,7 +672,20 @@ namespace GameCreatorGroupProject
                     }
                 }
             }
-            
+            if (!txtObjectName.Text.Equals(""))
+            {
+                string file1 = project.getResourceDir() + txtObjectName.Text + ".goc:";
+                if (File.Exists(file1))
+                {
+                    int i = 0;
+                    while (File.Exists(file1 + i.ToString()))
+                    {
+                        i++;
+                    }
+                    file1 = file1 + i.ToString();
+                }
+            }
+
         }
 
 
