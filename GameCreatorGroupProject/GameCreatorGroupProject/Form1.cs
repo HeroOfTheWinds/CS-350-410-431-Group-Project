@@ -107,8 +107,14 @@ namespace GameCreatorGroupProject
             project.setDirectory(targetPath);
             project.setResourceDir(resPath);
 
-            // Save to file
-            project.SaveProject();
+            // Save the project
+            int errNum = project.SaveProject();
+
+            if (errNum == 55)
+            {
+                // File was open in another application, tell user we failed.
+                MessageBox.Show("Error: File still open in another process. Could not save.");
+            }
 
             // Set variable to say there is an open project.
             projectOpen = true;
@@ -140,11 +146,19 @@ namespace GameCreatorGroupProject
 
             // Show resource in list view
             listResources.Items.Add(newName);
+            cmbSprite.Items.Add(project.Resources[newName]);
         }
 
         // Show the preview of the image when selected, and its file properties
         private void listResources_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
             // Look up item in the resource list to get path and display in the preview pane.
             picPreview.ImageLocation = project.Resources[listResources.SelectedItem.ToString()];
 
@@ -213,27 +227,14 @@ namespace GameCreatorGroupProject
             {
                 listResources.Items.Add(resName);
             }
-        }
 
-        private void itemConnect_Click(object sender, EventArgs e)
-        {
-            chatServerID = online.requestChatServer();
-            MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+            foreach (string resPath in project.Resources.Values)
+            {
+                // Fill up the sprite selection box in the Object Designer window
+                cmbSprite.Items.Add(resPath);
+            }
 
-            chat = online.getAvailable();
-
-            ChatWindow cw = new ChatWindow(chat);
-            cw.Show();
-
-            //online.connectClient(1, chatServerID, 1);
-            //chat = MainClient.clients.ElementAt(0);
-            //chat.connectClient(ServerInfo.getServerIP());
-        }
-
-        private void MainWindow_Load(object sender, EventArgs e)
-        {
             bool invalid;
-            online = new MainClient();
             listObjects.DataSource = objects;
             foreach (string s in Directory.GetFiles(project.getResourceDir()))
             {
@@ -242,7 +243,7 @@ namespace GameCreatorGroupProject
                 Regex c = new Regex(@"(.*)\.goc$");
                 Match obm;
                 Match cm;
-                if((obm = ob.Match(s)).Success)
+                if ((obm = ob.Match(s)).Success)
                 {
                     //parses file for validity
                     using (BinaryReader reader = new BinaryReader(File.Open(s, FileMode.Open)))
@@ -277,7 +278,7 @@ namespace GameCreatorGroupProject
                         listObjects.DataSource = null;
                         listObjects.DataSource = objects;
                     }
-                    
+
                 }
                 else if ((cm = c.Match(s)).Success)
                 {
@@ -288,6 +289,28 @@ namespace GameCreatorGroupProject
                     listObjects.DataSource = objects;
                 }
             }
+
+            projectOpen = true;
+        }
+
+        private void itemConnect_Click(object sender, EventArgs e)
+        {
+            chatServerID = online.requestChatServer();
+            MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+
+            chat = online.getAvailable();
+
+            ChatWindow cw = new ChatWindow(chat);
+            cw.Show();
+
+            //online.connectClient(1, chatServerID, 1);
+            //chat = MainClient.clients.ElementAt(0);
+            //chat.connectClient(ServerInfo.getServerIP());
+        }
+
+        private void MainWindow_Load(object sender, EventArgs e)
+        {
+            online = new MainClient();
         }
 
         public void connect()
@@ -378,7 +401,11 @@ namespace GameCreatorGroupProject
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
+<<<<<<< HEAD
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+=======
+                MessageBox.Show("Error: No currently open projects.");
+>>>>>>> 15d800e49384b6428bbdb59f147d67a02fdfd35c
                 return;
             }
 
@@ -463,7 +490,12 @@ namespace GameCreatorGroupProject
 
         private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
         }
 
         private void btnSaveObj_Click(object sender, EventArgs e)
@@ -471,7 +503,11 @@ namespace GameCreatorGroupProject
             // If no project is open, throw error and abandon function
             if (!projectOpen)
             {
+<<<<<<< HEAD
                 MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+=======
+                MessageBox.Show("Error: No currently open projects.");
+>>>>>>> 15d800e49384b6428bbdb59f147d67a02fdfd35c
                 return;
             }
 
