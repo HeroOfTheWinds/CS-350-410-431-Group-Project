@@ -92,43 +92,45 @@ namespace GameCreatorGroupProject
             string newName = Interaction.InputBox("Enter the project name:", "Enter Project Name", "NewProject", -1, -1);
 
             // Get the folder from the user
-            folderPrjDir.ShowDialog();
-
-            string targetPath = folderPrjDir.SelectedPath + @"\" + newName;
-
-            // Create the project directory if necessary.
-            if (!Directory.Exists(targetPath))
+            if (folderPrjDir.ShowDialog() == DialogResult.OK)
             {
-                Directory.CreateDirectory(targetPath);
+
+                string targetPath = folderPrjDir.SelectedPath + @"\" + newName;
+
+                // Create the project directory if necessary.
+                if (!Directory.Exists(targetPath))
+                {
+                    Directory.CreateDirectory(targetPath);
+                }
+
+                // Generate the path to the resources folder
+                string resPath = targetPath + @"\Resources";
+
+                // Create Resources directory if it doesn't exist
+                if (!Directory.Exists(resPath))
+                {
+                    Directory.CreateDirectory(resPath);
+                }
+
+                // Create a new project instance
+                project.setName(newName);
+                project.setDirectory(targetPath);
+                project.setResourceDir(resPath);
+
+                // Save the project
+                int errNum = project.SaveProject();
+
+                if (errNum == 55)
+                {
+                    // File was open in another application, tell user we failed.
+                    MessageBox.Show("Error: File still open in another process. Could not save.");
+                }
+
+                // Set variable to say there is an open project.
+                projectOpen = true;
+
+                return;
             }
-
-            // Generate the path to the resources folder
-            string resPath = targetPath + @"\Resources";
-
-            // Create Resources directory if it doesn't exist
-            if (!Directory.Exists(resPath))
-            {
-                Directory.CreateDirectory(resPath);
-            }
-
-            // Create a new project instance
-            project.setName(newName);
-            project.setDirectory(targetPath);
-            project.setResourceDir(resPath);
-
-            // Save the project
-            int errNum = project.SaveProject();
-
-            if (errNum == 55)
-            {
-                // File was open in another application, tell user we failed.
-                MessageBox.Show("Error: File still open in another process. Could not save.");
-            }
-
-            // Set variable to say there is an open project.
-            projectOpen = true;
-        
-            return;
         }
 
 
@@ -144,22 +146,79 @@ namespace GameCreatorGroupProject
                 return;
             }
 
-            openResourceDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
+            openResourceDialog.Filter = "Resource Files|*.gob;*.goc;*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|Game Object Files|*.gob;*.goc|Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|Game Object Data Files (*.gob)|*.gob|Game Object Code Files (*.goc)|*.goc|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
             // Get the path to the resource from the user
-            openResourceDialog.ShowDialog();
+            if (openResourceDialog.ShowDialog() == DialogResult.OK)
+            {
+                Regex ob = new Regex(@".*\\(.*)\.gob$");
+                Regex c = new Regex(@".*\\(.*)\.goc$");
+                Match obm;
+                Match cm;
+                if ((obm = ob.Match(openResourceDialog.FileName)).Success)
+                {
+                    //parses file for validity
+                    using (BinaryReader reader = new BinaryReader(File.Open(openResourceDialog.FileName, FileMode.Open)))
+                    {
+                        try
+                        {
+                            int elem;
+                            reader.ReadString();
+                            reader.ReadString();
+                            elem = reader.ReadInt32();
+                            for (int i = 0; i < elem; i++)
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
+                            //I think this will work? Makes sure this is the end of the file.
+                            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
 
-            // Use an input box to get the resource name from the user
-            string newName = Interaction.InputBox("Enter the resource's name:", "Enter Resource Name", "Resource1", -1, -1);
+                    }
 
-            // Get extension of the file
-            string fileExt = Path.GetExtension(openResourceDialog.FileName);
 
-            // Save the resource in the project and copy file to resource folder
-            resImporter.SaveResource(project, newName, fileExt, openResourceDialog.FileName);
+                    // Save the resource in the project and copy file to resource folder
+                    resImporter.SaveResource(project, obm.Groups[1].Value, Path.GetExtension(openResourceDialog.FileName), openResourceDialog.FileName);
 
-            // Show resource in list view
-            listResources.Items.Add(newName);
-            cmbSprite.Items.Add(project.Resources[newName]);
+                    listObjects.Items.Add(obm.Groups[1].Value + ".gob");
+                    listResources.Items.Add(obm.Groups[1].Value + ".gob");
+                }
+
+                else if ((cm = c.Match(openResourceDialog.FileName)).Success)
+                {
+                    //parse file for validity, print error if incorrect
+                    //also check if already exists
+                    listObjects.Items.Add(cm.Groups[1].Value + ".goc");
+                    listResources.Items.Add(cm.Groups[1].Value + ".goc");
+
+                    // Save the resource in the project and copy file to resource folder
+                    resImporter.SaveResource(project, cm.Groups[1].Value, Path.GetExtension(openResourceDialog.FileName), openResourceDialog.FileName);
+                }
+                else
+                {
+                    // Use an input box to get the resource name from the user
+                    string newName = Interaction.InputBox("Enter the resource's name:", "Enter Resource Name", "Resource1", -1, -1);
+
+                    // Get extension of the file
+                    string fileExt = Path.GetExtension(openResourceDialog.FileName);
+
+                    // Save the resource in the project and copy file to resource folder
+                    resImporter.SaveResource(project, newName, fileExt, openResourceDialog.FileName);
+
+                    // Show resource in list view
+                    listResources.Items.Add(newName + fileExt);
+                    cmbSprite.Items.Add(project.Resources[newName + fileExt]);
+                }
+            }
+            
         }
 
 
@@ -237,103 +296,102 @@ namespace GameCreatorGroupProject
             // Set the file open dialog to only show .prj files
             openResourceDialog.Filter = "Project Files (*.prj)|*.prj|All Files (*.*)|*.*";
             // Prompt user for project file
-            openResourceDialog.ShowDialog();
-            // Restore filter to unfiltered state
-            openResourceDialog.Filter = "All Files (*.*)|*.*";
-             
-            // Grab user-selected path
-            string projPath = openResourceDialog.FileName;
-
-            // Load data into current project
-            project.LoadProject(projPath);
-
-            // Clear out the list of resources the user sees
-            listResources.Items.Clear();
-
-            // Update the list of resources viewed by the user
-            foreach (string resName in project.Resources.Keys)
+            if (openResourceDialog.ShowDialog() == DialogResult.OK)
             {
-                listResources.Items.Add(resName);
-            }
+                // Restore filter to unfiltered state
+                openResourceDialog.Filter = "All Files (*.*)|*.*";
 
-            foreach (string resPath in project.Resources.Values)
-            {
-                // Fill up the sprite selection box in the Object Designer window
-                cmbSprite.Items.Add(resPath);
-            }
+                // Grab user-selected path
+                string projPath = openResourceDialog.FileName;
 
-            bool invalid;
-            //listObjects.DataSource = objects;
-            foreach (string s in Directory.GetFiles(project.getResourceDir()))
-            {
-                invalid = false;
-                Regex ob = new Regex(@".*\\(.*)\.gob$");
-                Regex c = new Regex(@".*\\(.*)\.goc$");
+                // Load data into current project
+                project.LoadProject(projPath);
 
-                //Regex img = new Regex(@".*\\(.*)(\.png|\.jpg|\.jpeg|\.bmp|\.tif|\.tiff|\.gif|\.exif)");
+                // Clear out the list of resources the user sees
+                listResources.Items.Clear();
 
-                Match obm;
-                Match cm;
-
-                //Match im;
-
-                if ((obm = ob.Match(s)).Success)
-                {
-                    //parses file for validity
-                    using (BinaryReader reader = new BinaryReader(File.Open(s, FileMode.Open)))
-                    {
-                        try
-                        {
-                            int elem;
-                            reader.ReadString();
-                            reader.ReadString();
-                            elem = reader.ReadInt32();
-                            for (int i = 0; i < elem; i++)
-                            {
-                                reader.ReadInt32();
-                                reader.ReadInt32();
-                            }
-                            //I think this will work? Makes sure this is the end of the file.
-                            if (reader.BaseStream.Position != reader.BaseStream.Length)
-                            {
-                                throw new Exception();
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            invalid = true;
-                        }
-
-                    }
-                    if (!invalid)
-                    {
-                        //is index 1 right? all examples suggest it is, whats at 0?
-                        listObjects.Items.Add(obm.Groups[1].Value);
-                    }
-
-                }
-                else if ((cm = c.Match(s)).Success)
-                {
-                    //parse file for validity
-
-                    listObjects.Items.Add(cm.Groups[1].Value);
-                }
                 /*
-                else if ((im = img.Match(s)).Success)
+                // Update the list of resources viewed by the user
+                foreach (string resName in project.Resources.Keys)
                 {
-                    listResources.Items.Add(im.Groups[1]);
-                    cmbSprite.Items.Add(s);
+                    listResources.Items.Add(resName);
                 }
                 */
 
+                foreach (string resPath in project.Resources.Values)
+                {
+                    // Fill up the sprite selection box in the Object Designer window
+                    cmbSprite.Items.Add(resPath);
+                }
+
+                bool invalid;
+                //listObjects.DataSource = objects;
                 foreach (KeyValuePair<string, string> k in project.Resources)
                 {
-                    listResources.Items.Add(k.Key);
-                    cmbSprite.Items.Add(k.Value);
-                }
-            }
+                    invalid = false;
+                    Regex ob = new Regex(@".*\.gob$");
+                    Regex c = new Regex(@".*\.goc$");
 
-            projectOpen = true;
+                    if (ob.Match(k.Value).Success)
+                    {
+                        //parses file for validity
+                        using (BinaryReader reader = new BinaryReader(File.Open(k.Value, FileMode.Open)))
+                        {
+                            try
+                            {
+                                int elem;
+                                reader.ReadString();
+                                reader.ReadString();
+                                elem = reader.ReadInt32();
+                                for (int i = 0; i < elem; i++)
+                                {
+                                    reader.ReadInt32();
+                                    reader.ReadInt32();
+                                }
+                                //I think this will work? Makes sure this is the end of the file.
+                                if (reader.BaseStream.Position != reader.BaseStream.Length)
+                                {
+                                    throw new Exception();
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                invalid = true;
+                            }
+
+                        }
+                        if (!invalid)
+                        {
+                            //is index 1 right? all examples suggest it is, whats at 0?
+                            listObjects.Items.Add(k.Key);
+                            listResources.Items.Add(k.Key);
+                        }
+
+                    }
+                    else if (c.Match(k.Value).Success)
+                    {
+                        //parse file for validity
+
+                        listObjects.Items.Add(k.Key);
+                        listResources.Items.Add(k.Key);
+                    }
+                    /*
+                    else if ((im = img.Match(s)).Success)
+                    {
+                        listResources.Items.Add(im.Groups[1]);
+                        cmbSprite.Items.Add(s);
+                    }
+                    */
+
+                    else
+                    {
+                        listResources.Items.Add(k.Key);
+                        cmbSprite.Items.Add(k.Value);
+                    }
+                }
+
+                projectOpen = true;
+            }
         }
 
 
@@ -396,6 +454,7 @@ namespace GameCreatorGroupProject
                 if (d == DialogResult.Yes)
                 {
                     project.SaveProject();
+                    e.Cancel = false;
                 }
                 if (d == DialogResult.No)
                 {
@@ -493,8 +552,7 @@ namespace GameCreatorGroupProject
 
 
 
-
-//have to add object to box
+        /*
         private void btnAddObject_Click(object sender, EventArgs e)
         {
             // If no project is open, throw error and abandon function
@@ -512,8 +570,8 @@ namespace GameCreatorGroupProject
             if (d.ShowDialog() == DialogResult.OK)
             {
                 //file must end in .gob, can change if want
-                Regex ob = new Regex(@".*\\(.*)\.gob$");
-                Regex c = new Regex(@".*\\(.*)\.goc$");
+                Regex ob = new Regex(@".*\\(.*\.gob)$");
+                Regex c = new Regex(@".*\\(.*\.goc)$");
                 Match obm;
                 Match cm;
                 if ((obm = ob.Match(d.FileName)).Success)
@@ -571,7 +629,7 @@ namespace GameCreatorGroupProject
                 }
             }
         }
-
+        */
 
 
 
@@ -729,6 +787,24 @@ namespace GameCreatorGroupProject
                 }
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void btnRemoveResource_Click(object sender, EventArgs e)
+        {
+            if (listResources.SelectedValue != null)
+            {
+                DialogResult d = MessageBox.Show("Are you sure you want to remove this resource?\nResource will be permanently deleted.", "", MessageBoxButtons.YesNoCancel);
+                if (d == DialogResult.Yes)
+                {
+                    string selected = listResources.GetItemText(listResources.SelectedItem);
+                    if (File.Exists(project.Resources[selected]))
+                    {
+                        File.Delete(project.Resources[selected]);
+                    }
+                    listResources.Items.Remove(listResources.SelectedItem);
+                }
+            }
+            
         }
     }
 }

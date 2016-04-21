@@ -40,7 +40,7 @@ namespace GameCreatorGroupProject
             string dest = project.getResourceDir() + @"\" + name + ext;
 
             // Copy file into project's resource directory, overwrite if needed.
-            if (!resPath.Equals(dest))
+            if (!File.Exists(dest))
             {
                 File.Copy(resPath, dest, true);
             }
@@ -48,7 +48,7 @@ namespace GameCreatorGroupProject
             // Update the project's list of resources
             if (!project.Resources.ContainsKey(name))
             {
-                project.Resources.Add(name, dest);
+                project.Resources.Add(name + ext, dest);
             }
             
         }
