@@ -172,7 +172,7 @@ namespace GameCreatorGroupProject
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 disconnect();
                 MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);

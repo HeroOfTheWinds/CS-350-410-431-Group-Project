@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace GameCreatorGroupProject
 {
-    abstract class TCPClient
+    public abstract class TCPClient
     {
         protected TcpClient client = null;
         protected NetworkStream stream = null;

@@ -34,12 +34,15 @@ namespace GameCreatorGroupProject
 
         //MainClient to be created when form is loaded
         MainClient online;
-        TCPClient chat;
+        private TCPClient chat;
 
         //private string sprloc = null;
         private Image spr = null;
+        private string sprp = null;
         private Vector2[] cOffsets = null;
         private Vector2[] bOffsets = null;
+
+        private List<string> objects = new List<string>();
 
         private uint chatServerID;
 
@@ -104,8 +107,14 @@ namespace GameCreatorGroupProject
             project.setDirectory(targetPath);
             project.setResourceDir(resPath);
 
-            // Save to file
-            project.SaveProject();
+            // Save the project
+            int errNum = project.SaveProject();
+
+            if (errNum == 55)
+            {
+                // File was open in another application, tell user we failed.
+                MessageBox.Show("Error: File still open in another process. Could not save.");
+            }
 
             // Set variable to say there is an open project.
             projectOpen = true;
@@ -123,6 +132,7 @@ namespace GameCreatorGroupProject
                 return;
             }
 
+            openResourceDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
             // Get the path to the resource from the user
             openResourceDialog.ShowDialog();
 
@@ -137,11 +147,19 @@ namespace GameCreatorGroupProject
 
             // Show resource in list view
             listResources.Items.Add(newName);
+            cmbSprite.Items.Add(project.Resources[newName]);
         }
 
         // Show the preview of the image when selected, and its file properties
         private void listResources_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
             // Look up item in the resource list to get path and display in the preview pane.
             picPreview.ImageLocation = project.Resources[listResources.SelectedItem.ToString()];
 
@@ -210,12 +228,82 @@ namespace GameCreatorGroupProject
             {
                 listResources.Items.Add(resName);
             }
+
+            foreach (string resPath in project.Resources.Values)
+            {
+                // Fill up the sprite selection box in the Object Designer window
+                cmbSprite.Items.Add(resPath);
+            }
+
+            bool invalid;
+            listObjects.DataSource = objects;
+            foreach (string s in Directory.GetFiles(project.getResourceDir()))
+            {
+                invalid = false;
+                Regex ob = new Regex(@"(.*)\.gob$");
+                Regex c = new Regex(@"(.*)\.goc$");
+                Match obm;
+                Match cm;
+                if ((obm = ob.Match(s)).Success)
+                {
+                    //parses file for validity
+                    using (BinaryReader reader = new BinaryReader(File.Open(s, FileMode.Open)))
+                    {
+                        try
+                        {
+                            int elem;
+                            reader.ReadString();
+                            reader.ReadString();
+                            elem = reader.ReadInt32();
+                            for (int i = 0; i < elem; i++)
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
+                            //I think this will work? Makes sure this is the end of the file.
+                            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            invalid = true;
+                        }
+
+                    }
+                    if (!invalid)
+                    {
+                        //is index 1 right? all examples suggest it is, whats at 0?
+                        objects.Add(obm.Groups[1].Value);
+                        listObjects.DataSource = null;
+                        listObjects.DataSource = objects;
+                    }
+
+                }
+                else if ((cm = c.Match(s)).Success)
+                {
+                    //pars file for validity
+
+                    objects.Add(cm.Groups[1].Value);
+                    listObjects.DataSource = null;
+                    listObjects.DataSource = objects;
+                }
+            }
+
+            projectOpen = true;
         }
 
         private void itemConnect_Click(object sender, EventArgs e)
         {
             chatServerID = online.requestChatServer();
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+
+            chat = online.getAvailable();
+
+            ChatWindow cw = new ChatWindow(chat);
+            cw.Show();
+
             //online.connectClient(1, chatServerID, 1);
             //chat = MainClient.clients.ElementAt(0);
             //chat.connectClient(ServerInfo.getServerIP());
@@ -276,6 +364,7 @@ namespace GameCreatorGroupProject
         {
             try
             {
+                sprp = cmbSprite.Text;
                 spr = Image.FromFile(cmbSprite.Text);
                 CollisionDesigner.spr = spr;
                 picSpriteView.Image = spr;
@@ -291,6 +380,7 @@ namespace GameCreatorGroupProject
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "All Graphics Types|*.jpg;*.jpeg;*.png;*.bmp;*.exif;*.tif;*.tiff|JPG|*.jpg;*.jpeg|PNG|*.png|BMP|*.bmp|GIF|*.gif|EXIF|*.exif|TIFF|*.tiff;*.tif";
             if (d.ShowDialog() == DialogResult.OK)
             {
                 cmbSprite.Text = d.FileName;
@@ -306,23 +396,78 @@ namespace GameCreatorGroupProject
             //have something ask for width and height and scale off that
         }
 
+//have to add object to box
         private void btnAddObject_Click(object sender, EventArgs e)
         {
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
             OpenFileDialog d = new OpenFileDialog();
+            d.Filter = "Game Object Files|*.gob;*.goc|Game Object Data Files (*.gob)|*.gob|Game Object Code Files (*.goc)|*.goc";
             if (d.ShowDialog() == DialogResult.OK)
             {
                 //file must end in .gob, can change if want
-                Regex ob = new Regex(@".*\.gob$");
-                Regex c = new Regex(@".*\.goc$");
-                if (ob.Match(d.FileName).Success)
+                Regex ob = new Regex(@"(.*)\.gob$");
+                Regex c = new Regex(@"(.*)\.goc$");
+                Match obm;
+                Match cm;
+                if ((obm = ob.Match(d.FileName)).Success)
                 {
-                    //parse file for validity, print error if incorrect, else add to object collection
-                    File.Copy(d.FileName, project.getResourceDir());
+                    //parses file for validity
+                    using(BinaryReader reader = new BinaryReader(File.Open(d.FileName, FileMode.Open)))
+                    {
+                        try
+                        {
+                            int elem;
+                            reader.ReadString();
+                            reader.ReadString();
+                            elem = reader.ReadInt32();
+                            for (int i = 0; i < elem; i++)
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
+                            //I think this will work? Makes sure this is the end of the file.
+                            if (reader.BaseStream.Position != reader.BaseStream.Length)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        
+                    }
+                    
+                    try
+                    {
+                        File.Copy(d.FileName, project.getResourceDir());
+                    }
+                    catch (IOException)
+                    {
+                        MessageBox.Show("Object of the same name already exists.", "Object exists.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    objects.Add(obm.Groups[1].Value);
+                    listObjects.DataSource = null;
+                    listObjects.DataSource = objects;
                 }
-                else if (c.Match(d.FileName).Success)
+
+                else if ((cm = c.Match(d.FileName)).Success)
                 {
-                    //parse file for validity, print error if incorrect, else add to object collection
+                    //parse file for validity, print error if incorrect
+                    //also check if already exists
+                    objects.Add(cm.Groups[1].Value);
                     File.Copy(d.FileName, project.getResourceDir());
+                    listObjects.DataSource = null;
+                    listObjects.DataSource = objects;
                 }
                 else
                 {
@@ -343,49 +488,73 @@ namespace GameCreatorGroupProject
 
         private void listObjects_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
         }
-        //This should activate when clicking save object
+
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
-            if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || txtObjectName.Text.Equals(""))
+            // If no project is open, throw error and abandon function
+            if (!projectOpen)
+            {
+                MessageBox.Show("Error: No currently open projects.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: No currently open projects.");
+                return;
+            }
+
+            if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || (!radioSprite.Checked && !radioBox.Checked) || txtObjectName.Text.Equals(""))
             {
                 MessageBox.Show("Game objects must have a valid sprite, collision box, and name to be saved.", "Unable to generate game object.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                string file = project.getResourceDir() + txtObjectName.Text + ".gob";
+                string file = project.getResourceDir() + @"\" + txtObjectName.Text + ".gob";
                 if (File.Exists(file))
                 {
+                    DialogResult d = MessageBox.Show("Object of given name already exists.\nWould you like to overwrite the object?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (d == DialogResult.No)
+                    {
+                        return;
+                    }
+                    /*
                     int i = 0;
                     while (File.Exists(file + i.ToString()))
                     {
                         i++;
                     }
                     file = file + i.ToString();
+                    */
                 }
-                ////write stuff to file                                                                                                                       Working on now JM
-                //SaveFileDialog file1 = new SaveFileDialog();
-                //file1.FileName = txtObjectName.Text + ".cs";
-                ////file1.Filter="cs files (*.cs)|*.cs|All files (*.*|*.*).";
-                //file1.ShowDialog();
-
-                //StreamWriter filewrite = new StreamWriter(file1.FileName);
-                ////txtObjectCode.Text;
-            }
-            //if objectname is not null
-            if (!txtObjectName.Text.Equals("")) {
-                string file1 = project.getResourceDir() + txtObjectName.Text + ".goc:";
-                if (File.Exists(file1))
+                using (BinaryWriter write = new BinaryWriter(File.Open(file, FileMode.Create)))
                 {
-                    int i = 0;
-                    while (File.Exists(file1 + i.ToString()))
+                    write.Write(txtObjectName.Text);
+                    write.Write(sprp);
+                    if (radioBox.Checked)
                     {
-                        i++;
+                        write.Write(bOffsets.Length);
+                        foreach (Vector2 v in bOffsets)
+                        {
+                            write.Write(v.X);
+                            write.Write(v.Y);
+                        }
                     }
-                    file1 = file1 + i.ToString();
+                    
+                    else if(radioSprite.Checked)
+                    {
+                        write.Write(cOffsets.Length);
+                        foreach (Vector2 v in cOffsets)
+                        {
+                            write.Write(v.X);
+                            write.Write(v.Y);
+                        }
+                    }
                 }
             }
+            
         }
 
         private void btnRemoveObject_Click(object sender, EventArgs e)
