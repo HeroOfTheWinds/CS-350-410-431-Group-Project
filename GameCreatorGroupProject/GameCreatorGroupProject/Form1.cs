@@ -345,7 +345,7 @@ namespace GameCreatorGroupProject
         {
 
         }
-
+        //This should activate when clicking save object
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
             if (spr == null || (radioBox.Checked && bOffsets == null) || (radioSprite.Checked && cOffsets == null) || txtObjectName.Text.Equals(""))
@@ -364,9 +364,28 @@ namespace GameCreatorGroupProject
                     }
                     file = file + i.ToString();
                 }
-                //write stuff to file
+                ////write stuff to file                                                                                                                       Working on now JM
+                //SaveFileDialog file1 = new SaveFileDialog();
+                //file1.FileName = txtObjectName.Text + ".cs";
+                ////file1.Filter="cs files (*.cs)|*.cs|All files (*.*|*.*).";
+                //file1.ShowDialog();
+
+                //StreamWriter filewrite = new StreamWriter(file1.FileName);
+                ////txtObjectCode.Text;
             }
-            
+            //if objectname is not null
+            if (!txtObjectName.Text.Equals("")) {
+                string file1 = project.getResourceDir() + txtObjectName.Text + ".goc:";
+                if (File.Exists(file1))
+                {
+                    int i = 0;
+                    while (File.Exists(file1 + i.ToString()))
+                    {
+                        i++;
+                    }
+                    file1 = file1 + i.ToString();
+                }
+            }
         }
 
         private void btnRemoveObject_Click(object sender, EventArgs e)
