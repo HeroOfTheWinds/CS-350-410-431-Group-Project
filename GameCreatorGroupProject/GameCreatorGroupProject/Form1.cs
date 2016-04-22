@@ -788,10 +788,17 @@ namespace GameCreatorGroupProject
                         }
                     }
                 }
+                resImporter.SaveResource(project, txtObjectName.Text, ".gob", project.getResourceDir());
+                if (!listObjects.Items.Contains(txtObjectName.Text + ".gob"))
+                {
+                    listObjects.Items.Add(txtObjectName.Text + ".gob");
+                }
+                
             }
-            if (!txtObjectName.Text.Equals(""))
+            if (!txtObjectCode.Text.Equals(""))
             {
-                string file1 = project.getResourceDir() + txtObjectName.Text + ".goc:";
+                string file1 = project.getResourceDir() + @"\" + txtObjectName.Text + ".goc";
+                /*
                 if (File.Exists(file1))
                 {
                     int i = 0;
@@ -800,6 +807,12 @@ namespace GameCreatorGroupProject
                         i++;
                     }
                     file1 = file1 + i.ToString();
+                }
+                */
+                resImporter.SaveResource(project, txtObjectName.Text, ".goc", project.getResourceDir());
+                if (!listObjects.Items.Contains(txtObjectName.Text + ".goc"))
+                {
+                    listObjects.Items.Add(txtObjectName.Text + ".goc");
                 }
             }
         }
