@@ -10,6 +10,9 @@ using OpenTK;
 
 namespace GameCreatorGroupProject
 {
+
+
+    
     class GameObject
     {
         //contains all gameObjects with collision detection on, might have to move to external class rather than static var in case user is working on more than one project

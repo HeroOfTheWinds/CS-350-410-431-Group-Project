@@ -25,6 +25,7 @@ namespace GameCreatorGroupProject
         // Necessary to ensure the user doesn't load something nonexistent
         // or exit without saving a brand new project.
         bool projectOpen = false;
+        bool started = false;
 
         // Debug flag; used to bypass some checks or show extra information
         #if DEBUG
@@ -726,8 +727,7 @@ namespace GameCreatorGroupProject
             }
         }
 
-
-
+       
 
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
@@ -883,6 +883,32 @@ namespace GameCreatorGroupProject
         private void listObjects_SelectedValueChanged(object sender, EventArgs e)
         {
 
+        }
+        private void startercode() {
+            if (!started) {
+                started = true;
+                String nameofobj = "abc";
+                txtObjectCode.AppendText("class " + nameofobj + " : GameObject");
+                txtObjectCode.AppendText(Environment.NewLine);
+                txtObjectCode.AppendText("public "+nameofobj+"(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap, float ispeed, float acceleration, bool collision):base(name,referenceCoord,vertexOffsets,inputmap,ispeed,acceleration,collision)");
+                txtObjectCode.AppendText(Environment.NewLine);
+                txtObjectCode.AppendText("{");
+                txtObjectCode.AppendText(Environment.NewLine);
+                
+            }
+        }
+        private void btnOnCreate_Click_1(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+           // clickedButton.Text = "On Create";
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public override bool spawn(Vector2[] spawnCoords)");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
         }
     }
 }
