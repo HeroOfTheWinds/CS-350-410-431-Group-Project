@@ -18,7 +18,7 @@ namespace GameCreatorGroupProject
 
         public static Image spr;
         public static Vector2[] offsets;
-        private List<Tuple<Point, bool>> points = new List<Tuple<Point, bool>>();
+        public static List<Tuple<Point, bool>> points = new List<Tuple<Point, bool>>();
 
         /// <summary>
         /// Clean up any resources being used.

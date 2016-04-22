@@ -73,7 +73,7 @@ namespace GameCreatorGroupProject
         {
             if (!saved)
             {
-                DialogResult d = MessageBox.Show("Would you like to close the designer?\nCurrent design will be lost.", "", MessageBoxButtons.YesNo);
+                DialogResult d = MessageBox.Show("Would you like to close the designer?\nCurrent changes will be lost.", "", MessageBoxButtons.YesNo);
                 if (d == DialogResult.No)
                 {
                     e.Cancel = true;
