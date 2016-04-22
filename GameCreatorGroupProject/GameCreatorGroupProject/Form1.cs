@@ -798,17 +798,17 @@ namespace GameCreatorGroupProject
             if (!txtObjectCode.Text.Equals(""))
             {
                 string file1 = project.getResourceDir() + @"\" + txtObjectName.Text + ".goc";
-                /*
-                if (File.Exists(file1))
+
+                // Write the contents of the txtObjectCode to the file. 
+                txtObjectCode.AppendText(Environment.NewLine);
+                txtObjectCode.AppendText("}");
+                using (BinaryWriter write = new BinaryWriter(File.Open(file1, FileMode.Create)))
                 {
-                    int i = 0;
-                    while (File.Exists(file1 + i.ToString()))
-                    {
-                        i++;
-                    }
-                    file1 = file1 + i.ToString();
+                    write.Write(txtObjectName.Text);
+                    write.Write(sprp);
+
                 }
-                */
+
                 resImporter.SaveResource(project, txtObjectName.Text, ".goc", project.getResourceDir());
                 if (!listObjects.Items.Contains(txtObjectName.Text + ".goc"))
                 {
@@ -900,8 +900,8 @@ namespace GameCreatorGroupProject
         private void startercode() {
             if (!started) {
                 started = true;
-                String nameofobj = "abc";
-                txtObjectCode.AppendText("class " + nameofobj + " : GameObject");
+                String nameofobj = "placeholdername";
+                txtObjectCode.AppendText("class " + nameofobj + " : GameObject  //as of now requires manually enter a closing brace");
                 txtObjectCode.AppendText(Environment.NewLine);
                 txtObjectCode.AppendText("public "+nameofobj+"(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap, float ispeed, float acceleration, bool collision):base(name,referenceCoord,vertexOffsets,inputmap,ispeed,acceleration,collision)");
                 txtObjectCode.AppendText(Environment.NewLine);
@@ -913,7 +913,7 @@ namespace GameCreatorGroupProject
         private void btnOnCreate_Click_1(object sender, EventArgs e)
         {
             Button clickedButton = (Button)sender;
-           // clickedButton.Text = "On Create";
+           // this next line will disable the user from generating the frame code twice. Maybe want to allow though, if they erase it or mess it up.
             clickedButton.Enabled = false;
             startercode();
             txtObjectCode.AppendText(Environment.NewLine);
@@ -922,6 +922,57 @@ namespace GameCreatorGroupProject
             txtObjectCode.AppendText("{");
             txtObjectCode.AppendText(Environment.NewLine);
             txtObjectCode.AppendText("}");
+        }
+
+        private void btnOnDestruct_Click(object sender, EventArgs e)
+        {
+            string objname = "placeholdername";
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("~"+objname+"()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        private void btnCollision_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public void collisionsetting()// uncomment the collision setting you desire");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("//setcollision();");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("//removecollision()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        //related to update()
+        private void btnOnStep_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public override update()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        private void btnSetObjName_Click(object sender, EventArgs e)
+        {
+            //Try to get obj name here. not sure how to do that just yet.
+           
         }
     }
 }
