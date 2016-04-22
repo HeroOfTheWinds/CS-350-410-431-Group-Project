@@ -788,6 +788,8 @@ namespace GameCreatorGroupProject
                         }
                     }
                 }
+                resImporter.SaveResource(project, txtObjectName.Text, ".gob", project.getResourceDir());
+                listObjects.Items.Add(txtObjectName.Text + ".gob");
             }
             if (!txtObjectName.Text.Equals(""))
             {
@@ -801,6 +803,8 @@ namespace GameCreatorGroupProject
                     }
                     file1 = file1 + i.ToString();
                 }
+                resImporter.SaveResource(project, txtObjectName.Text, ".goc", project.getResourceDir());
+                listObjects.Items.Add(txtObjectName.Text + ".goc");
             }
         }
 
