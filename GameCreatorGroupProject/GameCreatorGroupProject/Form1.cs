@@ -1076,6 +1076,12 @@ namespace GameCreatorGroupProject
             txtObjectCode.AppendText(Environment.NewLine);
             txtObjectCode.AppendText("{");
             txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("if(isSpawned)");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+            txtObjectCode.AppendText(Environment.NewLine);
             txtObjectCode.AppendText("}");
         }
 
@@ -1202,6 +1208,16 @@ namespace GameCreatorGroupProject
             // Here we will gather the data we want to let the user drag and drop onto the GLControl
             ListBox source = (ListBox)sender;
             DoDragDrop(source.SelectedItem, DragDropEffects.Copy);
+        }
+
+        private void btnInput_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            var selectionIndex = txtObjectCode.SelectionStart;
+            var textinput = "if (state[Key./*insert key code here*/]){}";
+            txtObjectCode.Text = txtObjectCode.Text.Insert(selectionIndex, textinput);
+
+            txtObjectCode.SelectionStart = selectionIndex;
         }
     }
 }
