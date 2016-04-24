@@ -207,7 +207,6 @@ namespace GameCreatorGroupProject
                     // Save the resource in the project and copy file to resource folder
                     resImporter.SaveResource(project, obm.Groups[1].Value, Path.GetExtension(openResourceDialog.FileName), openResourceDialog.FileName);
 
-<<<<<<< HEAD
                     if (!listObjects.Items.Contains(txtObjectName.Text + ".gob"))
                     {
                         listObjects.Items.Add(obm.Groups[1].Value + ".gob");
@@ -216,13 +215,10 @@ namespace GameCreatorGroupProject
                     {
                         listResources.Items.Add(obm.Groups[1].Value + ".gob");
                     }
-
-                    
-=======
-                    listObjects.Items.Add(obm.Groups[1].Value + ".gob");
-                    listResources.Items.Add(obm.Groups[1].Value + ".gob");
-                    listObjChoices.Items.Add(obm.Groups[1].Value + ".gob");
->>>>>>> a81b3e50574d69e72cc14ecc1a8a5a18d711091e
+                    if (!listObjChoices.Items.Contains(txtObjectName.Text + ".gob"))
+                    {
+                        listObjChoices.Items.Add(obm.Groups[1].Value + ".gob");
+                    }
                 }
 
                 else if ((cm = c.Match(openResourceDialog.FileName)).Success)
