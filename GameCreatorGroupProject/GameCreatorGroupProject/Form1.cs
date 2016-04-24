@@ -42,6 +42,11 @@ namespace GameCreatorGroupProject
         MainClient online;
         private TCPClient chat;
 
+
+        private Dictionary<string, string> theMarvelousDictionaryOfGameObjectNamesAndImages = new Dictionary<string, string>();
+
+
+
         //private string sprloc = null;
         private Image spr = null;
         private string sprp = null;
@@ -169,7 +174,11 @@ namespace GameCreatorGroupProject
                             int elem;
                             reader.ReadString();
                             reader.ReadString();
-                            reader.ReadBoolean();
+                            if (reader.ReadBoolean())
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
                             elem = reader.ReadInt32();
                             for (int i = 0; i < elem; i++)
                             {
@@ -194,16 +203,32 @@ namespace GameCreatorGroupProject
                     // Save the resource in the project and copy file to resource folder
                     resImporter.SaveResource(project, obm.Groups[1].Value, Path.GetExtension(openResourceDialog.FileName), openResourceDialog.FileName);
 
-                    listObjects.Items.Add(obm.Groups[1].Value + ".gob");
-                    listResources.Items.Add(obm.Groups[1].Value + ".gob");
+                    if (!listObjects.Items.Contains(txtObjectName.Text + ".gob"))
+                    {
+                        listObjects.Items.Add(obm.Groups[1].Value + ".gob");
+                    }
+                    if (!listResources.Items.Contains(txtObjectName.Text + ".gob"))
+                    {
+                        listResources.Items.Add(obm.Groups[1].Value + ".gob");
+                    }
+
+                    
                 }
 
                 else if ((cm = c.Match(openResourceDialog.FileName)).Success)
                 {
                     //parse file for validity, print error if incorrect
                     //also check if already exists
-                    listObjects.Items.Add(cm.Groups[1].Value + ".goc");
-                    listResources.Items.Add(cm.Groups[1].Value + ".goc");
+                    if (!listObjects.Items.Contains(txtObjectName.Text + ".goc"))
+                    {
+                        listObjects.Items.Add(cm.Groups[1].Value + ".goc");
+                    }
+                    if (!listResources.Items.Contains(txtObjectName.Text + ".goc"))
+                    {
+                        listResources.Items.Add(cm.Groups[1].Value + ".goc");
+                    }
+                    
+                    
 
                     // Save the resource in the project and copy file to resource folder
                     resImporter.SaveResource(project, cm.Groups[1].Value, Path.GetExtension(openResourceDialog.FileName), openResourceDialog.FileName);
@@ -343,15 +368,22 @@ namespace GameCreatorGroupProject
 
                     if (ob.Match(k.Value).Success)
                     {
+                        
                         //parses file for validity
                         using (BinaryReader reader = new BinaryReader(File.Open(k.Value, FileMode.Open)))
                         {
                             try
                             {
+                                string fp;
+                                string name;
                                 int elem;
-                                reader.ReadString();
-                                reader.ReadString();
-                                reader.ReadBoolean();
+                                name = reader.ReadString();
+                                fp = reader.ReadString();
+                                if (reader.ReadBoolean())
+                                {
+                                    reader.ReadInt32();
+                                    reader.ReadInt32();
+                                }
                                 elem = reader.ReadInt32();
                                 for (int i = 0; i < elem; i++)
                                 {
@@ -363,6 +395,10 @@ namespace GameCreatorGroupProject
                                 {
                                     throw new Exception();
                                 }
+                                if (!theMarvelousDictionaryOfGameObjectNamesAndImages.ContainsKey(name))
+                                {
+                                    theMarvelousDictionaryOfGameObjectNamesAndImages.Add(name, fp);
+                                }
                             }
                             catch (Exception)
                             {
@@ -372,7 +408,6 @@ namespace GameCreatorGroupProject
                         }
                         if (!invalid)
                         {
-                            //is index 1 right? all examples suggest it is, whats at 0?
                             listObjects.Items.Add(k.Key);
                             listResources.Items.Add(k.Key);
                         }
@@ -527,7 +562,7 @@ namespace GameCreatorGroupProject
             {
                 sprp = cmbSprite.Text;
                 spr = Image.FromFile(cmbSprite.Text);
-                CollisionDesigner.spr = spr;
+                spr = spr;
                 picSpriteView.Image = spr;
                 radioBox.Enabled = true;
                 radioSprite.Enabled = true;
@@ -597,7 +632,11 @@ namespace GameCreatorGroupProject
                             int elem;
                             reader.ReadString();
                             reader.ReadString();
-                            reader.readBoolean();
+                            if (reader.readBoolean())
+                            {
+                                reader.ReadInt32();
+                                reader.ReadInt32();
+                            }
                             elem = reader.ReadInt32();
                             for (int i = 0; i < elem; i++)
                             {
@@ -674,9 +713,9 @@ namespace GameCreatorGroupProject
                 DialogResult d = MessageBox.Show("Load selected object?\nUnsaved object data will be deleted", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (d == DialogResult.Yes)
                 {
-                    using (BinaryReader reader = new BinaryReader(File.Open(project.Resources[item], FileMode.Open)))
+                    try
                     {
-                        try
+                        using (BinaryReader reader = new BinaryReader(File.Open(project.Resources[item], FileMode.Open)))
                         {
                             int elem;
                             txtObjectName.Text = reader.ReadString();
@@ -685,19 +724,23 @@ namespace GameCreatorGroupProject
                             if (type = reader.ReadBoolean())
                             {
                                 radioSprite.Checked = true;
+                                CollisionDesigner.refPoint = new Point(reader.ReadInt32(), reader.ReadInt32());
+                                CollisionDesigner.points = new List<Tuple<Point, bool>>();
+                                CollisionDesigner.points.Add(new Tuple<Point, bool>(CollisionDesigner.refPoint, false));
                             }
                             else
                             {
                                 radioBox.Checked = true;
                             }
+
                             elem = reader.ReadInt32();
                             if (type)
                             {
                                 cOffsets = new Vector2[elem];
                                 for (int i = 0; i < elem; i++)
                                 {
-
                                     cOffsets[i] = new Vector2(reader.ReadInt32(), reader.ReadInt32());
+                                    CollisionDesigner.points.Add(new Tuple<Point, bool>(new Point((int)cOffsets[i].X + CollisionDesigner.refPoint.X, (int)cOffsets[i].Y + CollisionDesigner.refPoint.Y), false));
                                 }
                             }
                             else
@@ -715,11 +758,13 @@ namespace GameCreatorGroupProject
                                 throw new Exception();
                             }
                         }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
+                    
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Invalid game object file.", "Invalid file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        listObjects.Items.Remove(listObjects.SelectedItem);
+                        return;
                     }
                 }
 
@@ -787,11 +832,13 @@ namespace GameCreatorGroupProject
                     else if(radioSprite.Checked)
                     {
                         write.Write(true);
+                        write.Write(CollisionDesigner.refPoint.X);
+                        write.Write(CollisionDesigner.refPoint.Y);
                         write.Write(cOffsets.Length);
                         foreach (Vector2 v in cOffsets)
                         {
-                            write.Write(v.X);
-                            write.Write(v.Y);
+                            write.Write((int)v.X);
+                            write.Write((int)v.Y);
                         }
                     }
                 }
@@ -800,8 +847,19 @@ namespace GameCreatorGroupProject
                 {
                     listObjects.Items.Add(txtObjectName.Text + ".gob");
                 }
-                
+                if (!listResources.Items.Contains(txtObjectName.Text + ".gob"))
+                {
+                    listResources.Items.Add(txtObjectName.Text + ".gob");
+                }
+
             }
+
+            if (!theMarvelousDictionaryOfGameObjectNamesAndImages.ContainsKey(txtObjectName.Text))
+            {
+                theMarvelousDictionaryOfGameObjectNamesAndImages.Add(txtObjectName.Text, sprp);
+            }
+            
+
             if (!txtObjectCode.Text.Equals(""))
             {
                 string file1 = project.getResourceDir() + @"\" + txtObjectName.Text + ".goc";
@@ -820,6 +878,10 @@ namespace GameCreatorGroupProject
                 if (!listObjects.Items.Contains(txtObjectName.Text + ".goc"))
                 {
                     listObjects.Items.Add(txtObjectName.Text + ".goc");
+                }
+                if (!listResources.Items.Contains(txtObjectName.Text + ".goc"))
+                {
+                    listResources.Items.Add(txtObjectName.Text + ".goc");
                 }
             }
         }
@@ -855,6 +917,8 @@ namespace GameCreatorGroupProject
 
                 catch (Exception)
                 {
+                    //will this work???
+                    cmbSprite.Items.Remove(cmbSprite.SelectedItem);
                     MessageBox.Show("Invalid Sprite.", "Invalid sprite selection.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -879,22 +943,62 @@ namespace GameCreatorGroupProject
         {
             if (listResources.SelectedItem != null)
             {
-                DialogResult d = MessageBox.Show("Are you sure you want to remove this resource?\nResource will be permanently deleted.", "", MessageBoxButtons.YesNoCancel);
+                DialogResult d = MessageBox.Show("Are you sure you want to remove this resource?\nResource will be permanently deleted, and project will be saved.", "", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (d == DialogResult.Yes)
                 {
+                    string fp = "";
                     string selected = listResources.GetItemText(listResources.SelectedItem);
                     if (project.Resources.ContainsKey(selected))
                     {
                         if (File.Exists(project.Resources[selected]))
                         {
-                            File.Delete(project.Resources[selected]);
+                            try
+                            {
+                                File.Delete(project.Resources[selected]);
+                            }
+                            catch (IOException)
+                            {
+                                MessageBox.Show("Resource could not be deleted.", "File error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
                         }
-                        
+
+                        fp = project.Resources[selected];
+
                         project.Resources.Remove(selected);
+                        project.SaveProject();
                     }
-//also need to delete from other elements if valid
+
                     listResources.Items.Remove(listResources.SelectedItem);
-                    
+                    //this doesnt work... not gonna bother figuring out how to do this for now
+                    //listObjects.Items.Remove(listResources.SelectedItem);
+
+                    Regex ob = new Regex(@"(.*)\.gob$");
+                    Match obm;
+
+                    if ((obm = ob.Match(selected)).Success)
+                    {
+                        if (theMarvelousDictionaryOfGameObjectNamesAndImages.ContainsKey(obm.Groups[1].Value))
+                        {
+                            theMarvelousDictionaryOfGameObjectNamesAndImages.Remove(obm.Groups[1].Value);
+                        }
+                    }
+
+                    List<string> temp = new List<string>();
+
+                    foreach(KeyValuePair<string, string> k in theMarvelousDictionaryOfGameObjectNamesAndImages)
+                    {
+                        if (k.Value.Equals(fp))
+                        {
+                            temp.Add(k.Key);
+                        }
+
+                    }
+                    foreach (string s in temp)
+                    {
+                        theMarvelousDictionaryOfGameObjectNamesAndImages.Remove(s);
+                    }
+
                 }
             }
             

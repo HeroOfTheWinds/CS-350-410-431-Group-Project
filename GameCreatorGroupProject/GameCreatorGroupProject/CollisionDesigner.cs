@@ -86,6 +86,7 @@ namespace GameCreatorGroupProject
         {
             if (points.Count > 2)
             {
+                refPoint = new Point(points[0].Item1.X, points[0].Item1.Y);
                 offsets = new Vector2[points.Count - 1];
                 for (int i = 1; i < points.Count; i++)
                 {
