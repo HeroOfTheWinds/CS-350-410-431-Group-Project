@@ -98,6 +98,7 @@ namespace Server_application
                     if (!(connectExpected.IsSet && reader.ReadLine().Equals(expectedClient.ToString()) && reader.ReadLine().Equals(currentID.ToString())))
                     {
                         writer.WriteLine("err");
+                        writer.Flush();
                         client.GetStream().Close();
                         client.Close();
                     }
@@ -106,6 +107,7 @@ namespace Server_application
                     {
                         //reports to client if successfully connected
                         writer.WriteLine("success");
+                        writer.Flush();
                         connectExpected.Reset();
                         Thread t = new Thread(transmitter);
                         t.Start(client);
