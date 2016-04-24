@@ -22,6 +22,11 @@ namespace GameCreatorGroupProject
         // Create an empty Project instance
         Project project = new Project();
 
+        // Variable to store information on the Room currently being worked on
+        Room currentRoom = new Room();
+
+        Dictionary<string, string> spritePaths = new Dictionary<string, string>();
+
         // Variable to track whether a project is actively being edited
         // Necessary to ensure the user doesn't load something nonexistent
         // or exit without saving a brand new project.
@@ -137,8 +142,7 @@ namespace GameCreatorGroupProject
                 return;
             }
         }
-
-
+        
 
 
         // This function is called when the user clicks the Add button in the Resource Manager.
@@ -196,6 +200,7 @@ namespace GameCreatorGroupProject
 
                     listObjects.Items.Add(obm.Groups[1].Value + ".gob");
                     listResources.Items.Add(obm.Groups[1].Value + ".gob");
+                    listObjChoices.Items.Add(obm.Groups[1].Value + ".gob");
                 }
 
                 else if ((cm = c.Match(openResourceDialog.FileName)).Success)
@@ -233,16 +238,6 @@ namespace GameCreatorGroupProject
         // Show the preview of the image when selected, and its file properties
         private void listResources_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //went a bit crazy with these eh? there shouldnt be anything in here if no projects selected
-            /*
-            // If no project is open, throw error and abandon function
-            if (!projectOpen)
-            {
-                MessageBox.Show("Error: No currently open projects.");
-                return;
-            }
-            */
-
             // Look up item in the resource list to get path and display in the preview pane.
             try
             {
@@ -374,6 +369,7 @@ namespace GameCreatorGroupProject
                         {
                             //is index 1 right? all examples suggest it is, whats at 0?
                             listObjects.Items.Add(k.Key);
+                            listObjChoices.Items.Add(k.Key);
                             listResources.Items.Add(k.Key);
                         }
 
@@ -383,6 +379,7 @@ namespace GameCreatorGroupProject
                         //parse file for validity
 
                         listObjects.Items.Add(k.Key);
+                        listObjChoices.Items.Add(k.Key);
                         listResources.Items.Add(k.Key);
                     }
                     /*
@@ -799,6 +796,7 @@ namespace GameCreatorGroupProject
                 if (!listObjects.Items.Contains(txtObjectName.Text + ".gob"))
                 {
                     listObjects.Items.Add(txtObjectName.Text + ".gob");
+                    listObjChoices.Items.Add(txtObjectName.Text + ".gob");
                 }
                 
             }
@@ -987,6 +985,31 @@ namespace GameCreatorGroupProject
 
         }
 
+        /*
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            OpenTK related stuff for initialization
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        */
+
+        // Dictionary of named shader programs from our custom class
+        Dictionary<string, ShaderProgram> shaders = new Dictionary<string, ShaderProgram>();
+        string activeShader = "default";
+
+        // Index buffer object elements
+        int ibo_elements;
+
+        // More info for the VBO
+        Vector3[] vertdata;
+        Vector3[] coldata;
+        int[] indicedata;
+        Vector2[] texcoorddata;
+
+        // Dictionary of Lists of GameObjects to specify relative draw order (i.e. depth)
+        Dictionary<int, List<GameObject>> objects = new Dictionary<int, List<GameObject>>();
+
+        // Dictionary to store texture ID's by name
+        Dictionary<string, int> textures = new Dictionary<string, int>();
+
         private void glRoomView_Load(object sender, EventArgs e)
         {
             // Check that the control has loaded
@@ -1003,6 +1026,38 @@ namespace GameCreatorGroupProject
             GL.LoadIdentity();
             GL.Ortho(0, w, 0, h, -1, 1);
             GL.Viewport(0, 0, w, h);
+
+            // Generate a buffer on the graphics card for VBO indices
+            GL.GenBuffers(1, out ibo_elements);
+
+            // Load two shaders, one for test squares and the other for textured sprites
+            shaders.Add("default", new ShaderProgram("vs.glsl", "fs.glsl", true));
+            shaders.Add("textured", new ShaderProgram("vs_tex.glsl", "fs_tex.glsl", true));
+
+            // Declare that the shader we will use first is the textured sprite
+            activeShader = "textured";
+        }
+
+        private void updateRenderList()
+        {
+            // Load gamesObjects into room, taking their z-depth to slot them into the correct slot in our dictionary
+            // Also set their starting positions
+            foreach (Vector3 vec in currentRoom.Objects.Keys)
+            {
+                // Check if our dictionary has an entry for the current draw depth yet
+                if (!objects.ContainsKey((int)vec.Z))
+                {
+                    // It doesn't, so create a new list for depth Z
+                    objects.Add((int)vec.Z, new List<GameObject>());
+                    // Add this object to the new list
+                    objects[(int)vec.Z].Add(currentRoom.Objects[vec]);
+                }
+                else
+                {
+                    // Add this object to the correct list
+                    objects[(int)vec.Z].Add(currentRoom.Objects[vec]);
+                }
+            }
         }
 
         private void glRoomView_Paint(object sender, PaintEventArgs e)
@@ -1013,6 +1068,9 @@ namespace GameCreatorGroupProject
 
             // Clear previously drawn graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            
+
             // Show the new graphics
             glRoomView.SwapBuffers();
         }
@@ -1026,11 +1084,19 @@ namespace GameCreatorGroupProject
         {
             // This is where we will capture the data for the gameObject dropped into the form
             // Function fires when user releases the mouse button after entering the control.
+
+            // Receive the data
+            GLControl destination = (GLControl)sender;
+            String objName = (String)e.Data.GetData(typeof(String));
+
+            updateRenderList();
         }
 
         private void listObjChoices_MouseDown(object sender, MouseEventArgs e)
         {
             // Here we will gather the data we want to let the user drag and drop onto the GLControl
+            ListBox source = (ListBox)sender;
+            DoDragDrop(source.SelectedItem, DragDropEffects.Copy);
         }
     }
 }

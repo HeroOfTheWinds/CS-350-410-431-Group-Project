@@ -12,6 +12,8 @@ namespace GameCreatorGroupProject
     {
         public Dictionary<Vector3, GameObject> Objects;
         private Color Bcolor; //color4 is the struct in OpenTK.Graphics for color
+        public List<Background> BG;
+        public List<BGTile> Tiles;
         private int sizeWidth; //dimensions (x) of the room
         private int sizeHeight; //dimensions (y) of the room
         private int FPS; //rate a which the frames go
