@@ -22,7 +22,7 @@ namespace GameCreatorGroupProject
             throw new NotImplementedException();
         }
 
-        public override void send(ref object data)
+        public override void send(Object data)
         {
             throw new NotImplementedException();
         }

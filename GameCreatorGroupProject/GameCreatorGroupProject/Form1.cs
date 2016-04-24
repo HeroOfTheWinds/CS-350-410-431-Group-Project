@@ -248,10 +248,10 @@ namespace GameCreatorGroupProject
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string msg = "Hello World!";
-            object temp = msg;
+            //object temp = msg;
             if (chat == null)
                 chat = (ChatClient) online.getAvailable();
-            chat.send(ref temp);
+            chat.send(msg);
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)

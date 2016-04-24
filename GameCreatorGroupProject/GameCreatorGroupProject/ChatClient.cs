@@ -88,7 +88,7 @@ namespace GameCreatorGroupProject
 
 
                         //add code to write message to chat interface
-                        MessageBox.Show(message);
+                        //MessageBox.Show(message);
                         if (DataReceived != null) // check if subscribed
                             DataReceived(message); // raise event with data
                     }
@@ -99,12 +99,14 @@ namespace GameCreatorGroupProject
         }
 
         //sends a message
-        public override void send(ref Object message)
+        public override void send(Object message)
         {
             if (writer != null)
             {
                 //writes message to stream
-                writer.WriteLine((string)message);
+                //writer.WriteLineAsync(MainClient.getUsername());
+                //writer.WriteLine(MainClient.getUsername());
+                writer.WriteLine(message);
                 writer.Flush();
             }
             else

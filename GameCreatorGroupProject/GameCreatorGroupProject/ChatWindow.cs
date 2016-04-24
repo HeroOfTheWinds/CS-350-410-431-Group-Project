@@ -22,8 +22,8 @@ namespace GameCreatorGroupProject
 
         private void sendMessage(string msg)
         {
-            object temp = msg;
-            chat.send(ref temp);
+            //object temp = msg;
+            chat.send(msg);
         }
 
         public ChatWindow(ChatClient c, MainClient o)
@@ -57,7 +57,7 @@ namespace GameCreatorGroupProject
         {
             //chat client receives new message
             //Chat message displayed
-            richTextBox1.Text += msg;
+            richTextBox1.Text += msg+"\n";
         }
 
         private void sendButton_Click(object sender, EventArgs e)

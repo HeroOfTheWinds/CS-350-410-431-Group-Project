@@ -88,8 +88,10 @@ namespace GameCreatorGroupProject
                 using (staticClient = new TcpClient())
                 {
                     //attempts to connect with 5 second timeout
-                    IAsyncResult re = client.BeginConnect(serverIP, port, null, null);
+                    IAsyncResult re = staticClient.BeginConnect(serverIP, port, null, null);
                     bool connectede = re.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+
+
                     if (connectede)
                     {
                         staticStream = staticClient.GetStream();
@@ -177,6 +179,11 @@ namespace GameCreatorGroupProject
                 disconnect();
                 MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private bool onConnect(IAsyncResult ar)
+        {
+            return true;
         }
 
 
