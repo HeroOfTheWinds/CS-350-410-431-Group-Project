@@ -1,2 +1,11 @@
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe.config
 C:\Users\Jared\Documents\GitHub\mod14\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\bin\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\bin\Debug\Server application.pdb
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server_application.Form1.resources
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.pdb
