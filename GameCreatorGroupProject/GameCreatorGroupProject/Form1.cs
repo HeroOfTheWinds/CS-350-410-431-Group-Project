@@ -905,10 +905,10 @@ namespace GameCreatorGroupProject
         private void startercode() {
             if (!started) {
                 started = true;
-                String nameofobj = "placeholdername";
-                txtObjectCode.AppendText("class " + nameofobj + " : GameObject  //as of now requires manually enter a closing brace");
+                
+                txtObjectCode.AppendText("class " + txtObjectName.Text + " : GameObject  //as of now requires manually enter a closing brace");
                 txtObjectCode.AppendText(Environment.NewLine);
-                txtObjectCode.AppendText("public "+nameofobj+"(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap, float ispeed, float acceleration, bool collision):base(name,referenceCoord,vertexOffsets,inputmap,ispeed,acceleration,collision)");
+                txtObjectCode.AppendText("public "+ txtObjectName.Text + "(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap, float ispeed, float acceleration, bool collision):base(name,referenceCoord,vertexOffsets,inputmap,ispeed,acceleration,collision)");
                 txtObjectCode.AppendText(Environment.NewLine);
                 txtObjectCode.AppendText("{");
                 txtObjectCode.AppendText(Environment.NewLine);
@@ -931,12 +931,12 @@ namespace GameCreatorGroupProject
 
         private void btnOnDestruct_Click(object sender, EventArgs e)
         {
-            string objname = "placeholdername";
+            
             Button clickedButton = (Button)sender;
             clickedButton.Enabled = false;
             startercode();
             txtObjectCode.AppendText(Environment.NewLine);
-            txtObjectCode.AppendText("~"+objname+"()");
+            txtObjectCode.AppendText("~"+ txtObjectName.Text + "()");
             txtObjectCode.AppendText(Environment.NewLine);
             txtObjectCode.AppendText("{");
             txtObjectCode.AppendText(Environment.NewLine);

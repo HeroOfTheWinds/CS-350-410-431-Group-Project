@@ -36,7 +36,7 @@ namespace Server_application
                     listener.Start();
                 }
                 //displays error box if unable to start server
-                catch (SocketException e)
+                catch (SocketException)
                 {
                     MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -85,165 +85,169 @@ namespace Server_application
                 //control while client connected and server running
                 while (thisClient.Connected && running)
                 {
-                    //checks if data is available on the clients stream
-                    if (stream.DataAvailable)
+                    try
                     {
-                        //gets the type of request sent by the client
-                        byte reqType = reader.ReadByte();
-                        switch (reqType)
+                        //checks if data is available on the clients stream
+                        if (stream.DataAvailable)
                         {
-                            //request for chat server
-                            case 1:
-                                //locks to ensure server counter not modified by another thread
-                                lock (serverCounterLock)
-                                {
-                                    //increments server counter
-                                    serverCounter++;
-                                    //creates chat server with serverCounter as its ID in new thread
-                                    Thread tC = new Thread(startChatServer);
-                                    tC.Start(serverCounter);
-                                    //writes the assigned serverID to client
-                                    writer.Write(serverCounter);
-                                }
-                                break;
-                            //request for resource server
-                            case 2:
-                                //locks to ensure server counter not modified by another thread
-                                lock (serverCounterLock)
-                                {
-                                    //increments server counter
-                                    serverCounter++;
-                                    //creates resource server with serverCounter as its ID in new thread
-                                    Thread tR = new Thread(startResourceServer);
-                                    tR.Start(serverCounter);
-                                    //writes the assigned serverID to client
-                                    writer.Write(serverCounter);
-                                }
-                                break;
-                            //request for real time collaboration server
-                            case 3:
-                                //locks to ensure server counter not modified by another thread
-                                lock (serverCounterLock)
-                                {
-                                    //increments server counter
-                                    serverCounter++;
-                                    //creates real time collaboration server with serverCounter as its ID in new thread
-                                    Thread tRTC = new Thread(startRTCServer);
-                                    tRTC.Start(serverCounter);
-                                    //writes the assigned serverID to client
-                                    writer.Write(serverCounter);
-                                }
-                                break;
-                            //request to connect a client to a server
-                            case 4:
-                                TcpClient connect;
-                                //reads connection info from stream
-                                byte serType = reader.ReadByte();
-                                uint serverID = reader.ReadUInt32();
-                                uint clientID = reader.ReadUInt32();
-                                //checks if specified client connected, and gets corresponding TcpClient
-                                if (clientList.TryGetValue(clientID, out connect))
-                                {
-                                    //creates reader and writer on requested clients stream
-                                    NetworkStream cStream = connect.GetStream();
-                                    BinaryWriter cWriter = new BinaryWriter(cStream);
-                                    //indicates whether client successfully connected
-                                    bool success = false;
-                                    //checks the type of server connection request for
-                                    switch (serType)
+                            //gets the type of request sent by the client
+                            byte reqType = reader.ReadByte();
+                            switch (reqType)
+                            {
+                                //request for chat server
+                                case 1:
+                                    //locks to ensure server counter not modified by another thread
+                                    lock (serverCounterLock)
                                     {
-                                        //connection request for chat server
-                                        case 1:
-                                            //locks to ensure ChatServer's currentID is not changed
-                                            lock (ChatServer.IDLock)
-                                            {
-                                                //tells chat servers listener that incoming request is for server with specified ID
-                                                ChatServer.setCurrentID(serverID);
-                                                ChatServer.setExpectedClient(clientID);
-                                                //tells chat server that a connection is expected
-                                                ChatServer.connectExpected.Set();
-                                                //tells client to connect
-                                                cWriter.Write(serType);
-                                                cWriter.Write(serverID);
-                                                //waits for client to connect to unlock, connectExpected set to false when it does
-                                                success = ChatServer.connected.Wait(TimeSpan.FromSeconds(5));
-                                                //ensures values reset regardless of outcome
-                                                ChatServer.connectExpected.Reset();
-                                                ChatServer.connected.Reset();
-                                            }
-                                            break;
-                                        //connection request for resource server
-                                        case 2:
-                                            //structure same as chat server, see comments for case 1
-                                            lock (ResourceServer.IDLock)
-                                            {
-                                                ResourceServer.setCurrentID(serverID);
-                                                ResourceServer.setExpectedClient(clientID);
-                                                ResourceServer.connectExpected.Set();
-                                                cWriter.Write(serType);
-                                                cWriter.Write(serverID);
-                                                success = ResourceServer.connected.Wait(TimeSpan.FromSeconds(5));
-                                                //ensures values reset regardless of outcome
-                                                ResourceServer.connectExpected.Reset();
-                                                ResourceServer.connected.Reset();
-                                            }
-                                            break;
-                                        //connection request for real time collaboration server
-                                        case 3:
-                                            //structure same as chat server, see comments for case 1
-                                            lock (RTCServer.IDLock)
-                                            {
-                                                RTCServer.setCurrentID(serverID);
-                                                RTCServer.setExpectedClient(clientID);
-                                                RTCServer.connectExpected.Set();
-                                                cWriter.Write(serType);
-                                                cWriter.Write(serverID);
-                                                success = RTCServer.connected.Wait(TimeSpan.FromSeconds(5));
-                                                //ensures values reset regardless of outcome
-                                                RTCServer.connectExpected.Reset();
-                                                RTCServer.connected.Reset();
-                                            }
-                                            break;
+                                        //increments server counter
+                                        serverCounter++;
+                                        //creates chat server with serverCounter as its ID in new thread
+                                        Thread tC = new Thread(startChatServer);
+                                        tC.Start(serverCounter);
+                                        //writes the assigned serverID to client
+                                        writer.Write(serverCounter);
                                     }
-                                    //checks if requested client still connected
-                                    if (connect.Connected && success)
+                                    break;
+                                //request for resource server
+                                case 2:
+                                    //locks to ensure server counter not modified by another thread
+                                    lock (serverCounterLock)
                                     {
-                                        //tells requester client successfully connected if it is
+                                        //increments server counter
+                                        serverCounter++;
+                                        //creates resource server with serverCounter as its ID in new thread
+                                        Thread tR = new Thread(startResourceServer);
+                                        tR.Start(serverCounter);
+                                        //writes the assigned serverID to client
+                                        writer.Write(serverCounter);
+                                    }
+                                    break;
+                                //request for real time collaboration server
+                                case 3:
+                                    //locks to ensure server counter not modified by another thread
+                                    lock (serverCounterLock)
+                                    {
+                                        //increments server counter
+                                        serverCounter++;
+                                        //creates real time collaboration server with serverCounter as its ID in new thread
+                                        Thread tRTC = new Thread(startRTCServer);
+                                        tRTC.Start(serverCounter);
+                                        //writes the assigned serverID to client
+                                        writer.Write(serverCounter);
+                                    }
+                                    break;
+                                //request to connect a client to a server
+                                case 4:
+                                    TcpClient connect;
+                                    //reads connection info from stream
+                                    byte serType = reader.ReadByte();
+                                    uint serverID = reader.ReadUInt32();
+                                    uint clientID = reader.ReadUInt32();
+                                    //checks if specified client connected, and gets corresponding TcpClient
+                                    if (clientList.TryGetValue(clientID, out connect))
+                                    {
+                                        //creates reader and writer on requested clients stream
+                                        NetworkStream cStream = connect.GetStream();
+                                        BinaryWriter cWriter = new BinaryWriter(cStream);
+                                        //indicates whether client successfully connected
+                                        bool success = false;
+                                        //checks the type of server connection request for
+                                        switch (serType)
+                                        {
+                                            //connection request for chat server
+                                            case 1:
+                                                //locks to ensure ChatServer's currentID is not changed
+                                                lock (ChatServer.IDLock)
+                                                {
+                                                    //tells chat servers listener that incoming request is for server with specified ID
+                                                    ChatServer.setCurrentID(serverID);
+                                                    ChatServer.setExpectedClient(clientID);
+                                                    //tells chat server that a connection is expected
+                                                    ChatServer.connectExpected.Set();
+                                                    //tells client to connect
+                                                    cWriter.Write(serType);
+                                                    cWriter.Write(serverID);
+                                                    //waits for client to connect to unlock, connectExpected set to false when it does
+                                                    success = ChatServer.connected.Wait(TimeSpan.FromSeconds(5));
+                                                    //ensures values reset regardless of outcome
+                                                    ChatServer.connectExpected.Reset();
+                                                    ChatServer.connected.Reset();
+                                                }
+                                                break;
+                                            //connection request for resource server
+                                            case 2:
+                                                //structure same as chat server, see comments for case 1
+                                                lock (ResourceServer.IDLock)
+                                                {
+                                                    ResourceServer.setCurrentID(serverID);
+                                                    ResourceServer.setExpectedClient(clientID);
+                                                    ResourceServer.connectExpected.Set();
+                                                    cWriter.Write(serType);
+                                                    cWriter.Write(serverID);
+                                                    success = ResourceServer.connected.Wait(TimeSpan.FromSeconds(5));
+                                                    //ensures values reset regardless of outcome
+                                                    ResourceServer.connectExpected.Reset();
+                                                    ResourceServer.connected.Reset();
+                                                }
+                                                break;
+                                            //connection request for real time collaboration server
+                                            case 3:
+                                                //structure same as chat server, see comments for case 1
+                                                lock (RTCServer.IDLock)
+                                                {
+                                                    RTCServer.setCurrentID(serverID);
+                                                    RTCServer.setExpectedClient(clientID);
+                                                    RTCServer.connectExpected.Set();
+                                                    cWriter.Write(serType);
+                                                    cWriter.Write(serverID);
+                                                    success = RTCServer.connected.Wait(TimeSpan.FromSeconds(5));
+                                                    //ensures values reset regardless of outcome
+                                                    RTCServer.connectExpected.Reset();
+                                                    RTCServer.connected.Reset();
+                                                }
+                                                break;
+                                        }
+                                        //checks if requested client still connected
+                                        if (connect.Connected && success)
+                                        {
+                                            //tells requester client successfully connected if it is
+                                            writer.Write(true);
+                                        }
+                                        else
+                                        {
+                                            //else indicates connection unsuccessful
+                                            writer.Write(false);
+                                        }
+
+                                    }
+                                    //requested client not connected
+                                    else
+                                    {
+                                        //tells client connection request was unsuccessful
+                                        writer.Write(false);
+                                    }
+
+                                    break;
+                                //request for status of indicated client
+                                case 5:
+                                    TcpClient temp;
+                                    //checks if indicated client is in list of connected clients
+                                    if (clientList.TryGetValue(reader.ReadUInt32(), out temp))
+                                    {
+                                        //tells requester specified client is connected
                                         writer.Write(true);
                                     }
                                     else
                                     {
-                                        //else indicates connection unsuccessful
+                                        //tells requester specified client is not connected
                                         writer.Write(false);
                                     }
+                                    break;
 
-                                }
-                                //requested client not connected
-                                else
-                                {
-                                    //tells client connection request was unsuccessful
-                                    writer.Write(false);
-                                }
-
-                                break;
-                            //request for status of indicated client
-                            case 5:
-                                TcpClient temp;
-                                //checks if indicated client is in list of connected clients
-                                if (clientList.TryGetValue(reader.ReadUInt32(), out temp))
-                                {
-                                    //tells requester specified client is connected
-                                    writer.Write(true);
-                                }
-                                else
-                                {
-                                    //tells requester specified client is not connected
-                                    writer.Write(false);
-                                }
-                                break;
-
+                            }
                         }
                     }
+                    catch (Exception) { }
                 }
 
                 //cleanup

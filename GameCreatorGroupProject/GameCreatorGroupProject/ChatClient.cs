@@ -76,17 +76,22 @@ namespace GameCreatorGroupProject
                 //reads messages
                 while (client.Connected && !dc)
                 {
-                    //possible issue if server has not yet read sent data
-                    if (stream.DataAvailable)
+                    //if disconnected dataavailable field will throw an acception, and should set connected to false
+                    try
                     {
-                        //reads stream data
-                        message = reader.ReadLine();
+                        //possible issue if server has not yet read sent data
+                        if (stream.DataAvailable)
+                        {
+                            //reads stream data
+                            message = reader.ReadLine();
 
 
-                        //add code to write message to chat interface
-                        MessageBox.Show(message);
+                            //add code to write message to chat interface
+                            MessageBox.Show(message);
 
+                        }
                     }
+                    catch (Exception) { }
 
                 }
                 MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);

@@ -139,33 +139,37 @@ namespace GameCreatorGroupProject
                         //checks if both clients are still connected, and if disconnect was called
                         while (client.Connected && staticClient.Connected && !dc)
                         {
-                            //checks if server has sent a connection request
-                            if (stream.DataAvailable)
+                            try
                             {
-                                //reads stream data
-                                connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
-                                //creates requested client
-                                //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
-                                switch (connectInfo.Item1)
+                                //checks if server has sent a connection request
+                                if (stream.DataAvailable)
                                 {
-                                    case 1:
-                                        c = new ChatClient(connectInfo.Item2);
-                                        break;
-                                    case 2:
-                                        c = new ResourceClient(connectInfo.Item2);
-                                        break;
-                                    case 3:
-                                        c = new RTCClient(connectInfo.Item2);
-                                        break;
+                                    //reads stream data
+                                    connectInfo = new Tuple<byte, uint>(reader.ReadByte(), reader.ReadUInt32());
+                                    //creates requested client
+                                    //might need to add way to control clients (eg disconnect, etc), probably add to a list or somthing
+                                    switch (connectInfo.Item1)
+                                    {
+                                        case 1:
+                                            c = new ChatClient(connectInfo.Item2);
+                                            break;
+                                        case 2:
+                                            c = new ResourceClient(connectInfo.Item2);
+                                            break;
+                                        case 3:
+                                            c = new RTCClient(connectInfo.Item2);
+                                            break;
+                                    }
+                                    //connects client to server in new thread
+                                    Thread t = new Thread(startClient);
+                                    //gives thread enhanced priority to attempt to connect as quickly as possible
+                                    t.Priority = ThreadPriority.AboveNormal;
+                                    t.Start(c);
+                                    available.Enqueue(c);
+                                    clients.Add(c);
                                 }
-                                //connects client to server in new thread
-                                Thread t = new Thread(startClient);
-                                //gives thread enhanced priority to attempt to connect as quickly as possible
-                                t.Priority = ThreadPriority.AboveNormal;
-                                t.Start(c);
-                                available.Enqueue(c);
-                                clients.Add(c);
                             }
+                            catch (Exception) { }
                         }
                         //tells user if client disconnected
                         MessageBox.Show("Disconnected.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
