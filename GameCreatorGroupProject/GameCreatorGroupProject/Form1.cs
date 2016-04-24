@@ -12,6 +12,7 @@ using Microsoft.VisualBasic;
 using System.IO;
 using OpenTK;
 using System.Text.RegularExpressions;
+using OpenTK.Graphics.OpenGL;
 
 namespace GameCreatorGroupProject
 {
@@ -25,6 +26,10 @@ namespace GameCreatorGroupProject
         // Necessary to ensure the user doesn't load something nonexistent
         // or exit without saving a brand new project.
         bool projectOpen = false;
+        bool started = false;
+
+        // Bool to tell whether the Form has loaded yet, after which point we can start making OpenGL calls
+        bool formLoaded = false;
 
         // Debug flag; used to bypass some checks or show extra information
         #if DEBUG
@@ -426,6 +431,9 @@ namespace GameCreatorGroupProject
 
             cmbSprite.Text = "Please load a resource to select sprite.";
             initcmb = true;
+
+            // OK to use OpenGL now
+            formLoaded = true;
         }
 
 
@@ -726,8 +734,7 @@ namespace GameCreatorGroupProject
             }
         }
 
-
-
+       
 
         private void btnSaveObj_Click(object sender, EventArgs e)
         {
@@ -798,17 +805,17 @@ namespace GameCreatorGroupProject
             if (!txtObjectCode.Text.Equals(""))
             {
                 string file1 = project.getResourceDir() + @"\" + txtObjectName.Text + ".goc";
-                /*
-                if (File.Exists(file1))
+
+                // Write the contents of the txtObjectCode to the file. 
+                txtObjectCode.AppendText(Environment.NewLine);
+                txtObjectCode.AppendText("}");
+                using (BinaryWriter write = new BinaryWriter(File.Open(file1, FileMode.Create)))
                 {
-                    int i = 0;
-                    while (File.Exists(file1 + i.ToString()))
-                    {
-                        i++;
-                    }
-                    file1 = file1 + i.ToString();
+                    write.Write(txtObjectName.Text);
+                    write.Write(sprp);
+
                 }
-                */
+
                 resImporter.SaveResource(project, txtObjectName.Text, ".goc", project.getResourceDir());
                 if (!listObjects.Items.Contains(txtObjectName.Text + ".goc"))
                 {
@@ -896,6 +903,134 @@ namespace GameCreatorGroupProject
         private void listObjects_SelectedValueChanged(object sender, EventArgs e)
         {
 
+        }
+        private void startercode() {
+            if (!started) {
+                started = true;
+                
+                txtObjectCode.AppendText("class " + txtObjectName.Text + " : GameObject  //as of now requires manually enter a closing brace");
+                txtObjectCode.AppendText(Environment.NewLine);
+                txtObjectCode.AppendText("public "+ txtObjectName.Text + "(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap, float ispeed, float acceleration, bool collision):base(name,referenceCoord,vertexOffsets,inputmap,ispeed,acceleration,collision)");
+                txtObjectCode.AppendText(Environment.NewLine);
+                txtObjectCode.AppendText("{");
+                txtObjectCode.AppendText(Environment.NewLine);
+                
+            }
+        }
+        private void btnOnCreate_Click_1(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+           // this next line will disable the user from generating the frame code twice. Maybe want to allow though, if they erase it or mess it up.
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public override bool spawn(Vector2[] spawnCoords)");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        private void btnOnDestruct_Click(object sender, EventArgs e)
+        {
+            
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("~"+ txtObjectName.Text + "()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        private void btnCollision_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public void collisionsetting()// uncomment the collision setting you desire");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("//setcollision();");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("//removecollision()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        //related to update()
+        private void btnOnStep_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public override update()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
+
+        private void btnSetObjName_Click(object sender, EventArgs e)
+        {
+            //Try to get obj name here. not sure how to do that just yet.
+           
+        }
+
+        private void txtObjectCode_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void glRoomView_Load(object sender, EventArgs e)
+        {
+            // Check that the control has loaded
+            if (!formLoaded)
+                return;
+
+            // Set a background color
+            GL.ClearColor(Color.Black);
+
+            // Set up a viewport
+            int w = glRoomView.Width;
+            int h = glRoomView.Height;
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, w, 0, h, -1, 1);
+            GL.Viewport(0, 0, w, h);
+        }
+
+        private void glRoomView_Paint(object sender, PaintEventArgs e)
+        {
+            // Check that the control has loaded
+            if (!formLoaded)
+                return;
+
+            // Clear previously drawn graphics
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            // Show the new graphics
+            glRoomView.SwapBuffers();
+        }
+
+        private void glRoomView_DragEnter(object sender, DragEventArgs e)
+        {
+            // Here is where we put in code to start displaying a sprite/gameObject dragged in from the list box
+        }
+
+        private void glRoomView_DragDrop(object sender, DragEventArgs e)
+        {
+            // This is where we will capture the data for the gameObject dropped into the form
+            // Function fires when user releases the mouse button after entering the control.
+        }
+
+        private void listObjChoices_MouseDown(object sender, MouseEventArgs e)
+        {
+            // Here we will gather the data we want to let the user drag and drop onto the GLControl
         }
     }
 }
