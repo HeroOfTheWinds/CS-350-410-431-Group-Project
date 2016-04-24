@@ -107,3 +107,6 @@ C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project2\GameCreatorGroupPr
 C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project2\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
 C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project2\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.ChatWindow.resources
 C:\Users\justi_000\Source\Repos\CS-350-410-431-Group-Project2\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
+C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
