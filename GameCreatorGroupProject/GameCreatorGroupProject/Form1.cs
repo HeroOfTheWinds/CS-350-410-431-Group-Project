@@ -48,7 +48,7 @@ namespace GameCreatorGroupProject
         private TCPClient chat;
 
 
-        private Dictionary<string, string> theMarvelousDictionaryOfGameObjectNamesAndImages = new Dictionary<string, string>();
+        private Dictionary<string, string> objectSprites = new Dictionary<string, string>();
 
 
 
@@ -391,9 +391,9 @@ namespace GameCreatorGroupProject
                                 {
                                     throw new Exception();
                                 }
-                                if (!theMarvelousDictionaryOfGameObjectNamesAndImages.ContainsKey(name))
+                                if (!objectSprites.ContainsKey(name))
                                 {
-                                    theMarvelousDictionaryOfGameObjectNamesAndImages.Add(name, fp);
+                                    objectSprites.Add(name, fp);
                                 }
                             }
                             catch (Exception)
@@ -853,9 +853,9 @@ namespace GameCreatorGroupProject
 
             }
 
-            if (!theMarvelousDictionaryOfGameObjectNamesAndImages.ContainsKey(txtObjectName.Text))
+            if (!objectSprites.ContainsKey(txtObjectName.Text))
             {
-                theMarvelousDictionaryOfGameObjectNamesAndImages.Add(txtObjectName.Text, sprp);
+                objectSprites.Add(txtObjectName.Text, sprp);
             }
             
 
@@ -977,15 +977,15 @@ namespace GameCreatorGroupProject
 
                     if ((obm = ob.Match(selected)).Success)
                     {
-                        if (theMarvelousDictionaryOfGameObjectNamesAndImages.ContainsKey(obm.Groups[1].Value))
+                        if (objectSprites.ContainsKey(obm.Groups[1].Value))
                         {
-                            theMarvelousDictionaryOfGameObjectNamesAndImages.Remove(obm.Groups[1].Value);
+                            objectSprites.Remove(obm.Groups[1].Value);
                         }
                     }
 
                     List<string> temp = new List<string>();
 
-                    foreach(KeyValuePair<string, string> k in theMarvelousDictionaryOfGameObjectNamesAndImages)
+                    foreach(KeyValuePair<string, string> k in objectSprites)
                     {
                         if (k.Value.Equals(fp))
                         {
@@ -995,7 +995,7 @@ namespace GameCreatorGroupProject
                     }
                     foreach (string s in temp)
                     {
-                        theMarvelousDictionaryOfGameObjectNamesAndImages.Remove(s);
+                        objectSprites.Remove(s);
                     }
 
                 }
