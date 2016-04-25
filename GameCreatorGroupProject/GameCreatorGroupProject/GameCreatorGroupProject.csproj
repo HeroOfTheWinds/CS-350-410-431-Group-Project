@@ -84,6 +84,7 @@
     <Compile Include="ServerInfo.cs" />
     <Compile Include="ShaderProgram.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteLoader.cs" />
     <Compile Include="TCPClient.cs" />
     <EmbeddedResource Include="CollisionDesigner.resx">
       <DependentUpon>CollisionDesigner.cs</DependentUpon>
@@ -97,10 +98,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="fs.glsl" />
-    <None Include="fs_tex.glsl" />
-    <None Include="vs.glsl" />
-    <None Include="vs_tex.glsl" />
+    <None Include="fs.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="fs_tex.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="vs.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="vs_tex.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

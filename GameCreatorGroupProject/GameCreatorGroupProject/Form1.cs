@@ -467,6 +467,8 @@ namespace GameCreatorGroupProject
 
             // OK to use OpenGL now
             formLoaded = true;
+
+            currentRoom.Objects = new Dictionary<Vector3, GameObject>();
         }
 
 
@@ -1115,11 +1117,31 @@ namespace GameCreatorGroupProject
         int[] indicedata;
         Vector2[] texcoorddata;
 
-        // Dictionary of Lists of GameObjects to specify relative draw order (i.e. depth)
-        Dictionary<int, List<GameObject>> objects = new Dictionary<int, List<GameObject>>();
+        // Dictionary of Lists of Sprites to specify relative draw order (i.e. depth)
+        Dictionary<int, List<Sprite>> objects = new Dictionary<int, List<Sprite>>();
+
+        // Lists of Backgrounds and background tiles in the current room
+        List<Background> BGs = new List<Background>();
+        List<BGTile> BGTiles = new List<BGTile>();
 
         // Dictionary to store texture ID's by name
         Dictionary<string, int> textures = new Dictionary<string, int>();
+
+        // Function to load a texture for a given gameobject
+        private Sprite loadSprite(string obj, string sprPath)
+        {
+            // Create a helper object so we can access the sprite loading functions
+            SpriteLoader loader = new SpriteLoader();
+
+            // Create a new sprite object
+            Sprite spr = new Sprite();
+
+            // Using the passed object's name as a key
+            textures.Add(obj, loader.loadImage(obj, spr));
+            spr.TextureID = textures[obj];
+
+            return spr;
+        }
 
         private void glRoomView_Load(object sender, EventArgs e)
         {
@@ -1147,6 +1169,8 @@ namespace GameCreatorGroupProject
 
             // Declare that the shader we will use first is the textured sprite
             activeShader = "textured";
+
+            updateRenderList();
         }
 
         private void updateRenderList()
@@ -1155,18 +1179,31 @@ namespace GameCreatorGroupProject
             // Also set their starting positions
             foreach (Vector3 vec in currentRoom.Objects.Keys)
             {
+                // Note to self: ERROR here, must check if key is there first.
+
+                Sprite spr = currentRoom.Objects[vec].sprite;
+                string objName = currentRoom.Objects[vec].getName();
+
+                // See if a sprite has been loaded for this object yet
+                if (!textures.ContainsKey(objName))
+                {
+                    // Nope, so generate a sprite for it
+                    spr = loadSprite(objName, spritePaths[objName]);
+                    currentRoom.Objects[vec].sprite = spr;
+                }
+
                 // Check if our dictionary has an entry for the current draw depth yet
                 if (!objects.ContainsKey((int)vec.Z))
                 {
                     // It doesn't, so create a new list for depth Z
-                    objects.Add((int)vec.Z, new List<GameObject>());
+                    objects.Add((int)vec.Z, new List<Sprite>());
                     // Add this object to the new list
-                    objects[(int)vec.Z].Add(currentRoom.Objects[vec]);
+                    objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
                 }
                 else
                 {
                     // Add this object to the correct list
-                    objects[(int)vec.Z].Add(currentRoom.Objects[vec]);
+                    objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
                 }
             }
         }
@@ -1180,7 +1217,212 @@ namespace GameCreatorGroupProject
             // Clear previously drawn graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-            
+            // Set up the geometry for rendering
+            // Important lists for the Vertex Buffer Objects (VBOs)
+            List<Vector3> verts = new List<Vector3>(); // Vertices of the quads
+            List<int> inds = new List<int>(); // Indices, closely tied to above
+            List<Vector3> colors = new List<Vector3>(); // Not used by textured sprites
+            List<Vector2> texcoords = new List<Vector2>(); // Coordinates of the texture in quad space
+
+            // Total number of processed vertices
+            int vertcount = 0;
+
+            // Set up rendering for backgrounds
+            foreach (Background bg in BGs)
+            {
+                // Populate the previously defined lists
+                verts.AddRange(bg.GetVerts().ToList());
+                inds.AddRange(bg.GetIndices(vertcount).ToList());
+                colors.AddRange(bg.GetColorData().ToList());
+                vertcount += bg.VertCount;
+                texcoords.AddRange(bg.GetTextureCoords());
+            }
+            // Set up rendering for background tiles
+            foreach (BGTile bgt in BGTiles)
+            {
+                // Populate the previously defined lists
+                verts.AddRange(bgt.GetVerts(Width, Height).ToList());
+                inds.AddRange(bgt.GetIndices(vertcount).ToList());
+                colors.AddRange(bgt.GetColorData().ToList());
+                vertcount += bgt.VertCount;
+                texcoords.AddRange(bgt.GetTextureCoords());
+            }
+
+            // Stack for LIFO behavior in drawing sprites
+            Stack<Sprite> objLists = new Stack<Sprite>();
+
+            // Loop over every GameObject in the game
+            // First put the highest-draw layer objects at the bottom so they draw last
+            foreach (int i in objects.Keys)
+            {
+                foreach (Sprite spr in objects[i])
+                {
+                    objLists.Push(spr);
+                }
+            }
+
+            // Loop over each list in the stack and draw them
+            while (objLists.Count > 0)
+            {
+                Sprite v = objLists.Pop();
+                {
+                    // Populate the previously defined lists
+                    verts.AddRange(v.GetVerts(Width, Height).ToList());
+                    inds.AddRange(v.GetIndices(vertcount).ToList());
+                    colors.AddRange(v.GetColorData().ToList());
+                    vertcount += v.VertCount;
+                    texcoords.AddRange(v.GetTextureCoords());
+
+                    // Update the matrix used to calculate the Sprite's visuals
+                    v.CalculateModelMatrix();
+                    // Offset it by our viewport matrix (for things like scrolling levels)
+                    v.ModelViewProjectionMatrix = v.ModelMatrix;// * ortho;
+                }
+            }
+
+            // Convert the lists into easier to use arrays
+            vertdata = verts.ToArray();
+            indicedata = inds.ToArray();
+            coldata = colors.ToArray();
+            texcoorddata = texcoords.ToArray();
+
+            // Use a VBO to set up the vertex positions of the quads
+            GL.BindBuffer(BufferTarget.ArrayBuffer, shaders[activeShader].GetBuffer("vPosition"));
+            GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(vertdata.Length * Vector3.SizeInBytes), vertdata, BufferUsageHint.StaticDraw);
+            GL.VertexAttribPointer(shaders[activeShader].GetAttribute("vPosition"), 3, VertexAttribPointerType.Float, false, 0, 0);
+
+            // If there are color parameters, apply them to the shader.
+            if (shaders[activeShader].GetAttribute("vColor") != -1)
+            {
+                GL.BindBuffer(BufferTarget.ArrayBuffer, shaders[activeShader].GetBuffer("vColor"));
+                GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(coldata.Length * Vector3.SizeInBytes), coldata, BufferUsageHint.StaticDraw);
+                GL.VertexAttribPointer(shaders[activeShader].GetAttribute("vColor"), 3, VertexAttribPointerType.Float, true, 0, 0);
+            }
+
+            // If there are texture parameters, also do VBO operations on them
+            if (shaders[activeShader].GetAttribute("texcoord") != -1)
+            {
+                GL.BindBuffer(BufferTarget.ArrayBuffer, shaders[activeShader].GetBuffer("texcoord"));
+                GL.BufferData<Vector2>(BufferTarget.ArrayBuffer, (IntPtr)(texcoorddata.Length * Vector2.SizeInBytes), texcoorddata, BufferUsageHint.StaticDraw);
+                GL.VertexAttribPointer(shaders[activeShader].GetAttribute("texcoord"), 2, VertexAttribPointerType.Float, true, 0, 0);
+            }
+
+            // One more VBO operation, this one for aforementioned indices
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ibo_elements);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indicedata.Length * sizeof(int)), indicedata, BufferUsageHint.StaticDraw);
+
+            // Tell the program to use the Shader we currently are using
+            GL.UseProgram(shaders[activeShader].ProgramID);
+
+            // Clear the buffer binding since we are done with it
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            // Setting up buffer to draw to screen
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+            // Enable several important switches to be able to draw flat images and make a generally pretty picture.
+            //GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.CullFace);
+            GL.Enable(EnableCap.Blend);
+            GL.Enable(EnableCap.Texture2D);
+            // Since blending is enabled, give it an alpha (transparency) based function to work with
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
+            // Allow vertex attribute arrays to be created on th GPU for this shader
+            shaders[activeShader].EnableVertexAttribArrays();
+
+            // Index counter, since we turned some lists into arrays and need to offset accordingly
+            int indiceat = 0;
+
+            // Loop over every background and render it
+            foreach (Background bg in BGs)
+            {
+                // Tell OpenTK to associate the given texture to the VBO we're drawing
+                GL.BindTexture(TextureTarget.Texture2D, bg.TextureID);
+
+                // Allow tiling of images
+
+                // Send our projection matrix to the GLSL shader
+                GL.UniformMatrix4(shaders[activeShader].GetUniform("modelview"), false, ref bg.ModelViewProjectionMatrix);
+
+                // If shader uses textures, send the image to the shader code for processing
+                if (shaders[activeShader].GetAttribute("maintexture") != -1)
+                {
+                    GL.Uniform1(shaders[activeShader].GetAttribute("maintexture"), bg.TextureID);
+                }
+
+                // Draw a square/rectangle
+                GL.DrawElements(BeginMode.Quads, bg.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
+                // Increment our index counter by the number of indices processed
+                indiceat += bg.IndiceCount;
+            }
+
+            // Loop over every background tile and render it
+            foreach (BGTile bgt in BGTiles)
+            {
+                // Tell OpenTK to associate the given texture to the VBO we're drawing
+                GL.BindTexture(TextureTarget.Texture2D, bgt.TextureID);
+
+                // Allow tiling of images
+
+                // Send our projection matrix to the GLSL shader
+                GL.UniformMatrix4(shaders[activeShader].GetUniform("modelview"), false, ref bgt.ModelViewProjectionMatrix);
+
+                // If shader uses textures, send the image to the shader code for processing
+                if (shaders[activeShader].GetAttribute("maintexture") != -1)
+                {
+                    GL.Uniform1(shaders[activeShader].GetAttribute("maintexture"), bgt.TextureID);
+                }
+
+                // Draw a square/rectangle
+                GL.DrawElements(BeginMode.Quads, bgt.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
+                // Increment our index counter by the number of indices processed
+                indiceat += bgt.IndiceCount;
+            }
+
+            // Loop over every Sprite in the room
+            // First put the highest-draw layer objects at the bottom so they draw last
+            // Stack for LIFO behavior in drawing sprites
+            Stack<Sprite> sprLists = new Stack<Sprite>();
+
+            // Loop over every GameObject in the game
+            // First put the highest-draw layer objects at the bottom so they draw last
+            foreach (int i in objects.Keys)
+            {
+                foreach (Sprite spr in objects[i])
+                {
+                    sprLists.Push(spr);
+                }
+            }
+            // Loop over each list in the stack and draw them
+            while (sprLists.Count > 0)
+            {
+                Sprite v = sprLists.Pop();
+                {
+                    // Tell OpenTK to associate the given texture to the VBO we're drawing
+                    GL.BindTexture(TextureTarget.Texture2D, v.TextureID);
+                    // Send our projection matrix to the GLSL shader
+                    GL.UniformMatrix4(shaders[activeShader].GetUniform("modelview"), false, ref v.ModelViewProjectionMatrix);
+
+                    // If shader uses textures, send the image to the shader code for processing
+                    if (shaders[activeShader].GetAttribute("maintexture") != -1)
+                    {
+                        GL.Uniform1(shaders[activeShader].GetAttribute("maintexture"), v.TextureID);
+                    }
+
+                    // Draw a square/rectangle
+                    GL.DrawElements(BeginMode.Quads, v.IndiceCount, DrawElementsType.UnsignedInt, indiceat * sizeof(uint));
+                    // Increment our index counter by the number of indices processed
+                    indiceat += v.IndiceCount;
+                }
+            }
+
+            // Free up the memory off the GPU
+            shaders[activeShader].DisableVertexAttribArrays();
+
+            // Draw the final buffer (or canvas) to screen
+            GL.Flush();
 
             // Show the new graphics
             glRoomView.SwapBuffers();
@@ -1189,6 +1431,16 @@ namespace GameCreatorGroupProject
         private void glRoomView_DragEnter(object sender, DragEventArgs e)
         {
             // Here is where we put in code to start displaying a sprite/gameObject dragged in from the list box
+            if (e.Data.GetDataPresent(typeof(string)))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+
+            updateRenderList();
         }
 
         private void glRoomView_DragDrop(object sender, DragEventArgs e)
@@ -1200,6 +1452,33 @@ namespace GameCreatorGroupProject
             GLControl destination = (GLControl)sender;
             String objName = (String)e.Data.GetData(typeof(String));
 
+            // Load offsets from file
+            using (BinaryReader reader = new BinaryReader(File.Open(project.Resources[objName], FileMode.Open)))
+            {
+                int elem;
+                reader.ReadString();
+                reader.ReadString();
+                if (reader.ReadBoolean())
+                {
+                    reader.ReadInt32();
+                    reader.ReadInt32();
+                }
+                elem = reader.ReadInt32();
+
+                Vector2[] offsets = new Vector2[elem];
+
+                for (int i = 0; i < elem; i++)
+                {
+                    offsets[i] = new Vector2(reader.ReadInt32(), reader.ReadInt32());
+                }
+
+                // Create a new GameObject
+                GameObject newObj = new GameObject(objName, new Vector2(MousePosition.X, MousePosition.Y), offsets, new float[] { 0f, 0f, currentRoom.width, currentRoom.height });
+            
+
+                currentRoom.Objects.Add(new Vector3(MousePosition.X, MousePosition.Y, 0f), newObj);
+            }
+
             updateRenderList();
         }
 
@@ -1207,7 +1486,7 @@ namespace GameCreatorGroupProject
         {
             // Here we will gather the data we want to let the user drag and drop onto the GLControl
             ListBox source = (ListBox)sender;
-            DoDragDrop(source.SelectedItem, DragDropEffects.Copy);
+            DoDragDrop(source.SelectedItem.ToString(), DragDropEffects.Copy);
         }
 
         private void btnInput_Click(object sender, EventArgs e)

@@ -49,6 +49,9 @@ namespace GameCreatorGroupProject
         //indicates if object has been spawned
         private bool isSpawned = false;
 
+        // Sprite attached to object
+        public Sprite sprite;
+
 
         //constructor takes as inputs, the name of the object, spawn location, map details as an array of floats that holds the maps size, the speed of the object, acceleration of the object, and whether object has collision.
         //NOTE: vertexOffsets must be vertices in order, with the last vertex connecting to the first, and discludes the reference vertex
@@ -66,6 +69,28 @@ namespace GameCreatorGroupProject
             {
                 GameObject.collision.Add(this);
             }
+            Vector2[] spawnCoords = new Vector2[vertexOffsets.Length + 1];
+            spawnCoords[0] = referenceCoord;
+            //calculates coordinates based on offsets
+            for (int i = 1; i < spawnCoords.Length; i++)
+            {
+                spawnCoords[i] = vertexOffsets[i - 1];
+                spawnCoords[i].X += referenceCoord.X;
+                spawnCoords[i].Y += referenceCoord.Y;
+            }
+            //tells user if spawn failed
+            if (!spawn(spawnCoords))
+            {
+                MessageBox.Show("Spawn failed.", "Could not spawn object, invalid coordinates.", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        public GameObject(String name, Vector2 referenceCoord, Vector2[] vertexOffsets, float[] inputmap)
+        {
+            objectname = name;
+            map = new float[4];
+            Array.Copy(inputmap, map, 4);
+            GameObject.collision.Add(this);
             Vector2[] spawnCoords = new Vector2[vertexOffsets.Length + 1];
             spawnCoords[0] = referenceCoord;
             //calculates coordinates based on offsets
