@@ -133,7 +133,10 @@ namespace GameCreatorGroupProject
             return true;
 
         }
+        public virtual bool ontimer() {
 
+            return true;
+        }
         //Update should check for user input at the start or end of each frame.a
         public virtual void Update() {
             //does nothing if object not spawned
