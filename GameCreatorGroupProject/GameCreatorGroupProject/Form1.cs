@@ -1498,5 +1498,22 @@ namespace GameCreatorGroupProject
 
             txtObjectCode.SelectionStart = selectionIndex;
         }
+
+        private void btnTimer_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            clickedButton.Enabled = false;
+            startercode();
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("public override bool ontimer()");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("{");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("//enter your code here");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("return true;");
+            txtObjectCode.AppendText(Environment.NewLine);
+            txtObjectCode.AppendText("}");
+        }
     }
 }

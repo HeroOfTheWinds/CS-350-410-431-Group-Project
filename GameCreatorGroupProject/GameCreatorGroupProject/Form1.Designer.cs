@@ -824,6 +824,7 @@
             this.btnTimer.TabIndex = 5;
             this.btnTimer.Text = "Set Timer";
             this.btnTimer.UseVisualStyleBackColor = true;
+            this.btnTimer.Click += new System.EventHandler(this.btnTimer_Click);
             // 
             // btnHealth
             // 
