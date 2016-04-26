@@ -155,6 +155,7 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
             this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
+            this.toolCompile = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -184,7 +185,8 @@
             this.toolStrip1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolFile,
-            this.toolChat});
+            this.toolChat,
+            this.toolCompile});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1184, 25);
@@ -252,7 +254,7 @@
             this.toolChat.Image = ((System.Drawing.Image)(resources.GetObject("toolChat.Image")));
             this.toolChat.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolChat.Name = "toolChat";
-            this.toolChat.Size = new System.Drawing.Size(77, 22);
+            this.toolChat.Size = new System.Drawing.Size(78, 22);
             this.toolChat.Text = "Team Chat";
             // 
             // itemStartServer
@@ -754,7 +756,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnVariable.Location = new System.Drawing.Point(5, 209);
             this.btnVariable.Name = "btnVariable";
-            this.btnVariable.Size = new System.Drawing.Size(6, 23);
+            this.btnVariable.Size = new System.Drawing.Size(0, 23);
             this.btnVariable.TabIndex = 7;
             this.btnVariable.Text = "Set Variable";
             this.btnVariable.UseVisualStyleBackColor = true;
@@ -765,7 +767,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInstantiate.Location = new System.Drawing.Point(5, 6);
             this.btnInstantiate.Name = "btnInstantiate";
-            this.btnInstantiate.Size = new System.Drawing.Size(163, 23);
+            this.btnInstantiate.Size = new System.Drawing.Size(146, 23);
             this.btnInstantiate.TabIndex = 0;
             this.btnInstantiate.Text = "Instantiate Object";
             this.btnInstantiate.UseVisualStyleBackColor = true;
@@ -776,7 +778,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDestroy.Location = new System.Drawing.Point(5, 35);
             this.btnDestroy.Name = "btnDestroy";
-            this.btnDestroy.Size = new System.Drawing.Size(163, 23);
+            this.btnDestroy.Size = new System.Drawing.Size(146, 23);
             this.btnDestroy.TabIndex = 1;
             this.btnDestroy.Text = "Destroy Object";
             this.btnDestroy.UseVisualStyleBackColor = true;
@@ -787,7 +789,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnChangeSprite.Location = new System.Drawing.Point(6, 180);
             this.btnChangeSprite.Name = "btnChangeSprite";
-            this.btnChangeSprite.Size = new System.Drawing.Size(5, 23);
+            this.btnChangeSprite.Size = new System.Drawing.Size(0, 23);
             this.btnChangeSprite.TabIndex = 6;
             this.btnChangeSprite.Text = "Change Sprite";
             this.btnChangeSprite.UseVisualStyleBackColor = true;
@@ -798,7 +800,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMove.Location = new System.Drawing.Point(6, 64);
             this.btnMove.Name = "btnMove";
-            this.btnMove.Size = new System.Drawing.Size(162, 23);
+            this.btnMove.Size = new System.Drawing.Size(145, 23);
             this.btnMove.TabIndex = 2;
             this.btnMove.Text = "Move";
             this.btnMove.UseVisualStyleBackColor = true;
@@ -809,7 +811,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnScore.Location = new System.Drawing.Point(6, 93);
             this.btnScore.Name = "btnScore";
-            this.btnScore.Size = new System.Drawing.Size(162, 23);
+            this.btnScore.Size = new System.Drawing.Size(145, 23);
             this.btnScore.TabIndex = 3;
             this.btnScore.Text = "Set Score";
             this.btnScore.UseVisualStyleBackColor = true;
@@ -820,7 +822,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTimer.Location = new System.Drawing.Point(6, 151);
             this.btnTimer.Name = "btnTimer";
-            this.btnTimer.Size = new System.Drawing.Size(162, 23);
+            this.btnTimer.Size = new System.Drawing.Size(145, 23);
             this.btnTimer.TabIndex = 5;
             this.btnTimer.Text = "Set Timer";
             this.btnTimer.UseVisualStyleBackColor = true;
@@ -832,7 +834,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHealth.Location = new System.Drawing.Point(6, 122);
             this.btnHealth.Name = "btnHealth";
-            this.btnHealth.Size = new System.Drawing.Size(162, 23);
+            this.btnHealth.Size = new System.Drawing.Size(145, 23);
             this.btnHealth.TabIndex = 4;
             this.btnHealth.Text = "Set Health";
             this.btnHealth.UseVisualStyleBackColor = true;
@@ -858,7 +860,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAlarm.Location = new System.Drawing.Point(5, 174);
             this.btnAlarm.Name = "btnAlarm";
-            this.btnAlarm.Size = new System.Drawing.Size(6, 23);
+            this.btnAlarm.Size = new System.Drawing.Size(0, 23);
             this.btnAlarm.TabIndex = 3;
             this.btnAlarm.Text = "Timer Alarm";
             this.btnAlarm.UseVisualStyleBackColor = true;
@@ -870,7 +872,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnCreate.Location = new System.Drawing.Point(5, 3);
             this.btnOnCreate.Name = "btnOnCreate";
-            this.btnOnCreate.Size = new System.Drawing.Size(163, 23);
+            this.btnOnCreate.Size = new System.Drawing.Size(146, 23);
             this.btnOnCreate.TabIndex = 4;
             this.btnOnCreate.Text = "On Create";
             this.btnOnCreate.UseVisualStyleBackColor = true;
@@ -882,7 +884,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestVar.Location = new System.Drawing.Point(5, 145);
             this.btnTestVar.Name = "btnTestVar";
-            this.btnTestVar.Size = new System.Drawing.Size(163, 23);
+            this.btnTestVar.Size = new System.Drawing.Size(146, 23);
             this.btnTestVar.TabIndex = 6;
             this.btnTestVar.Text = "Test Variable";
             this.btnTestVar.UseVisualStyleBackColor = true;
@@ -893,7 +895,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCollision.Location = new System.Drawing.Point(5, 87);
             this.btnCollision.Name = "btnCollision";
-            this.btnCollision.Size = new System.Drawing.Size(163, 23);
+            this.btnCollision.Size = new System.Drawing.Size(146, 23);
             this.btnCollision.TabIndex = 2;
             this.btnCollision.Text = "On Collision";
             this.btnCollision.UseVisualStyleBackColor = true;
@@ -905,7 +907,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInput.Location = new System.Drawing.Point(5, 116);
             this.btnInput.Name = "btnInput";
-            this.btnInput.Size = new System.Drawing.Size(163, 23);
+            this.btnInput.Size = new System.Drawing.Size(146, 23);
             this.btnInput.TabIndex = 1;
             this.btnInput.Text = "Get Input";
             this.btnInput.UseVisualStyleBackColor = true;
@@ -917,7 +919,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnDestruct.Location = new System.Drawing.Point(5, 29);
             this.btnOnDestruct.Name = "btnOnDestruct";
-            this.btnOnDestruct.Size = new System.Drawing.Size(163, 23);
+            this.btnOnDestruct.Size = new System.Drawing.Size(146, 23);
             this.btnOnDestruct.TabIndex = 5;
             this.btnOnDestruct.Text = "On Destruct";
             this.btnOnDestruct.UseVisualStyleBackColor = true;
@@ -929,7 +931,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnStep.Location = new System.Drawing.Point(5, 58);
             this.btnOnStep.Name = "btnOnStep";
-            this.btnOnStep.Size = new System.Drawing.Size(163, 23);
+            this.btnOnStep.Size = new System.Drawing.Size(146, 23);
             this.btnOnStep.TabIndex = 7;
             this.btnOnStep.Text = "On Step";
             this.btnOnStep.UseVisualStyleBackColor = true;
@@ -1543,7 +1545,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 154);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 150);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1554,7 +1556,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 157);
+            this.txtMessage.Location = new System.Drawing.Point(3, 153);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1569,7 +1571,7 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 145);
+            this.txtChat.Size = new System.Drawing.Size(1152, 141);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
@@ -1577,6 +1579,17 @@
             this.folderPrjDir.Description = "Specify a folder to store the project in:";
             this.folderPrjDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.folderPrjDir.SelectedPath = "System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments)";
+            // 
+            // toolCompile
+            // 
+            this.toolCompile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolCompile.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.toolCompile.Image = ((System.Drawing.Image)(resources.GetObject("toolCompile.Image")));
+            this.toolCompile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolCompile.Name = "toolCompile";
+            this.toolCompile.Size = new System.Drawing.Size(115, 22);
+            this.toolCompile.Text = "Compile Executable";
+            this.toolCompile.Click += new System.EventHandler(this.toolCompile_Click);
             // 
             // MainWindow
             // 
@@ -1590,7 +1603,7 @@
             this.KeyPreview = true;
             this.Name = "MainWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Nameless Game Creator";
+            this.Text = "Protocol Game Creator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);
@@ -1760,6 +1773,7 @@
         private System.Windows.Forms.Panel pnlActions;
         private System.Windows.Forms.Panel pnlEvents;
         private System.Windows.Forms.Label lblEvents;
+        private System.Windows.Forms.ToolStripButton toolCompile;
     }
 }
 

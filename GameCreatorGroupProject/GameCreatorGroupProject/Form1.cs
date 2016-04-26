@@ -13,6 +13,8 @@ using System.IO;
 using OpenTK;
 using System.Text.RegularExpressions;
 using OpenTK.Graphics.OpenGL;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
 
 namespace GameCreatorGroupProject
 {
@@ -24,8 +26,6 @@ namespace GameCreatorGroupProject
 
         // Variable to store information on the Room currently being worked on
         Room currentRoom = new Room();
-
-        Dictionary<string, string> spritePaths = new Dictionary<string, string>();
 
         // Variable to track whether a project is actively being edited
         // Necessary to ensure the user doesn't load something nonexistent
@@ -1108,6 +1108,10 @@ namespace GameCreatorGroupProject
         Dictionary<string, ShaderProgram> shaders = new Dictionary<string, ShaderProgram>();
         string activeShader = "default";
 
+        // These pertain to what the user can see at a given time
+        public RectangleF CurrentView = new RectangleF(0, 0, 800, 600);
+        private Matrix4 ortho;
+
         // Index buffer object elements
         int ibo_elements;
 
@@ -1137,7 +1141,7 @@ namespace GameCreatorGroupProject
             Sprite spr = new Sprite();
 
             // Using the passed object's name as a key
-            textures.Add(obj, loader.loadImage(obj, spr));
+            textures.Add(obj, loader.loadImage(sprPath, spr));
             spr.TextureID = textures[obj];
 
             return spr;
@@ -1155,10 +1159,17 @@ namespace GameCreatorGroupProject
             // Set up a viewport
             int w = glRoomView.Width;
             int h = glRoomView.Height;
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(0, w, 0, h, -1, 1);
+
+            CurrentView = new RectangleF(0, 0, w, h);
+
+            CurrentView.Size = new SizeF(w, h);
+            ortho = Matrix4.CreateOrthographic(w, h, -1.0f, 64f);
             GL.Viewport(0, 0, w, h);
+
+            //GL.MatrixMode(MatrixMode.Projection);
+            //GL.LoadIdentity();
+            //GL.Ortho(0, w, 0, h, -1, 1);
+            
 
             // Generate a buffer on the graphics card for VBO indices
             GL.GenBuffers(1, out ibo_elements);
@@ -1181,14 +1192,15 @@ namespace GameCreatorGroupProject
             {
                 // Note to self: ERROR here, must check if key is there first.
 
-                Sprite spr = currentRoom.Objects[vec].sprite;
+                Sprite spr = new Sprite(); // currentRoom.Objects[vec].sprite;
                 string objName = currentRoom.Objects[vec].getName();
+                objName = objName.Remove(objName.IndexOf('.'));
 
                 // See if a sprite has been loaded for this object yet
                 if (!textures.ContainsKey(objName))
                 {
                     // Nope, so generate a sprite for it
-                    spr = loadSprite(objName, spritePaths[objName]);
+                    spr = loadSprite(objName, objectSprites[objName]);
                     currentRoom.Objects[vec].sprite = spr;
                 }
 
@@ -1197,6 +1209,7 @@ namespace GameCreatorGroupProject
                 {
                     // It doesn't, so create a new list for depth Z
                     objects.Add((int)vec.Z, new List<Sprite>());
+
                     // Add this object to the new list
                     objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
                 }
@@ -1213,6 +1226,8 @@ namespace GameCreatorGroupProject
             // Check that the control has loaded
             if (!formLoaded)
                 return;
+
+            GL.Viewport(0, 0, Width, Height);
 
             // Clear previously drawn graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -1322,7 +1337,6 @@ namespace GameCreatorGroupProject
             //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
             // Enable several important switches to be able to draw flat images and make a generally pretty picture.
-            //GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
             GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.Texture2D);
@@ -1452,6 +1466,9 @@ namespace GameCreatorGroupProject
             GLControl destination = (GLControl)sender;
             String objName = (String)e.Data.GetData(typeof(String));
 
+            Point mouseLoc = glRoomView.PointToClient(MousePosition);
+            mouseLoc.Y = glRoomView.Height - mouseLoc.Y; // Convert ref from upper left corner to lower left
+
             // Load offsets from file
             using (BinaryReader reader = new BinaryReader(File.Open(project.Resources[objName], FileMode.Open)))
             {
@@ -1473,13 +1490,20 @@ namespace GameCreatorGroupProject
                 }
 
                 // Create a new GameObject
-                GameObject newObj = new GameObject(objName, new Vector2(MousePosition.X, MousePosition.Y), offsets, new float[] { 0f, 0f, currentRoom.width, currentRoom.height });
+                GameObject newObj = new GameObject(objName, new Vector2(mouseLoc.X, mouseLoc.Y), offsets, new float[] { 0f, 0f, currentRoom.width, currentRoom.height });
             
 
-                currentRoom.Objects.Add(new Vector3(MousePosition.X, MousePosition.Y, 0f), newObj);
+                currentRoom.Objects.Add(new Vector3(mouseLoc.X, mouseLoc.Y, 0f), newObj);
+                txtXPos.Text = mouseLoc.X.ToString();
+                txtYPos.Text = mouseLoc.Y.ToString();
             }
 
             updateRenderList();
+
+            currentRoom.Objects[new Vector3(mouseLoc.X, mouseLoc.Y, 0f)].sprite.Position = new Vector3(mouseLoc.X/(float)Width, mouseLoc.Y/(float)Height, 0f);
+
+            glRoomView.Invalidate();
+            glRoomView.Update();
         }
 
         private void listObjChoices_MouseDown(object sender, MouseEventArgs e)
@@ -1514,6 +1538,34 @@ namespace GameCreatorGroupProject
             txtObjectCode.AppendText("return true;");
             txtObjectCode.AppendText(Environment.NewLine);
             txtObjectCode.AppendText("}");
+        }
+
+        /*
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Area for compiling the final game
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        */
+
+        private void toolCompile_Click(object sender, EventArgs e)
+        {
+            CSharpCodeProvider codeProvider = new CSharpCodeProvider();
+            ICodeCompiler icc = codeProvider.CreateCompiler();
+
+            System.CodeDom.Compiler.CompilerParameters parameters = new CompilerParameters();
+            parameters.GenerateExecutable = true;
+            parameters.OutputAssembly = "ExecutableNameHere.exe";
+            CompilerResults results = icc.CompileAssemblyFromSource(parameters, "Put in string of text to compile here");
+
+            if (results.Errors.Count > 0)
+            {
+                foreach (CompilerError CompErr in results.Errors)
+                {
+                    string errorText = "Line number " + CompErr.Line +
+                        ", Error Number: " + CompErr.ErrorNumber +
+                        ", '" + CompErr.ErrorText + ";" +
+                        Environment.NewLine + Environment.NewLine;
+                }
+            }
         }
     }
 }
