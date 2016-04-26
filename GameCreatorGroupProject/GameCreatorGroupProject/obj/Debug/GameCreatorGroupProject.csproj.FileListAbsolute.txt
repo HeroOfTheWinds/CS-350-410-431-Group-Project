@@ -127,3 +127,9 @@ C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProje
 C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\fs_tex.glsl
 C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\vs.glsl
 C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\vs_tex.glsl
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.CollisionDesigner.resources
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.ChatWindow.resources
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\fs.glsl
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\fs_tex.glsl
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\vs.glsl
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\vs_tex.glsl
