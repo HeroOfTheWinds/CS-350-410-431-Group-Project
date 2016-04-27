@@ -101,6 +101,9 @@
     <None Include="fs.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="fs_sel.glsl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="fs_tex.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

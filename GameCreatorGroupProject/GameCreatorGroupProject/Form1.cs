@@ -1212,6 +1212,10 @@ namespace GameCreatorGroupProject
         Dictionary<string, int> textures = new Dictionary<string, int>();
         Dictionary<string, Vector2> texSizes = new Dictionary<string, Vector2>();
 
+        // Sprite currently selected for editing in the room
+        Sprite selectedSpr = null;
+        GameObject selectedObj = null;
+
         // Function to load a texture for a given gameobject
         private Sprite loadSprite(string obj, string sprPath)
         {
@@ -1259,6 +1263,7 @@ namespace GameCreatorGroupProject
             // Load two shaders, one for test squares and the other for textured sprites
             shaders.Add("default", new ShaderProgram("vs.glsl", "fs.glsl", true));
             shaders.Add("textured", new ShaderProgram("vs_tex.glsl", "fs_tex.glsl", true));
+            shaders.Add("selected", new ShaderProgram("vs_tex.glsl", "fs_sel.glsl", true));
 
             // Declare that the shader we will use first is the textured sprite
             activeShader = "textured";
@@ -1510,6 +1515,16 @@ namespace GameCreatorGroupProject
             {
                 Sprite v = sprLists.Pop();
                 {
+                    // Check if this sprite is selected
+                    if (v == selectedSpr)
+                    {
+                        GL.UseProgram(shaders["selected"].ProgramID);
+                    }
+                    else
+                    {
+                        GL.UseProgram(shaders["textured"].ProgramID);
+                    }
+
                     // Tell OpenTK to associate the given texture to the VBO we're drawing
                     GL.BindTexture(TextureTarget.Texture2D, v.TextureID);
                     // Send our projection matrix to the GLSL shader
@@ -1665,5 +1680,60 @@ namespace GameCreatorGroupProject
         }
 
 
+        /*
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Code here for starting drag and drop within the room
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        */
+        private bool mouseDown = false;
+
+        private void glRoomView_MouseDown(object sender, MouseEventArgs e)
+        {
+            // First, get the coordinate of the click
+            Point clickPt = glRoomView.PointToClient(MousePosition);
+            clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
+
+            // If already dragging something, move it with the mouse
+            if (mouseDown)
+            {
+                
+            }
+            else // Select an object instead
+            {
+                // Clear previous selection
+                selectedSpr = null;
+
+                // Check if the point is inside
+                foreach (GameObject obj in currentRoom.Objects.Values)
+                {
+                    if (obj.IsInside(clickPt))
+                    {
+                        // Select the object for editing
+                        selectedSpr = obj.sprite;
+                        selectedObj = obj;
+
+                        // Display selected object's data in Room Viewer
+                        txtXPos.Text = obj.getMinX().ToString();
+                        txtYPos.Text = obj.getMinY().ToString();
+
+                        mouseDown = true;
+
+                        // Redraw so user can see selected object
+                        glRoomView.Invalidate();
+                        glRoomView.Update();
+
+                        // break out to avoid conflicts
+                        break;
+                    }
+                }
+            }
+            
+        }
+
+        //  Stop the dragging here
+        private void glRoomView_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
     }
 }

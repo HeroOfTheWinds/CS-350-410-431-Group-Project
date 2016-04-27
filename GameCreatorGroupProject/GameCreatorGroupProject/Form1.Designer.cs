@@ -71,6 +71,11 @@
             this.gboxBehaviorCode = new System.Windows.Forms.GroupBox();
             this.txtObjectCode = new System.Windows.Forms.TextBox();
             this.gboxSprite = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.radioSprite = new System.Windows.Forms.RadioButton();
             this.radioDisk = new System.Windows.Forms.RadioButton();
             this.radioBox = new System.Windows.Forms.RadioButton();
@@ -156,11 +161,6 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.txtChat = new System.Windows.Forms.TextBox();
             this.folderPrjDir = new System.Windows.Forms.FolderBrowserDialog();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.toolStrip1.SuspendLayout();
             this.ModeControlTabs.SuspendLayout();
             this.ResourcesTab.SuspendLayout();
@@ -636,6 +636,55 @@
             this.gboxSprite.TabStop = false;
             this.gboxSprite.Text = "Sprites:";
             // 
+            // button1
+            // 
+            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.button1.Location = new System.Drawing.Point(513, 56);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(69, 26);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Set Size";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(411, 43);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Height";
+            this.label2.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(313, 43);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Width";
+            this.label1.Visible = false;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(414, 59);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(81, 20);
+            this.textBox2.TabIndex = 9;
+            this.textBox2.Visible = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(316, 59);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(81, 20);
+            this.textBox1.TabIndex = 8;
+            this.textBox1.Visible = false;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // radioSprite
             // 
             this.radioSprite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -788,7 +837,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInstantiate.Location = new System.Drawing.Point(5, 6);
             this.btnInstantiate.Name = "btnInstantiate";
-            this.btnInstantiate.Size = new System.Drawing.Size(129, 23);
+            this.btnInstantiate.Size = new System.Drawing.Size(112, 23);
             this.btnInstantiate.TabIndex = 0;
             this.btnInstantiate.Text = "Instantiate Object";
             this.btnInstantiate.UseVisualStyleBackColor = true;
@@ -799,7 +848,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDestroy.Location = new System.Drawing.Point(5, 35);
             this.btnDestroy.Name = "btnDestroy";
-            this.btnDestroy.Size = new System.Drawing.Size(129, 23);
+            this.btnDestroy.Size = new System.Drawing.Size(112, 23);
             this.btnDestroy.TabIndex = 1;
             this.btnDestroy.Text = "Destroy Object";
             this.btnDestroy.UseVisualStyleBackColor = true;
@@ -821,7 +870,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMove.Location = new System.Drawing.Point(6, 64);
             this.btnMove.Name = "btnMove";
-            this.btnMove.Size = new System.Drawing.Size(128, 23);
+            this.btnMove.Size = new System.Drawing.Size(111, 23);
             this.btnMove.TabIndex = 2;
             this.btnMove.Text = "Move";
             this.btnMove.UseVisualStyleBackColor = true;
@@ -832,7 +881,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnScore.Location = new System.Drawing.Point(6, 93);
             this.btnScore.Name = "btnScore";
-            this.btnScore.Size = new System.Drawing.Size(128, 23);
+            this.btnScore.Size = new System.Drawing.Size(111, 23);
             this.btnScore.TabIndex = 3;
             this.btnScore.Text = "Set Score";
             this.btnScore.UseVisualStyleBackColor = true;
@@ -843,7 +892,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTimer.Location = new System.Drawing.Point(6, 151);
             this.btnTimer.Name = "btnTimer";
-            this.btnTimer.Size = new System.Drawing.Size(128, 23);
+            this.btnTimer.Size = new System.Drawing.Size(111, 23);
             this.btnTimer.TabIndex = 5;
             this.btnTimer.Text = "Set Timer";
             this.btnTimer.UseVisualStyleBackColor = true;
@@ -855,7 +904,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHealth.Location = new System.Drawing.Point(6, 122);
             this.btnHealth.Name = "btnHealth";
-            this.btnHealth.Size = new System.Drawing.Size(128, 23);
+            this.btnHealth.Size = new System.Drawing.Size(111, 23);
             this.btnHealth.TabIndex = 4;
             this.btnHealth.Text = "Set Health";
             this.btnHealth.UseVisualStyleBackColor = true;
@@ -893,7 +942,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnCreate.Location = new System.Drawing.Point(5, 3);
             this.btnOnCreate.Name = "btnOnCreate";
-            this.btnOnCreate.Size = new System.Drawing.Size(129, 23);
+            this.btnOnCreate.Size = new System.Drawing.Size(112, 23);
             this.btnOnCreate.TabIndex = 4;
             this.btnOnCreate.Text = "On Create";
             this.btnOnCreate.UseVisualStyleBackColor = true;
@@ -905,7 +954,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestVar.Location = new System.Drawing.Point(5, 145);
             this.btnTestVar.Name = "btnTestVar";
-            this.btnTestVar.Size = new System.Drawing.Size(129, 23);
+            this.btnTestVar.Size = new System.Drawing.Size(112, 23);
             this.btnTestVar.TabIndex = 6;
             this.btnTestVar.Text = "Test Variable";
             this.btnTestVar.UseVisualStyleBackColor = true;
@@ -916,7 +965,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCollision.Location = new System.Drawing.Point(5, 87);
             this.btnCollision.Name = "btnCollision";
-            this.btnCollision.Size = new System.Drawing.Size(129, 23);
+            this.btnCollision.Size = new System.Drawing.Size(112, 23);
             this.btnCollision.TabIndex = 2;
             this.btnCollision.Text = "On Collision";
             this.btnCollision.UseVisualStyleBackColor = true;
@@ -928,7 +977,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInput.Location = new System.Drawing.Point(5, 116);
             this.btnInput.Name = "btnInput";
-            this.btnInput.Size = new System.Drawing.Size(129, 23);
+            this.btnInput.Size = new System.Drawing.Size(112, 23);
             this.btnInput.TabIndex = 1;
             this.btnInput.Text = "Get Input";
             this.btnInput.UseVisualStyleBackColor = true;
@@ -940,7 +989,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnDestruct.Location = new System.Drawing.Point(5, 29);
             this.btnOnDestruct.Name = "btnOnDestruct";
-            this.btnOnDestruct.Size = new System.Drawing.Size(129, 23);
+            this.btnOnDestruct.Size = new System.Drawing.Size(112, 23);
             this.btnOnDestruct.TabIndex = 5;
             this.btnOnDestruct.Text = "On Destruct";
             this.btnOnDestruct.UseVisualStyleBackColor = true;
@@ -952,7 +1001,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnStep.Location = new System.Drawing.Point(5, 58);
             this.btnOnStep.Name = "btnOnStep";
-            this.btnOnStep.Size = new System.Drawing.Size(129, 23);
+            this.btnOnStep.Size = new System.Drawing.Size(112, 23);
             this.btnOnStep.TabIndex = 7;
             this.btnOnStep.Text = "On Step";
             this.btnOnStep.UseVisualStyleBackColor = true;
@@ -1526,6 +1575,8 @@
             this.glRoomView.DragDrop += new System.Windows.Forms.DragEventHandler(this.glRoomView_DragDrop);
             this.glRoomView.DragEnter += new System.Windows.Forms.DragEventHandler(this.glRoomView_DragEnter);
             this.glRoomView.Paint += new System.Windows.Forms.PaintEventHandler(this.glRoomView_Paint);
+            this.glRoomView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.glRoomView_MouseDown);
+            this.glRoomView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.glRoomView_MouseUp);
             // 
             // imageResources
             // 
@@ -1566,7 +1617,7 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendMsg.Location = new System.Drawing.Point(1016, 146);
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 142);
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1577,7 +1628,7 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMessage.Location = new System.Drawing.Point(3, 149);
+            this.txtMessage.Location = new System.Drawing.Point(3, 145);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1592,7 +1643,7 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChat.Size = new System.Drawing.Size(1152, 137);
+            this.txtChat.Size = new System.Drawing.Size(1152, 133);
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
@@ -1600,55 +1651,6 @@
             this.folderPrjDir.Description = "Specify a folder to store the project in:";
             this.folderPrjDir.RootFolder = System.Environment.SpecialFolder.MyComputer;
             this.folderPrjDir.SelectedPath = "System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments)";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(316, 59);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(81, 20);
-            this.textBox1.TabIndex = 8;
-            this.textBox1.Visible = false;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(414, 59);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(81, 20);
-            this.textBox2.TabIndex = 9;
-            this.textBox2.Visible = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(313, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Width";
-            this.label1.Visible = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(411, 43);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "Height";
-            this.label2.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(513, 56);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(69, 26);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Set Size";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainWindow
             // 
