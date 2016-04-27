@@ -80,6 +80,7 @@ namespace GameCreatorGroupProject
                 //reads messages
                 while (client.Connected && !dc)
                 {
+                    Thread.Sleep(0);
                     //if disconnected dataavailable field will throw an acception, and should set connected to false
                     try
                     {

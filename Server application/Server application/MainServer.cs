@@ -45,6 +45,7 @@ namespace Server_application
             //main server control
             while (running)
             {
+                Thread.Sleep(0);
                 //checks if a new client is waiting to connect
                 if (listener.Pending())
                 {
@@ -64,9 +65,14 @@ namespace Server_application
                     //client type waits for requests from server
                     else if (type == 1)
                     {
+                        
                         uint thisClientID = reader.ReadUInt32();
-                        //adds client to a dictionary for use
-                        clientList.Add(thisClientID, client);
+                        if (!clientList.ContainsKey(thisClientID))
+                        {
+                            //adds client to a dictionary for use
+                            clientList.Add(thisClientID, client);
+                        }
+                            
                     }
                 }
             }
@@ -86,6 +92,7 @@ namespace Server_application
                 //control while client connected and server running
                 while (thisClient.Connected && running)
                 {
+                    Thread.Sleep(0);
                     try
                     {
                         //checks if data is available on the clients stream
