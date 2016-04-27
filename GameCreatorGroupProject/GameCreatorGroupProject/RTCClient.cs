@@ -26,5 +26,10 @@ namespace GameCreatorGroupProject
         {
             throw new NotImplementedException();
         }
+
+        public override int getClientType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

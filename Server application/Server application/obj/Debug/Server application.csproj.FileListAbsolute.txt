@@ -1,5 +1,28 @@
 C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe.config
 C:\Users\Jared\Documents\GitHub\mod14\Server application\Server application\bin\Debug\Server application.exe.config
+<<<<<<< HEAD
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\bin\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\bin\Debug\Server application.pdb
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server_application.Form1.resources
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\modalot\Server application\Server application\obj\Debug\Server application.pdb
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.exe
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.pdb
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.pdb
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server_application.Form1.resources
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\obj\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\obj\Debug\Server application.pdb
+=======
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe.config
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.pdb
@@ -17,3 +40,4 @@ C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server a
 C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.pdb
 C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.exe
 C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.pdb
+>>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499

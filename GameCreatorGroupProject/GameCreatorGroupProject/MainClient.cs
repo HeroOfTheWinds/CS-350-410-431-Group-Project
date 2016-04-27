@@ -311,5 +311,11 @@ namespace GameCreatorGroupProject
             return staticReader.ReadBoolean();
         }
 
+
+        public bool isConnected()
+        {
+            return dc;
+        }
+
     }
 }

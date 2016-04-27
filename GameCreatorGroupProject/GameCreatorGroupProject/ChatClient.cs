@@ -128,5 +128,11 @@ namespace GameCreatorGroupProject
             if (reader != null) { reader.Close(); }
             if (client != null) { client.Close(); }
         }
+
+
+        public override int getClientType()
+        {
+            return serverType;
+        }
     }
 }
