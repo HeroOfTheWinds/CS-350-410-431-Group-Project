@@ -9,3 +9,11 @@ C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server ap
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.exe
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.pdb
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe.config
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server_application.Form1.resources
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.exe
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\bin\Debug\Server application.pdb
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.exe
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.pdb

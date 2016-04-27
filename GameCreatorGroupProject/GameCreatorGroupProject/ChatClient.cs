@@ -89,18 +89,13 @@ namespace GameCreatorGroupProject
                             //reads stream data
                             message = reader.ReadLine();
 
-
-<<<<<<< HEAD
                         //add code to write message to chat interface
-                        //MessageBox.Show(message);
                         if (DataReceived != null) // check if subscribed
                             DataReceived(message); // raise event with data
-=======
                             //add code to write message to chat interface
                             MessageBox.Show(message);
 
                         }
->>>>>>> 7092c81cc15ea036f67740f52167c6fcf48ae421
                     }
                     catch (Exception) { }
 

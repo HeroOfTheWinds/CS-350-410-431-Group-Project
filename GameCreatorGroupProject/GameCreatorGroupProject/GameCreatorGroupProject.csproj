@@ -50,7 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncChatClient.cs" />
+    <Compile Include="Background.cs" />
+    <Compile Include="BGTile.cs" />
     <Compile Include="ChatClient.cs" />
     <Compile Include="CollisionDesigner.cs">
       <SubType>Form</SubType>
@@ -81,6 +82,9 @@
     <Compile Include="RTCClient.cs" />
     <Compile Include="Segment.cs" />
     <Compile Include="ServerInfo.cs" />
+    <Compile Include="ShaderProgram.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteLoader.cs" />
     <Compile Include="TCPClient.cs" />
     <EmbeddedResource Include="CollisionDesigner.resx">
       <DependentUpon>CollisionDesigner.cs</DependentUpon>
