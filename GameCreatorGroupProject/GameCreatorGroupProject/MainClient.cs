@@ -141,6 +141,7 @@ namespace GameCreatorGroupProject
                         //checks if both clients are still connected, and if disconnect was called
                         while (client.Connected && staticClient.Connected && !dc)
                         {
+                            Thread.Sleep(0);
                             try
                             {
                                 //checks if server has sent a connection request
@@ -314,7 +315,7 @@ namespace GameCreatorGroupProject
 
         public bool isConnected()
         {
-            return dc;
+            return !dc;
         }
 
     }

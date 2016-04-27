@@ -41,3 +41,9 @@ C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server a
 C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.exe
 C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\Server application\Server application\obj\Debug\Server application.pdb
 >>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\bin\Debug\Server application.exe
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\bin\Debug\Server application.pdb
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\obj\Debug\Server application.csprojResolveAssemblyReference.cache
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\obj\Debug\Server_application.Form1.resources
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\obj\Debug\Server_application.Properties.Resources.resources
+C:\Users\Jared\Documents\GitHub\modmore\Server application\Server application\obj\Debug\Server application.csproj.GenerateResource.Cache

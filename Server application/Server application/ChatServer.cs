@@ -131,6 +131,7 @@ namespace Server_application
                 NetworkStream outStream;
                 while (thisClient.Connected && running)
                 {
+                    Thread.Sleep(0);
                     try
                     {
                         //checks if data is available on the clients stream
