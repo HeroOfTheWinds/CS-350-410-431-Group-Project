@@ -24,7 +24,7 @@ namespace Server_application
         //main server port
         private readonly int port = 20112;
 
-        public override void startServer()
+        public async override void startServer()
         {
             //attempts to start listener on chat port
             if (!listenerStarted)
@@ -50,7 +50,7 @@ namespace Server_application
                 {
                     //connects to client
                     //currently connects to any client, possibly add security later
-                    TcpClient client = listener.AcceptTcpClient();
+                    TcpClient client = await listener.AcceptTcpClientAsync();
                     NetworkStream stream = client.GetStream();
                     BinaryReader reader = new BinaryReader(stream);
                     byte type = reader.ReadByte();

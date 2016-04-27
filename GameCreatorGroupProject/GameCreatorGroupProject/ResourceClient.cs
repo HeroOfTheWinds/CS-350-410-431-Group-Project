@@ -1,18 +1,10 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Sockets;
-    using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Windows.Forms;
+﻿using System;
 
-
-    namespace GameCreatorGroupProject
+namespace GameCreatorGroupProject
+{
+    internal class ResourceClient : TCPClient
     {
+<<<<<<< HEAD
         //special clients should only be invoked by main client
         internal class ResourceClient : TCPClient
         {
@@ -86,46 +78,38 @@
                                 data = reader.ReadLine();
                             }
 
+=======
+        private uint serverID;
+        private readonly int port = 20115;
+>>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499
 
-                        }
-                        catch (Exception) { }
-                    }
-                    MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
+        public ResourceClient(uint serverID)
+        {
+            this.serverID = serverID;
+        }
 
+        public override void connectClient(string serverIP)
+        {
+            throw new NotImplementedException();
+        }
 
-            public override void disconnectClient()
-            {
-                dc = true;
-                if (writer != null) { writer.Close(); }
-                if (reader != null) { reader.Close(); }
-                if (client != null) { client.Close(); }
-            }
+        public override void disconnectClient()
+        {
+            throw new NotImplementedException();
+        }
 
-            /*******************************
-            changes a string into a byte stream
-        **********************************/
-            public override void send(ref Object data) //idk if data should be a ref Object or a string
-            {
-                if (writer != null)
-                {
-                    //writers data to stream
-                    writer.WriteLine((string)data);
-                    writer.Flush();
-                }
-                else
-                {
-                    throw new notConnectedException("Client must be connected to server before send is invoked");
-                }
-            }
-
-
+<<<<<<< HEAD
             public override int getClientType()
             {
                 return serverType;
             }
 
 
+=======
+        public override void send(Object data)
+        {
+            throw new NotImplementedException();
+>>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499
         }
     }
+}

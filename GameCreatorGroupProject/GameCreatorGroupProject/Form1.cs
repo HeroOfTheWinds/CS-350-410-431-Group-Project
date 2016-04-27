@@ -45,7 +45,7 @@ namespace GameCreatorGroupProject
 
         //MainClient to be created when form is loaded
         MainClient online;
-        private TCPClient chat;
+        private ChatClient chat;
 
 
         private Dictionary<string, string> objectSprites = new Dictionary<string, string>();
@@ -482,13 +482,18 @@ namespace GameCreatorGroupProject
             }
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
 
-            chat = online.getAvailable();
+            chat = (ChatClient) online.getAvailable();
 
+<<<<<<< HEAD
             
 
             //online.connectClient(1, chatServerID, 1);
             //chat = MainClient.clients.ElementAt(0);
             //chat.connectClient(ServerInfo.getServerIP());
+=======
+            ChatWindow cw = new ChatWindow(chat, online);
+            cw.Show();
+>>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499
         }
 
 
@@ -578,10 +583,10 @@ namespace GameCreatorGroupProject
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string msg = "Hello World!";
-            object temp = msg;
+            //object temp = msg;
             if (chat == null)
-                chat = online.getAvailable();
-            chat.send(ref temp);
+                chat = (ChatClient) online.getAvailable();
+            chat.send(msg);
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)

@@ -13,7 +13,7 @@ using System.Windows.Forms;
 namespace GameCreatorGroupProject
 {
     //special clients should only be invoked by main client
-    class ChatClient : TCPClient
+    public class ChatClient : TCPClient
     {
         private StreamWriter writer = null;
         private StreamReader reader = null;
@@ -22,6 +22,10 @@ namespace GameCreatorGroupProject
         public static readonly byte serverType = 1;
         private uint serverID;
         private bool dc;
+
+        //Event
+        public delegate void DataReceivedHandler(string data);
+        public event DataReceivedHandler DataReceived;
 
         public ChatClient(uint serverID)
         {
@@ -85,7 +89,9 @@ namespace GameCreatorGroupProject
                             //reads stream data
                             message = reader.ReadLine();
 
-
+                        //add code to write message to chat interface
+                        if (DataReceived != null) // check if subscribed
+                            DataReceived(message); // raise event with data
                             //add code to write message to chat interface
                             MessageBox.Show(message);
 
@@ -99,12 +105,14 @@ namespace GameCreatorGroupProject
         }
 
         //sends a message
-        public override void send(ref Object message)
+        public override void send(Object message)
         {
             if (writer != null)
             {
                 //writes message to stream
-                writer.WriteLine((string)message);
+                //writer.WriteLineAsync(MainClient.getUsername());
+                //writer.WriteLine(MainClient.getUsername());
+                writer.WriteLine(message);
                 writer.Flush();
             }
             else

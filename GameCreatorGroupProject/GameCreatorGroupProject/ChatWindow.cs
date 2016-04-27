@@ -12,22 +12,58 @@ namespace GameCreatorGroupProject
 {
     public partial class ChatWindow : Form
     {
-        private TCPClient chat;
+        private ChatClient chat;
+        private MainClient online;
 
         public ChatWindow()
         {
             InitializeComponent();
         }
 
-        public ChatWindow(TCPClient c)
+        private void sendMessage(string msg)
         {
+            //object temp = msg;
+            chat.send(msg);
+        }
+
+        public ChatWindow(ChatClient c, MainClient o)
+        {
+            InitializeComponent();
             this.chat = c;
+            this.online = o;
+            chat.DataReceived += Chat_DataReceived;
+        }
+
+        private void Chat_DataReceived(string data)
+        {
+            if(InvokeRequired)
+            {
+                Invoke((MethodInvoker)(() => Chat_DataReceived(data)));
+                return;
+            }
+            updateChat(data);
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Bring up form with list of users
+            //get clientID
             //add user
+            uint clientID = 0;
+            online.connectClient(1, chat.getServerID(), clientID);
+        }
+
+        public void updateChat(string msg)
+        {
+            //chat client receives new message
+            //Chat message displayed
+            richTextBox1.Text += msg+"\n";
+        }
+
+        private void sendButton_Click(object sender, EventArgs e)
+        {
+            sendMessage(richTextBox2.Text.ToString());
+            richTextBox2.Text = "";
         }
     }
 }

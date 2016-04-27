@@ -20,7 +20,7 @@ namespace GameCreatorGroupProject
         abstract public void connectClient(string serverIP);
 
         //sends data to the server using a NetworkStream
-        abstract public void send(ref Object data);
+        abstract public void send(Object data);
 
         //disconnects the client from the server
         abstract public void disconnectClient();

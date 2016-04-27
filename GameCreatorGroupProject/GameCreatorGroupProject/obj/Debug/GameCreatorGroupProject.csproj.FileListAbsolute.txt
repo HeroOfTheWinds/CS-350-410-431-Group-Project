@@ -59,6 +59,7 @@ C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\GameCreatorGroupProject\Game
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.pdb
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.xml
 C:\Users\AquaC\Desktop\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.xml
+<<<<<<< HEAD
 C:\Users\Jared\Documents\GitHub\modalot\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
 C:\Users\Jared\Documents\GitHub\modalot\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
 C:\Users\Jared\Documents\GitHub\modalot\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
@@ -153,3 +154,21 @@ C:\Users\Jared\Documents\GitHub\modmore\GameCreatorGroupProject\GameCreatorGroup
 C:\Users\Jared\Documents\GitHub\modmore\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.pdb
 C:\Users\Jared\Documents\GitHub\modmore\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.xml
 C:\Users\Jared\Documents\GitHub\modmore\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.xml
+=======
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csprojResolveAssemblyReference.cache
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.CollisionDesigner.resources
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.ChatWindow.resources
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.pdb
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.Compatibility.dll
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.dll
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.dll
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.pdb
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.xml
+C:\Users\AquaC\Projects\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.xml
+>>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499
