@@ -37,13 +37,20 @@ namespace GameCreatorGroupProject
         public void SaveResource(Project project, string name, string ext, string resPath)
         {
             // Generate the destination file path
-            string dest = project.getResourceDir() + "/" + name + ext;
+            string dest = project.getResourceDir() + @"\" + name + ext;
 
             // Copy file into project's resource directory, overwrite if needed.
-            File.Copy(resPath, dest, true);
+            if (!File.Exists(dest))
+            {
+                File.Copy(resPath, dest, true);
+            }
 
             // Update the project's list of resources
-            project.Resources.Add(name, dest);
+            if (!project.Resources.ContainsKey(name + ext))
+            {
+                project.Resources.Add(name + ext, dest);
+            }
+            
         }
     }
 }

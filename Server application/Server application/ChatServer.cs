@@ -98,6 +98,7 @@ namespace Server_application
                     if (!(connectExpected.IsSet && reader.ReadLine().Equals(expectedClient.ToString()) && reader.ReadLine().Equals(currentID.ToString())))
                     {
                         writer.WriteLine("err");
+                        writer.Flush();
                         client.GetStream().Close();
                         client.Close();
                     }
@@ -106,6 +107,7 @@ namespace Server_application
                     {
                         //reports to client if successfully connected
                         writer.WriteLine("success");
+                        writer.Flush();
                         connectExpected.Reset();
                         Thread t = new Thread(transmitter);
                         t.Start(client);
@@ -129,26 +131,29 @@ namespace Server_application
                 NetworkStream outStream;
                 while (thisClient.Connected && running)
                 {
-                    //checks if data is available on the clients stream
-                    if (inStream.DataAvailable)
+                    try
                     {
-                        message = reader.ReadLine();
-                        //sends data to all clients in chat
-                        foreach (KeyValuePair<TcpClient, string> c in clientList)
+                        //checks if data is available on the clients stream
+                        if (inStream.DataAvailable)
                         {
-                            string clientName;
-                            
-                            //creates StreamWriter for current outgoing client
-                            outStream = c.Key.GetStream();
-                            writer = new StreamWriter(outStream);
-                            //appends sender name to beginning of message
-                            clientList.TryGetValue(thisClient, out clientName);
-                            //writes sender and message to outgoing stream
-                            writer.WriteLine(clientName + ": " + message.ToString());
-                            writer.Flush();
+                            message = reader.ReadLine();
+                            //sends data to all clients in chat
+                            foreach (KeyValuePair<TcpClient, string> c in clientList)
+                            {
+                                string clientName;
+
+                                //creates StreamWriter for current outgoing client
+                                outStream = c.Key.GetStream();
+                                writer = new StreamWriter(outStream);
+                                //appends sender name to beginning of message
+                                clientList.TryGetValue(thisClient, out clientName);
+                                //writes sender and message to outgoing stream
+                                writer.WriteLine(clientName + ": " + message.ToString());
+                                writer.Flush();
+                            }
                         }
                     }
-
+                    catch (Exception) { }
                 }
 
                 if (writer != null) { writer.Close(); }

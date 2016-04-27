@@ -19,7 +19,7 @@ namespace GameCreatorGroupProject
         private StreamReader reader = null;
         //chat port
         private readonly int port = 20113;
-        private readonly byte serverType = 1;
+        public static readonly byte serverType = 1;
         private uint serverID;
         private bool dc;
 
@@ -80,18 +80,29 @@ namespace GameCreatorGroupProject
                 //reads messages
                 while (client.Connected && !dc)
                 {
-                    //possible issue if server has not yet read sent data
-                    if (stream.DataAvailable)
+                    //if disconnected dataavailable field will throw an acception, and should set connected to false
+                    try
                     {
-                        //reads stream data
-                        message = reader.ReadLine();
+                        //possible issue if server has not yet read sent data
+                        if (stream.DataAvailable)
+                        {
+                            //reads stream data
+                            message = reader.ReadLine();
 
 
+<<<<<<< HEAD
                         //add code to write message to chat interface
                         //MessageBox.Show(message);
                         if (DataReceived != null) // check if subscribed
                             DataReceived(message); // raise event with data
+=======
+                            //add code to write message to chat interface
+                            MessageBox.Show(message);
+
+                        }
+>>>>>>> 7092c81cc15ea036f67740f52167c6fcf48ae421
                     }
+                    catch (Exception) { }
 
                 }
                 MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
