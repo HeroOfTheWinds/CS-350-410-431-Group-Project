@@ -292,6 +292,34 @@ namespace GameCreatorGroupProject
 
 
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            float width;
+            float height;
+            bool validw = Single.TryParse(textBox1.Text, out width);
+            bool validh = Single.TryParse(textBox2.Text, out height);
+            if (!validw || !validh)
+            {
+                MessageBox.Show("Could not set collision bounds, invalid input.", "Invalid input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                bOffsets = new Vector2[3];
+                bOffsets[0] = new Vector2(width, 0);
+                bOffsets[1] = new Vector2(width, height);
+                bOffsets[2] = new Vector2(0, height);
+            }
+        }
+
+
+
+
+
         private void itemSave_Click(object sender, EventArgs e)
         {
             // If no project is open, throw error and abandon function
@@ -340,6 +368,7 @@ namespace GameCreatorGroupProject
 
                 // Clear out the list of resources the user sees
                 listResources.Items.Clear();
+                listObjects.Items.Clear();
 
                 /*
                 // Update the list of resources viewed by the user
@@ -442,13 +471,20 @@ namespace GameCreatorGroupProject
 
         private void itemConnect_Click(object sender, EventArgs e)
         {
-            chatServerID = online.requestChatServer();
+            try
+            {
+                chatServerID = online.requestChatServer();
+            }
+            catch (notConnectedException)
+            {
+                MessageBox.Show("Could not connect to chat server, not connected to server.", "Not connected to server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
 
             chat = online.getAvailable();
 
-            ChatWindow cw = new ChatWindow(chat);
-            cw.Show();
+            
 
             //online.connectClient(1, chatServerID, 1);
             //chat = MainClient.clients.ElementAt(0);
@@ -478,8 +514,32 @@ namespace GameCreatorGroupProject
         {
             Thread t = new Thread(connectMain);
             t.Start();
+
+            Thread ts = new Thread(spawnReq);
+            ts.Start();
         }
 
+
+
+        private void spawnReq()
+        {
+            while (online.isConnected())
+            {
+                TCPClient spawned;
+                if ((spawned = online.getAvailable()) != null)
+                {
+                    if (spawned.getClientType() == 1)
+                    {
+                        ChatWindow cw = new ChatWindow((ChatClient)spawned);
+                        cw.Show();
+                    }
+                    if (spawned.getClientType() == 2)
+                    {
+                        //input code for making resource gui popup
+                    }
+                }
+            }
+        }
 
 
 
@@ -592,6 +652,11 @@ namespace GameCreatorGroupProject
 
         private void radioSprite_Click(object sender, EventArgs e)
         {
+            textBox1.Visible = false;
+            textBox2.Visible = false;
+            button1.Visible = false;
+            label1.Visible = false;
+            label2.Visible = false;
             CollisionDesigner d = new CollisionDesigner();
             d.ShowDialog(this);
             cOffsets = CollisionDesigner.offsets;
@@ -696,7 +761,19 @@ namespace GameCreatorGroupProject
 
         private void radioBox_Click(object sender, EventArgs e)
         {
-            //have things to ask for width and height and make box from that
+            textBox1.Visible = true;
+            textBox2.Visible = true;
+            button1.Visible = true;
+            label1.Visible = true;
+            label2.Visible = true;
+            if (textBox1.TextLength == 0)
+            {
+                textBox1.Text = spr.Width.ToString();
+            }
+            if (textBox2.TextLength == 0)
+            {
+                textBox2.Text = spr.Height.ToString();
+            }
         }
 
 
@@ -731,6 +808,11 @@ namespace GameCreatorGroupProject
                             else
                             {
                                 radioBox.Checked = true;
+                                textBox1.Visible = true;
+                                textBox2.Visible = true;
+                                button1.Visible = true;
+                                label1.Visible = true;
+                                label2.Visible = true;
                             }
 
                             elem = reader.ReadInt32();
@@ -749,8 +831,10 @@ namespace GameCreatorGroupProject
                                 for (int i = 0; i < elem; i++)
                                 {
 
-                                    bOffsets[i] = new Vector2(reader.ReadInt32(), reader.ReadInt32());
+                                    bOffsets[i] = new Vector2(reader.ReadSingle(), reader.ReadSingle());
                                 }
+                                textBox1.Text = bOffsets[0].X.ToString();
+                                textBox2.Text = bOffsets[2].Y.ToString();
                             }
                             //I think this will work? Makes sure this is the end of the file.
                             if (reader.BaseStream.Position != reader.BaseStream.Length)
@@ -1567,5 +1651,7 @@ namespace GameCreatorGroupProject
                 }
             }
         }
+
+
     }
 }

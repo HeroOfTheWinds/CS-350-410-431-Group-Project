@@ -20,9 +20,9 @@
             private StreamWriter writer = null;
             private StreamReader reader = null;
 
-            //chat port
+            //resource port
             private readonly int port = 20115;
-            public static readonly byte serverType = 1;
+            public static readonly byte serverType = 2;
             private uint serverID;
             private bool dc;
 
@@ -118,6 +118,12 @@
                 {
                     throw new notConnectedException("Client must be connected to server before send is invoked");
                 }
+            }
+
+
+            public override int getClientType()
+            {
+                return serverType;
             }
 
 

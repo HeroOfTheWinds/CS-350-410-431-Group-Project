@@ -109,7 +109,7 @@ namespace GameCreatorGroupProject
         protected override void OnPaint(PaintEventArgs e)
         {
             Graphics g = CreateGraphics();
-            g.DrawImage(spr, new Point(225, 225));
+            g.DrawImage(spr, 225, 225, spr.Width, spr.Height);
 
             if (points.Count != 0)
             {

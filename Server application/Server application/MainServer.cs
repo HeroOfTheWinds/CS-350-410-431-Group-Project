@@ -34,11 +34,12 @@ namespace Server_application
                     //possible issues with conflicts if multiple chat servers running, to be fixed later
                     listener = new TcpListener(IPAddress.Any, port);
                     listener.Start();
+                    listenerStarted = true;
                 }
                 //displays error box if unable to start server
                 catch (SocketException)
                 {
-                    MessageBox.Show("A network error has occured.", "Unable to start chat server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("A network error has occured.", "Unable to start server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             //main server control

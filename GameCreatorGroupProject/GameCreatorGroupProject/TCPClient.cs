@@ -24,5 +24,8 @@ namespace GameCreatorGroupProject
 
         //disconnects the client from the server
         abstract public void disconnectClient();
+
+        //returns the clients type
+        abstract public int getClientType();
     }
 }
