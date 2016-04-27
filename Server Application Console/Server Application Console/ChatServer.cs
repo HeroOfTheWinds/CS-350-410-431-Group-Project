@@ -34,24 +34,6 @@ namespace Server_Application_Console
             this.serverID = serverID;
         }
 
-/*
-        public static void setConnectExpected(bool expected)
-        {
-            if(expected)
-            {
-                connectExpected.Set();
-            }
-            else
-            {
-                connectExpected.Reset();
-            }
-        }
-
-        public static bool getConnectExpected()
-        {
-            return connectExpected.IsSet;
-        }
-*/
         public static uint getCurrentID()
         {
             return currentID;
@@ -85,7 +67,7 @@ namespace Server_Application_Console
             while (running)
             {
                 //checks if a new client is waiting to connect
-                if (listener.Pending() && currentID == serverID)
+                if (currentID == serverID)
                 {
                     //connects to client
                     TcpClient client = await listener.AcceptTcpClientAsync();
@@ -131,26 +113,22 @@ namespace Server_Application_Console
                 while (thisClient.Connected && running)
                 {
                     //checks if data is available on the clients stream
-                    if (inStream.DataAvailable)
+                    message = reader.ReadLine();
+                    //sends data to all clients in chat
+                    foreach (KeyValuePair<TcpClient, string> c in clientList)
                     {
-                        message = reader.ReadLine();
-                        //sends data to all clients in chat
-                        foreach (KeyValuePair<TcpClient, string> c in clientList)
-                        {
-                            string clientName;
+                        string clientName;
                             
-                            //creates StreamWriter for current outgoing client
-                            outStream = c.Key.GetStream();
-                            writer = new StreamWriter(outStream);
-                            //appends sender name to beginning of message
-                            clientList.TryGetValue(thisClient, out clientName);
-                            //writes sender and message to outgoing stream
-                            writer.WriteLine(clientName + ": " + message.ToString());
-                            Console.WriteLine(clientName + ": " + message.ToString());
-                            writer.Flush();
-                        }
+                        //creates StreamWriter for current outgoing client
+                        outStream = c.Key.GetStream();
+                        writer = new StreamWriter(outStream);
+                        //appends sender name to beginning of message
+                        clientList.TryGetValue(thisClient, out clientName);
+                        //writes sender and message to outgoing stream
+                        writer.WriteLine(clientName + ": " + message.ToString());
+                        Console.WriteLine(clientName + ": " + message.ToString());
+                        writer.Flush();
                     }
-
                 }
 
                 if (writer != null) { writer.Close(); }
