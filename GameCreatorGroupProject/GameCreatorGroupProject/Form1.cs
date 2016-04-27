@@ -1210,6 +1210,7 @@ namespace GameCreatorGroupProject
 
         // Dictionary to store texture ID's by name
         Dictionary<string, int> textures = new Dictionary<string, int>();
+        Dictionary<string, Vector2> texSizes = new Dictionary<string, Vector2>();
 
         // Function to load a texture for a given gameobject
         private Sprite loadSprite(string obj, string sprPath)
@@ -1223,6 +1224,7 @@ namespace GameCreatorGroupProject
             // Using the passed object's name as a key
             textures.Add(obj, loader.loadImage(sprPath, spr));
             spr.TextureID = textures[obj];
+            texSizes.Add(obj, new Vector2(spr.Width, spr.Height));
 
             return spr;
         }
@@ -1237,8 +1239,8 @@ namespace GameCreatorGroupProject
             GL.ClearColor(Color.Black);
 
             // Set up a viewport
-            int w = glRoomView.Width;
-            int h = glRoomView.Height;
+            int w = glRoomView.Width * 2;
+            int h = glRoomView.Height * 2;
 
             CurrentView = new RectangleF(0, 0, w, h);
 
@@ -1283,6 +1285,14 @@ namespace GameCreatorGroupProject
                     spr = loadSprite(objName, objectSprites[objName]);
                     currentRoom.Objects[vec].sprite = spr;
                 }
+                else if (currentRoom.Objects[vec].sprite == null)
+                {
+                    // Resuse an old sprite
+                    spr.TextureID = textures[objName];
+                    spr.Width = (int) texSizes[objName].X;
+                    spr.Height = (int)texSizes[objName].Y;
+                    currentRoom.Objects[vec].sprite = spr;
+                }
 
                 // Check if our dictionary has an entry for the current draw depth yet
                 if (!objects.ContainsKey((int)vec.Z))
@@ -1292,11 +1302,17 @@ namespace GameCreatorGroupProject
 
                     // Add this object to the new list
                     objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
+                    currentRoom.Objects[vec].sprite.loaded = true; // prevent double-loading
                 }
                 else
                 {
-                    // Add this object to the correct list
-                    objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
+                    // Add this object to the correct list if not there already
+                    if (currentRoom.Objects[vec].sprite.loaded == false)
+                    {
+                        // Prevent double-loading
+                        currentRoom.Objects[vec].sprite.loaded = true;
+                        objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
+                    }
                 }
             }
         }
@@ -1307,7 +1323,7 @@ namespace GameCreatorGroupProject
             if (!formLoaded)
                 return;
 
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Width * 2, Height * 2);
 
             // Clear previously drawn graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);

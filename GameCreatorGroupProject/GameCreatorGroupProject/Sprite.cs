@@ -14,6 +14,9 @@ namespace GameCreatorGroupProject
     // drawing a 2D image (or sprite) on the screen during the game.
     class Sprite
     {
+        // Variable to track if the given sprite has already been loaded into the room
+        public bool loaded = false;
+
         // Member variables
         // Var for storing position (in pixels) on the screen
         public Vector3 Position = Vector3.Zero;
