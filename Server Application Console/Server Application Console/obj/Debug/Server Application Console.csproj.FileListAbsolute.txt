@@ -1,0 +1,6 @@
+C:\Users\Jared\Documents\GitHub\modmore\Server Application Console\Server Application Console\bin\Debug\Server Application Console.exe.config
+C:\Users\Jared\Documents\GitHub\modmore\Server Application Console\Server Application Console\bin\Debug\Server Application Console.exe
+C:\Users\Jared\Documents\GitHub\modmore\Server Application Console\Server Application Console\bin\Debug\Server Application Console.pdb
+C:\Users\Jared\Documents\GitHub\modmore\Server Application Console\Server Application Console\obj\Debug\Server Application Console.csprojResolveAssemblyReference.cache
+C:\Users\Jared\Documents\GitHub\modmore\Server Application Console\Server Application Console\obj\Debug\Server Application Console.exe
+C:\Users\Jared\Documents\GitHub\modmore\Server Application Console\Server Application Console\obj\Debug\Server Application Console.pdb
