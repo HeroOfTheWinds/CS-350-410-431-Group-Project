@@ -483,17 +483,8 @@ namespace GameCreatorGroupProject
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
 
             chat = (ChatClient) online.getAvailable();
-
-<<<<<<< HEAD
-            
-
-            //online.connectClient(1, chatServerID, 1);
-            //chat = MainClient.clients.ElementAt(0);
-            //chat.connectClient(ServerInfo.getServerIP());
-=======
             ChatWindow cw = new ChatWindow(chat, online);
             cw.Show();
->>>>>>> b1f9e660103dc9f5de79a6fdb9b050399778f499
         }
 
 
@@ -535,7 +526,7 @@ namespace GameCreatorGroupProject
                 {
                     if (spawned.getClientType() == 1)
                     {
-                        ChatWindow cw = new ChatWindow((ChatClient)spawned);
+                        ChatWindow cw = new ChatWindow((ChatClient)spawned, online);
                         cw.Show();
                     }
                     if (spawned.getClientType() == 2)
