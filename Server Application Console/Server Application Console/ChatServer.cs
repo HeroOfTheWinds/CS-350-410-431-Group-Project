@@ -84,6 +84,7 @@ namespace Server_Application_Console
             //server control loop
             while (running)
             {
+                Thread.Sleep(0);
                 //checks if a new client is waiting to connect
                 if (listener.Pending() && currentID == serverID)
                 {
@@ -130,6 +131,7 @@ namespace Server_Application_Console
                 NetworkStream outStream;
                 while (thisClient.Connected && running)
                 {
+                    Thread.Sleep(0);
                     //checks if data is available on the clients stream
                     if (inStream.DataAvailable)
                     {

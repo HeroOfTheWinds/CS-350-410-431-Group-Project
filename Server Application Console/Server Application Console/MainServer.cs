@@ -30,14 +30,15 @@ namespace Server_Application_Console
             {
                 try
                 {
-                    //possible issues with conflicts if multiple chat servers running, to be fixed later
+                    //possible issues with conflicts if multiple servers running, to be fixed later
                     listener = new TcpListener(IPAddress.Any, port);
                     listener.Start();
+                    listenerStarted = true;
                 }
                 //displays error box if unable to start server
                 catch (SocketException e)
                 {
-                    Console.WriteLine("Unable to start the chat server, the socket is already in use.\n" + e.ToString());
+                    Console.WriteLine("Unable to start the server, the socket is already in use.\n" + e.ToString());
                 }
             }
             //main server control
@@ -85,6 +86,7 @@ namespace Server_Application_Console
                 //control while client connected and server running
                 while (thisClient.Connected && running)
                 {
+                    Thread.Sleep(0);
                     //checks if data is available on the clients stream
                     if (stream.DataAvailable)
                     {
