@@ -519,6 +519,24 @@ namespace GameCreatorGroupProject
             return false;
         }
 
+        // Function to move the object in a certain direction
+        public void move(Vector2 dist)
+        {
+            minX += dist.X;
+            maxX += dist.X;
+            minY += dist.Y;
+            maxY += dist.Y;
+
+            for (int i = 0; i < loc.GetLength(0); i++)
+            {
+                loc[i].X += dist.X;
+                segs[i].move(dist.X, "r");
+
+                loc[i].Y += dist.Y;
+                segs[i].move(dist.Y, "u");
+            }
+        }
+
         /*
         //check if location is valid, x coordinate, and y coordinate, max and min xy are the map boundaries
         //currently unused
