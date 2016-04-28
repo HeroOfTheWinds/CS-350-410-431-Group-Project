@@ -19,7 +19,7 @@ namespace GameCreatorGroupProject
 
         //have some way for user to provide username
 #if DEBUG
-        private static string username = "Debug";
+        private static string username = "Cody";
 #else
         private static string username = "Release";
 #endif
@@ -206,38 +206,47 @@ namespace GameCreatorGroupProject
         //sends request for server type specified by message, and sends request for connection for itself
         private uint send(byte type)
         {
-            uint serverID;
-            //checks to ensure parameter is valid
-            if (type == 1 || type == 2 || type == 3)
+            try
             {
-                //ensures client has been connected
-                if (staticWriter != null)
+                uint serverID;
+                //checks to ensure parameter is valid
+                if (type == 1 || type == 2 || type == 3)
                 {
-                    //writes request to stream
-                    staticWriter.Write(type);
-                    staticWriter.Flush();
-                    //not sure if this is a blocking method, might have to find some way to wait for data to be available
-                    //gets serverID for connection from main server
-                    serverID = staticReader.ReadUInt32();
-                    //connects this client
-                    if (!connectClient(type, serverID, thisClientID))
+                    //ensures client has been connected
+                    if (staticWriter != null)
                     {
-                        //tells user if unable to connect to their own server
-                        MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //writes request to stream
+                        staticWriter.Write(type);
+                        staticWriter.Flush();
+                        //not sure if this is a blocking method, might have to find some way to wait for data to be available
+                        //gets serverID for connection from main server
+                        serverID = staticReader.ReadUInt32();
+                        //connects this client
+                        if (!connectClient(type, serverID, thisClientID))
+                        {
+                            //tells user if unable to connect to their own server
+                            MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
                     }
-                    
+                    else
+                    {
+                        throw new notConnectedException("Client must be connected to server before send is invoked");
+                    }
+
                 }
+                //argument invalid
                 else
                 {
-                    throw new notConnectedException("Client must be connected to server before send is invoked");
+                    throw new ArgumentException("Invalid server type");
                 }
+                return serverID;
             }
-            //argument invalid
-            else
+            catch
             {
-                throw new ArgumentException("Invalid server type");
+                MessageBox.Show("A network error has occured.", "Unable to connect to server.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return 0;
             }
-            return serverID;
         }
 
         //disconnects the client
@@ -287,18 +296,26 @@ namespace GameCreatorGroupProject
         //requests specified client be connected to specified server, returns true if successfully connected, else false
         public bool connectClient(byte serverType, uint serverID, uint clientID)
         {
-            if (staticWriter != null && staticClient.Connected)
+            try
             {
-                //writes connect info to stream
-                staticWriter.Write((byte)4);
-                staticWriter.Write(serverType);
-                staticWriter.Write(serverID);
-                staticWriter.Write(clientID);
-                staticWriter.Flush();
-                //not sure if this is a blocking method, might have to find some way to wait for data to be available
-                return staticReader.ReadBoolean();
+                if (staticWriter != null && staticClient.Connected)
+                {
+                    //writes connect info to stream
+                    staticWriter.Write((byte)4);
+                    staticWriter.Write(serverType);
+                    staticWriter.Write(serverID);
+                    staticWriter.Write(clientID);
+                    staticWriter.Flush();
+                    //not sure if this is a blocking method, might have to find some way to wait for data to be available
+                    return staticReader.ReadBoolean();
+                }
+                else
+                {
+                    MessageBox.Show("Disconnected.", "Unable to connect clients, server unavailable.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return false;
+                }
             }
-            else
+            catch
             {
                 MessageBox.Show("Disconnected.", "Unable to connect clients, server unavailable.", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;

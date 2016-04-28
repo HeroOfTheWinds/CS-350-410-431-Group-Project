@@ -4,3 +4,6 @@ C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-
 C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-Project-master\Server Application Console\Server Application Console\obj\Debug\Server Application Console.csprojResolveAssemblyReference.cache
 C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-Project-master\Server Application Console\Server Application Console\obj\Debug\Server Application Console.exe
 C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-Project-master\Server Application Console\Server Application Console\obj\Debug\Server Application Console.pdb
+C:\Users\cdyrd\Desktop\new\Server Application Console\Server Application Console\bin\Debug\Server Application Console.exe.config
+C:\Users\cdyrd\Desktop\new\Server Application Console\Server Application Console\obj\Debug\Server Application Console.exe
+C:\Users\cdyrd\Desktop\new\Server Application Console\Server Application Console\obj\Debug\Server Application Console.pdb

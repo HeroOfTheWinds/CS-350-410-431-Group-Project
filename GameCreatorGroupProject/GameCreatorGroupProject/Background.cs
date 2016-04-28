@@ -59,9 +59,9 @@ namespace GameCreatorGroupProject
         public Vector3[] GetVerts(float wWidth, float wHeight)
         {
             return new Vector3[] { new Vector3(-1f, -1f, 0f),
-                new Vector3( -1f + (Width/wWidth), -1f, 0f),
-                new Vector3( -1f + (Width/wWidth),  -1f + (Height/wHeight), 0f),
-                new Vector3( -1f, -1f + (Height/wHeight), 0f)};
+                new Vector3( -1f + 2*(Width/wWidth), -1f, 0f),
+                new Vector3( -1f + 2*(Width/wWidth),  -1f + 2*(Height/wHeight), 0f),
+                new Vector3( -1f, -1f + 2*(Height/wHeight), 0f)};
         }
 
         // Generate the int indices for a large array containing the vertices of every quad in the scene.

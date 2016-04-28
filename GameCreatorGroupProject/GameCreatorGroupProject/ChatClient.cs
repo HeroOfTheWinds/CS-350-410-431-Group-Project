@@ -104,7 +104,7 @@ namespace GameCreatorGroupProject
                         if (DataReceived != null) // check if subscribed
                             DataReceived(message); // raise event with data
                             //add code to write message to chat interface
-                            MessageBox.Show(message);
+                            //MessageBox.Show(message);
 
                         }
                     }

@@ -14,9 +14,6 @@ namespace GameCreatorGroupProject
     // drawing a 2D image (or sprite) on the screen during the game.
     class Sprite
     {
-        // Variable to track if the given sprite has already been loaded into the room
-        public bool loaded = false;
-
         // Member variables
         // Var for storing position (in pixels) on the screen
         public Vector3 Position = Vector3.Zero;
@@ -113,32 +110,6 @@ namespace GameCreatorGroupProject
         public void CalculateModelMatrix()
         {
             ModelMatrix = Matrix4.CreateScale(Scale) * Matrix4.CreateRotationX(Rotation.X) * Matrix4.CreateRotationY(Rotation.Y) * Matrix4.CreateRotationZ(Rotation.Z) * Matrix4.CreateTranslation(Position);
-        }
-
-        // Function to determine if a point is within a sprite
-        // Args: point where the click occured, dimensions of the control
-        public bool IsInside(Point clickPt, int wWidth, int wHeight)
-        {
-            // Convert the click point to screen normalized point
-            float relX = clickPt.X / (float)wWidth;
-            float relY = clickPt.Y / (float)wHeight;
-
-            // Convert sprite dimensions to normalized dimensions
-            float sizeX = Width / (float)wWidth;
-            float sizeY = Height / (float)wHeight;
-
-            // Compare with position and sprite size to determine if point is within
-            if (relX >= Position.X && relX <= Position.X + sizeX) // if within horizontal bounds
-            {
-                if (relY >= Position.Y && relY <= Position.Y + sizeY) // if within vertical bounds
-                {
-                    // It is inside, return true
-                    return true;
-                }
-            }
-
-            // If above didn't return, return false
-            return false;
         }
     }
 }
