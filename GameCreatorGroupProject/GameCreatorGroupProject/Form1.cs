@@ -1807,47 +1807,67 @@ namespace GameCreatorGroupProject
             Point clickPt = glRoomView.PointToClient(MousePosition);
             clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
 
-            // If already dragging something, move it with the mouse
-            if (mouseDown)
-            {
-                
-            }
-            else // Select an object instead
-            {
-                // Clear previous selection
-                selectedSpr = null;
+            // Clear previous selection
+            selectedSpr = null;
+            selectedObj = null;
 
-                // Check if the point is inside
-                foreach (GameObject obj in currentRoom.Objects.Values)
+            // Check if the point is inside
+            foreach (GameObject obj in currentRoom.Objects.Values)
+            {
+                if (obj.IsInside(clickPt))
                 {
-                    if (obj.IsInside(clickPt))
-                    {
-                        // Select the object for editing
-                        selectedSpr = obj.sprite;
-                        selectedObj = obj;
+                    // Select the object for editing
+                    selectedSpr = obj.sprite;
+                    selectedObj = obj;
 
-                        // Display selected object's data in Room Viewer
-                        txtXPos.Text = obj.getMinX().ToString();
-                        txtYPos.Text = obj.getMinY().ToString();
+                    // Display selected object's data in Room Viewer
+                    txtXPos.Text = obj.getMinX().ToString();
+                    txtYPos.Text = obj.getMinY().ToString();
 
-                        mouseDown = true;
+                    mouseDown = true;
 
-                        // Redraw so user can see selected object
-                        glRoomView.Invalidate();
-                        glRoomView.Update();
+                    // Redraw so user can see selected object
+                    glRoomView.Invalidate();
+                    glRoomView.Update();
 
-                        // break out to avoid conflicts
-                        break;
-                    }
+                    // break out to avoid conflicts
+                    break;
                 }
-            }
-            
+            }      
         }
 
         //  Stop the dragging here
         private void glRoomView_MouseUp(object sender, MouseEventArgs e)
         {
             mouseDown = false;
+        }
+
+        private void glRoomView_MouseMove(object sender, MouseEventArgs e)
+        {
+            // First, get the coordinate of the click
+            Point clickPt = glRoomView.PointToClient(MousePosition);
+            clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
+
+            if (mouseDown)
+            {
+                // Calc change in position from last mouse location
+                Vector2 deltaPos = new Vector2();
+                deltaPos.X = clickPt.X - selectedObj.getMinX();
+                deltaPos.Y = clickPt.Y - selectedObj.getMinY();
+
+                // Move the object to the new position
+                selectedObj.move(deltaPos);
+                selectedSpr.Position.X = clickPt.X / (float)Width;
+                selectedSpr.Position.Y = clickPt.Y / (float)Height;
+
+                // Display selected object's data in Room Viewer
+                txtXPos.Text = selectedObj.getMinX().ToString();
+                txtYPos.Text = selectedObj.getMinY().ToString();
+
+                // Redraw so user can see selected object
+                glRoomView.Invalidate();
+                glRoomView.Update();
+            }
         }
     }
 }
