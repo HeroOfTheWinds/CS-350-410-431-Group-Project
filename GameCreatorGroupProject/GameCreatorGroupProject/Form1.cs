@@ -277,6 +277,7 @@ namespace GameCreatorGroupProject
                     // Show resource in list view
                     listResources.Items.Add(newName + fileExt);
                     cmbSprite.Items.Add(project.Resources[newName + fileExt]);
+                    cmbxBGImage.Items.Add(newName + fileExt);
                 }
             }
             
@@ -483,6 +484,7 @@ namespace GameCreatorGroupProject
                     {
                         listResources.Items.Add(k.Key);
                         cmbSprite.Items.Add(k.Value);
+                        cmbxBGImage.Items.Add(k.Key);
                     }
                 }
 
@@ -1263,6 +1265,9 @@ namespace GameCreatorGroupProject
         GameObject selectedObj = null;
         Vector3 originalPos = new Vector3();
 
+        // Color to set the background to
+        Color clearColor = Color.Black;
+
         // Function to load a texture for a given gameobject
         private Sprite loadSprite(string obj, string sprPath)
         {
@@ -1377,6 +1382,8 @@ namespace GameCreatorGroupProject
 
             GL.Viewport(0, 0, Width * 2, Height * 2);
 
+            GL.ClearColor(clearColor);
+
             // Clear previously drawn graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -1394,7 +1401,7 @@ namespace GameCreatorGroupProject
             foreach (Background bg in BGs)
             {
                 // Populate the previously defined lists
-                verts.AddRange(bg.GetVerts().ToList());
+                verts.AddRange(bg.GetVerts(Width, Height).ToList());
                 inds.AddRange(bg.GetIndices(vertcount).ToList());
                 colors.AddRange(bg.GetColorData().ToList());
                 vertcount += bg.VertCount;
@@ -1890,6 +1897,55 @@ namespace GameCreatorGroupProject
                 glRoomView.Invalidate();
                 glRoomView.Update();
             }
+        }
+
+        private void btnChooseColor_Click(object sender, EventArgs e)
+        {
+            // Display a color picker dialog
+            colorRoomBG.ShowDialog();
+            // Use result for background color
+            clearColor = colorRoomBG.Color;
+
+            currentRoom.bcolor = clearColor;
+
+            // Redraw so user can see selected object
+            glRoomView.Invalidate();
+            glRoomView.Update();
+        }
+
+        private void txtSizeX_TextChanged(object sender, EventArgs e)
+        {
+            glRoomView.Width = Convert.ToInt32(txtSizeX.Text);
+            currentRoom.width = Convert.ToInt32(txtSizeX.Text);
+        }
+
+        private void txtSizeY_TextChanged(object sender, EventArgs e)
+        {
+            glRoomView.Height = Convert.ToInt32(txtSizeY.Text);
+            currentRoom.height = Convert.ToInt32(txtSizeY.Text);
+        }
+
+        private void panel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            // Redraw so user can see selected object
+            glRoomView.Invalidate();
+            glRoomView.Update();
+        }
+
+        private void cmbxBGImage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BGs.Clear();
+
+            Background newBG = new Background();
+            SpriteLoader loader = new SpriteLoader();
+
+            textures.Add(cmbxBGImage.Text, loader.loadImage(project.Resources[cmbxBGImage.Text], newBG, true));
+            newBG.TextureID = textures[cmbxBGImage.Text];
+            BGs.Add(newBG);
+
+            // Redraw so user can see selected object
+            glRoomView.Invalidate();
+            glRoomView.Update();
         }
     }
 }

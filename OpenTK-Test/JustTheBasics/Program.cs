@@ -59,8 +59,8 @@ namespace JustTheBasics
         // Default constructor that sets window size to 512x512 and adds some antialiasing (the GraphicsMode part)
         public Game() : base(800, 600, new OpenTK.Graphics.GraphicsMode(32, 24, 0, 4))
         {
-            CurrentView.Size = new SizeF(ClientSize.Width, ClientSize.Height);
-            ortho = Matrix4.CreateOrthographic(ClientSize.Width, ClientSize.Height, -1.0f, 64f);
+            CurrentView.Size = new SizeF(ClientSize.Width * 2, ClientSize.Height * 2);
+            ortho = Matrix4.CreateOrthographic(ClientSize.Width * 2, ClientSize.Height * 2, -1.0f, 64f);
         }
 
         // Use this function to load images, objects, and shaders at the start
@@ -168,7 +168,7 @@ namespace JustTheBasics
         {
             base.OnLoad(e);
 
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Width * 2, Height * 2);
 
             // Call our initialization function
             initProgram();
@@ -308,7 +308,7 @@ namespace JustTheBasics
             base.OnRenderFrame(e);
 
             // Set the viewport, i.e. the size of the contents of the window to be rendered.
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Width * 2, Height * 2);
             // Clear the graphics drawn last frame to avoid weird effects.
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             // Enable several important switches to be able to draw flat images and make a generally pretty picture.
