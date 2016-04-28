@@ -44,6 +44,8 @@ namespace GameCreatorGroupProject
         private float maxY;
         private float minY;
 
+        public float depth;
+
         //indicates if object has been spawned
         private bool isSpawned = false;
 

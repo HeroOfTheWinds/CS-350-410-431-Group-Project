@@ -1248,7 +1248,7 @@ namespace GameCreatorGroupProject
         Vector2[] texcoorddata;
 
         // Dictionary of Lists of Sprites to specify relative draw order (i.e. depth)
-        Dictionary<int, List<Sprite>> objects = new Dictionary<int, List<Sprite>>();
+        SortedDictionary<int, List<Sprite>> objects = new SortedDictionary<int, List<Sprite>>();
 
         // Lists of Backgrounds and background tiles in the current room
         List<Background> BGs = new List<Background>();
@@ -1261,6 +1261,7 @@ namespace GameCreatorGroupProject
         // Sprite currently selected for editing in the room
         Sprite selectedSpr = null;
         GameObject selectedObj = null;
+        Vector3 originalPos = new Vector3();
 
         // Function to load a texture for a given gameobject
         private Sprite loadSprite(string obj, string sprPath)
@@ -1648,16 +1649,16 @@ namespace GameCreatorGroupProject
 
                 // Create a new GameObject
                 GameObject newObj = new GameObject(objName, new Vector2(mouseLoc.X, mouseLoc.Y), offsets, new float[] { 0f, 0f, currentRoom.width, currentRoom.height });
-            
+                newObj.depth = Convert.ToSingle(txtLayer.Text); // Convert to float
 
-                currentRoom.Objects.Add(new Vector3(mouseLoc.X, mouseLoc.Y, 0f), newObj);
+                currentRoom.Objects.Add(new Vector3(mouseLoc.X, mouseLoc.Y, Convert.ToSingle(txtLayer.Text)), newObj);
                 txtXPos.Text = mouseLoc.X.ToString();
                 txtYPos.Text = mouseLoc.Y.ToString();
             }
 
             updateRenderList();
 
-            currentRoom.Objects[new Vector3(mouseLoc.X, mouseLoc.Y, 0f)].sprite.Position = new Vector3(mouseLoc.X/(float)Width, mouseLoc.Y/(float)Height, 0f);
+            currentRoom.Objects[new Vector3(mouseLoc.X, mouseLoc.Y, Convert.ToSingle(txtLayer.Text))].sprite.Position = new Vector3(mouseLoc.X/(float)Width, mouseLoc.Y/(float)Height, 0f);
 
             glRoomView.Invalidate();
             glRoomView.Update();
@@ -1807,41 +1808,37 @@ namespace GameCreatorGroupProject
             Point clickPt = glRoomView.PointToClient(MousePosition);
             clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
 
-            // If already dragging something, move it with the mouse
-            if (mouseDown)
-            {
-                
-            }
-            else // Select an object instead
-            {
-                // Clear previous selection
-                selectedSpr = null;
+            // Clear previous selection
+            selectedSpr = null;
+            selectedObj = null;
 
-                // Check if the point is inside
-                foreach (GameObject obj in currentRoom.Objects.Values)
+            // Check if the point is inside
+            foreach (GameObject obj in currentRoom.Objects.Values)
+            {
+                if (obj.IsInside(clickPt))
                 {
-                    if (obj.IsInside(clickPt))
-                    {
-                        // Select the object for editing
-                        selectedSpr = obj.sprite;
-                        selectedObj = obj;
+                    // Select the object for editing
+                    selectedSpr = obj.sprite;
+                    selectedObj = obj;
 
-                        // Display selected object's data in Room Viewer
-                        txtXPos.Text = obj.getMinX().ToString();
-                        txtYPos.Text = obj.getMinY().ToString();
+                    // Store the original position of the object before moving it
+                    // so that the dictionaries can be accessed and updated
+                    originalPos = new Vector3(selectedObj.getMinX(), selectedObj.getMinY(), selectedObj.depth);
 
-                        mouseDown = true;
+                    // Display selected object's data in Room Viewer
+                    txtXPos.Text = obj.getMinX().ToString();
+                    txtYPos.Text = obj.getMinY().ToString();
 
-                        // Redraw so user can see selected object
-                        glRoomView.Invalidate();
-                        glRoomView.Update();
+                    mouseDown = true;
 
-                        // break out to avoid conflicts
-                        break;
-                    }
+                    // Redraw so user can see selected object
+                    glRoomView.Invalidate();
+                    glRoomView.Update();
+
+                    // break out to avoid conflicts
+                    break;
                 }
             }
-            
         }
 
         //  Stop the dragging here
@@ -1871,6 +1868,23 @@ namespace GameCreatorGroupProject
                 // Display selected object's data in Room Viewer
                 txtXPos.Text = selectedObj.getMinX().ToString();
                 txtYPos.Text = selectedObj.getMinY().ToString();
+
+                // Generate the new position
+                Vector3 newPosition = new Vector3(selectedObj.getMinX(), selectedObj.getMinY(), selectedObj.depth);
+
+                // check if this position is already in the dictionary
+                if (!currentRoom.Objects.ContainsKey(newPosition))
+                {
+                    int oldCount = currentRoom.Objects.Count;
+
+                    currentRoom.Objects.Add(newPosition, selectedObj);
+                    currentRoom.Objects.Remove(originalPos);
+
+                    //objects[(int)newPosition.Z] = objects[(int)originalPos.Z];
+                    //objects.Remove((int)originalPos.Z);
+
+                    originalPos = newPosition;
+                }
 
                 // Redraw so user can see selected object
                 glRoomView.Invalidate();
