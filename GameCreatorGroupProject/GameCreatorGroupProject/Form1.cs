@@ -1807,33 +1807,41 @@ namespace GameCreatorGroupProject
             Point clickPt = glRoomView.PointToClient(MousePosition);
             clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
 
-            // Clear previous selection
-            selectedSpr = null;
-            selectedObj = null;
-
-            // Check if the point is inside
-            foreach (GameObject obj in currentRoom.Objects.Values)
+            // If already dragging something, move it with the mouse
+            if (mouseDown)
             {
-                if (obj.IsInside(clickPt))
+                
+            }
+            else // Select an object instead
+            {
+                // Clear previous selection
+                selectedSpr = null;
+
+                // Check if the point is inside
+                foreach (GameObject obj in currentRoom.Objects.Values)
                 {
-                    // Select the object for editing
-                    selectedSpr = obj.sprite;
-                    selectedObj = obj;
+                    if (obj.IsInside(clickPt))
+                    {
+                        // Select the object for editing
+                        selectedSpr = obj.sprite;
+                        selectedObj = obj;
 
-                    // Display selected object's data in Room Viewer
-                    txtXPos.Text = obj.getMinX().ToString();
-                    txtYPos.Text = obj.getMinY().ToString();
+                        // Display selected object's data in Room Viewer
+                        txtXPos.Text = obj.getMinX().ToString();
+                        txtYPos.Text = obj.getMinY().ToString();
 
-                    mouseDown = true;
+                        mouseDown = true;
 
-                    // Redraw so user can see selected object
-                    glRoomView.Invalidate();
-                    glRoomView.Update();
+                        // Redraw so user can see selected object
+                        glRoomView.Invalidate();
+                        glRoomView.Update();
 
-                    // break out to avoid conflicts
-                    break;
+                        // break out to avoid conflicts
+                        break;
+                    }
                 }
-            }      
+            }
+            
         }
 
         //  Stop the dragging here

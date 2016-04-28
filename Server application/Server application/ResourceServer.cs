@@ -18,12 +18,14 @@ namespace Server_application
         protected static TcpListener listener = null;
         protected static bool listenerStarted = false;
 
+        public int arrayLength = 0;
+
         private static uint currentID = 0;
         private static uint expectedClient = 0;
 
         //this will probably need to be changed when implimented for resources
         public static readonly object IDLock = new object();
-        private Dictionary<TcpClient, string> clientList = new Dictionary<TcpClient, string>();
+        private Dictionary<TcpClient, byte[]> clientList = new Dictionary<TcpClient, byte[]>();
         private bool running = true;
         private uint serverID = 0;
         //chat port
@@ -99,13 +101,13 @@ namespace Server_application
                     //connects to client
                     TcpClient client = listener.AcceptTcpClient();
                     //reads info from the client to ensure the proper client is attempting to connect
-                    StreamReader reader = new StreamReader(client.GetStream());
-                    StreamWriter writer = new StreamWriter(client.GetStream());
+                    BinaryReader reader = new BinaryReader(client.GetStream());
+                    BinaryWriter writer = new BinaryWriter(client.GetStream());
                     //if client attempting to connect directly without going through main server, denies connection (closes clients stream)
                     //may also occur if connection attempted aftr timeout
-                    if (!(connectExpected.IsSet && reader.ReadLine().Equals(expectedClient.ToString()) && reader.ReadLine().Equals(currentID.ToString())))
+                    if (!(connectExpected.IsSet && reader.ReadByte().Equals(expectedClient.ToString()) && reader.ReadByte().Equals(currentID.ToString())))
                     {
-                        writer.WriteLine("err");
+                        writer.Write("err");
                         writer.Flush();
                         client.GetStream().Close();
                         client.Close();
@@ -114,7 +116,7 @@ namespace Server_application
                     else
                     {
                         //reports to client if successfully connected
-                        writer.WriteLine("success");
+                        writer.Write("success");
                         writer.Flush();
                         connectExpected.Reset();
                         Thread t = new Thread(transmitter);
@@ -140,6 +142,7 @@ namespace Server_application
 
         /**************************************
         transmisster method: (server side) sends resource to clients
+        NO STRING ONLY INT AND BYTE[]
         ***************************************/
 
         private void transmitter(Object client)
@@ -148,11 +151,12 @@ namespace Server_application
             using (TcpClient thisClient = (TcpClient)client)
             {
                 NetworkStream inStream = thisClient.GetStream();
-                string message = "";
-                //   StreamReader reader = new StreamReader(inStream);
+                //string message = "";
+                byte[] message = null;
+                BinaryReader reader = new BinaryReader(inStream);
                 //adds client to clientList, client name sent in clients stream
-                clientList.Add(thisClient, getAppDataPath());
-                StreamWriter writer = null;
+                clientList.Add(thisClient, reader.ReadBytes(arrayLength));
+                BinaryWriter writer = null;
                 NetworkStream outStream;
                 while (thisClient.Connected && running)
                 {
@@ -161,20 +165,22 @@ namespace Server_application
                         //checks if data is available on the clients stream
                         if (inStream.DataAvailable)
                         {
-                            message = getAppDataPath();
-                            //message = reader.ReadLine();
+
+                            // message =reader.ReadLine(); 
+                            char data = reader.ReadChar();
                             //sends data to all clients in chat
-                            foreach (KeyValuePair<TcpClient, string> c in clientList)
+                            foreach (KeyValuePair<TcpClient, byte[]> c in clientList)
                             {
-                                string clientName;
+                                byte[] clientName;
 
                                 //creates StreamWriter for current outgoing client
                                 outStream = c.Key.GetStream();
-                                writer = new StreamWriter(outStream);
+                                writer = new BinaryWriter(outStream);
                                 //appends sender name to beginning of message
                                 clientList.TryGetValue(thisClient, out clientName);
                                 //writes sender and message to outgoing stream
-                                writer.WriteLine(clientName + ": " + message.ToString());
+                                writer.Write(arrayLength);//this is set to zero and shouldnt be
+                                writer.Write(clientName + ": " + message.ToString()); //this should be a byte
                                 writer.Flush();
                             }
                         }
@@ -192,18 +198,6 @@ namespace Server_application
             }
 
         }
-
-        /**************************************
-        getAppDataPath()
-            this function uses the system environment to fint he current user's
-            application data folder, and returns the path as a string.
-        ***************************************/
-        private string getAppDataPath()
-        {
-            // Use the system-defined path to the User's AppData folder.
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            return path;
-        }
     }
 }
+
