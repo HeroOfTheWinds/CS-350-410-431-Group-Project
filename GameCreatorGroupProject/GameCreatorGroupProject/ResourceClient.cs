@@ -147,7 +147,7 @@ namespace GameCreatorGroupProject
             {
                 int byteLength = ThisByte.Length;
                 //writers data to stream
-                writer.Write(result);//writes the name (EDIT THIS  LATER)
+                writer.Write(result);//writes the name
                 writer.Write(byteLength); //send length of the byte array and then the byte array.
                 writer.Write(ThisByte);
                 writer.Flush();
