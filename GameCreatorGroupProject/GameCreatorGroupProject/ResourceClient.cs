@@ -9,7 +9,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Microsoft.VisualBasic;
+using OpenTK;
+using System.Text.RegularExpressions;
+using OpenTK.Graphics.OpenGL;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
 
 namespace GameCreatorGroupProject
 {
@@ -40,7 +45,6 @@ namespace GameCreatorGroupProject
         //connects to specified server
         public override void connectClient(string serverIP)
         {
-            string data;
             dc = false;
 
             using (client = new TcpClient())
@@ -50,26 +54,36 @@ namespace GameCreatorGroupProject
                 bool connected = r.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
                 if (connected)
                 {
-                    stream = client.GetStream();
-                    writer = new BinaryWriter(new MemoryStream());
-                    reader = new BinaryReader(new MemoryStream());
-                    //verifies client with server
-                    writer.Write(MainClient.getThisClientID());
-                    writer.Write(serverID);
-                    writer.Flush();
-                    //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
-                    if (reader.Read().Equals("err"))
+                    try
                     {
-                        disconnectClient();
-                        MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        MainClient.available.Enqueue(this);
+                        stream = client.GetStream();
+                        writer = new BinaryWriter(new MemoryStream());
+                        reader = new BinaryReader(new MemoryStream());
+                        //verifies client with server
+
+                        writer.Write(MainClient.getThisClientID());
+                        writer.Write(serverID);
+                        writer.Flush();
+                        //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
+                        if (reader.Read().Equals("err"))
+                        {
+                            disconnectClient();
+                            MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        //resets priority after connected
+                        Thread.CurrentThread.Priority = ThreadPriority.Normal;
+                        //tells server clients username
+                        writer.Write(MainClient.getUsername());
+                        writer.Flush();
                     }
-                    //resets priority after connected
-                    Thread.CurrentThread.Priority = ThreadPriority.Normal;
-                    //tells server clients username
-                    writer.Write(MainClient.getUsername());
-                    writer.Flush();
+                    catch (IOException)
+                    {
+                        MessageBox.Show("The connection has timed out.", "Connection timeout.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+
                 else
                 {
                     client.EndConnect(r);
@@ -88,20 +102,19 @@ namespace GameCreatorGroupProject
                         if (stream.DataAvailable)
                         {
                             //need to set arrayLength
-
                             //THIS NEEDS TO CONVERT IT BACK INTO A STRING
-                            bytearray = reader.ReadBytes(arrayLength);
-                            data = ByteArrayToString(bytearray); //need to enter the byte[]
+                            /* bytearray = reader.ReadBytes(arrayLength);
+                             data = ByteArrayToString(bytearray); //need to enter the byte[]
+                             Project project;
+                             if (DataReceived != null)
+                             {
+                                 if()//project is open
+                                 {
+                                     // Generate the destination file path
+                                     string dest = project.getResourceDir() + @"\" + name + ".gob";
+                                     File.WriteAllText(dest, data);*/
+                            File.WriteAllBytes(project.getResourceDir() + reader.ReadString() + reader.ReadBytes(reader.ReadInt32()));
 
-
-
-                            if (DataReceived != null)
-                            {
-                                //THIS IS WHERE IT CAN BE READ BACK INTO A FILE
-                                string path = @"c:\putfilenamehere"; //this will be the location of the file
-                                                                     //THIS IS WHERE IT CAN BE READ BACK INTO A FILE
-                                File.WriteAllText(path, data);
-                            }
                         }
                     }
                     catch (Exception) { }
@@ -121,18 +134,21 @@ namespace GameCreatorGroupProject
 
         /*******************************
        send()
-       the gui will send the path as a string to send function
+      LoadResource() gets the file data
     **********************************/
-        public override void send(Object data) //idk if data should be a Object or a string
+        public override void send(Object d)
         {
-            string Data;
-            Data = (string)data;
+            string Data = LoadResource();
             byte[] ThisByte = StringToByteArray(Data);
+            string fileName = getResourcePath();
+            string result = Path.GetFileName(fileName);
 
             if (writer != null)
             {
+                int byteLength = ThisByte.Length;
                 //writers data to stream
-                writer.Write(arrayLength); //send length of the byte array and then the byte array.
+                writer.Write(result);//writes the name (EDIT THIS  LATER)
+                writer.Write(byteLength); //send length of the byte array and then the byte array.
                 writer.Write(ThisByte);
                 writer.Flush();
             }
@@ -169,24 +185,40 @@ namespace GameCreatorGroupProject
         }
 
         /**************************************
-        getAppDataPath()
+        getResources()
             this function uses the system environment to find he current user's
             application data folder, and returns the path as a string.
+            TEST
         ***************************************/
-        private string getAppDataPath()
+        private string getResourcePath()
         {
             // Use the system-defined path to the User's AppData folder.
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-
+            string Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string path = Path + @"\Resources";
             return path;
+        }
+
+        /*****************************
+        LoadResource()
+        takes the file from the directory in order to send it
+        ********************************/
+        public string LoadResource()
+        {
+            string resource;
+            string path = getResourcePath(); //getresources returns the path
+            // Create a stream reader to get the data from ProjectData.prj
+            using (StreamReader inFile = new StreamReader(path))
+            {
+                // Read in directory
+                resource = inFile.ReadLine();
+                inFile.Close();
+            }
+            return resource;
         }
 
         public override int getClientType()
         {
             return serverType;
         }
-
-
     }
 }

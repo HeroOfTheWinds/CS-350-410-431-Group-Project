@@ -48,3 +48,6 @@ C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProje
 C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.pdb
 C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.xml
 C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\OpenTK.GLControl.xml
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
