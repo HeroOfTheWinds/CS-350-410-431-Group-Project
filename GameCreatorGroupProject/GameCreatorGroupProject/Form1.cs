@@ -20,6 +20,8 @@ namespace GameCreatorGroupProject
 {
     public partial class MainWindow : Form
     {
+        //MainClient main = Program.getMain();
+        private List<uint> ilist = new List<uint>();
 
         // Create an empty Project instance
         Project project = new Project();
@@ -72,8 +74,30 @@ namespace GameCreatorGroupProject
             InitializeComponent();
         }
 
+        private static class Prompt
+        {
+            public static string ShowDialog(string text, string caption)
+            {
+                Form prompt = new Form()
+                {
+                    Width = 500,
+                    Height = 150,
+                    FormBorderStyle = FormBorderStyle.FixedDialog,
+                    Text = caption,
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+                Label textLabel = new Label() { Left = 50, Top = 20, Text = text };
+                TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 400 };
+                Button confirmation = new Button() { Text = "Ok", Left = 350, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+                confirmation.Click += (sender, e) => { prompt.Close(); };
+                prompt.Controls.Add(textBox);
+                prompt.Controls.Add(confirmation);
+                prompt.Controls.Add(textLabel);
+                prompt.AcceptButton = confirmation;
 
-
+                return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+            }
+        }
 
         private void itemStartServer_Click(object sender, EventArgs e)
         {
@@ -483,12 +507,6 @@ namespace GameCreatorGroupProject
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
             /*
             chat = (ChatClient) online.getAvailable();
-            
-
-            //online.connectClient(1, chatServerID, 1);
-            //chat = MainClient.clients.ElementAt(0);
-            //chat.connectClient(ServerInfo.getServerIP());
-
             ChatWindow cw = new ChatWindow(chat, online);
             cw.Show();
             */
@@ -517,7 +535,21 @@ namespace GameCreatorGroupProject
         {
             Thread t = new Thread(connectMain);
             t.Start();
-
+            /*
+            TCPClient spawned;
+            if ((spawned = online.getAvailable()) != null)
+            {
+                if (spawned.getClientType() == 1)
+                {
+                    ChatWindow cw = new ChatWindow((ChatClient)spawned, online);
+                    cw.Show();
+                }
+                if (spawned.getClientType() == 2)
+                {
+                    //input code for making resource gui popup
+                }
+            }
+            */
             Thread ts = new Thread(spawnReq);
             ts.Start();
         }
@@ -526,18 +558,16 @@ namespace GameCreatorGroupProject
 
         private void spawnReq()
         {
-            //bool hasCon = false;
             while (online.isConnected())
             {
                 Thread.Sleep(0);
-                //hasCon = true;
                 TCPClient spawned;
                 if ((spawned = online.getAvailable()) != null)
                 {
                     if (spawned.getClientType() == 1)
                     {
-                        ChatWindow cw = new ChatWindow((ChatClient)spawned, online);
-                        cw.Show();
+                        Thread ts = new Thread(startChatGUI);
+                        ts.Start(spawned);
                     }
                     if (spawned.getClientType() == 2)
                     {
@@ -545,6 +575,12 @@ namespace GameCreatorGroupProject
                     }
                 }
             }
+        }
+
+
+        private void startChatGUI(object c)
+        {
+            Application.Run(new ChatWindow((ChatClient)c, online));
         }
 
 
@@ -1658,6 +1694,73 @@ namespace GameCreatorGroupProject
             }
         }
 
+        private void listBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (listBox1.Visible == true)
+            {
+                int index = this.listBox1.IndexFromPoint(e.Location);
+                if (index != System.Windows.Forms.ListBox.NoMatches)
+                {
+                    DialogResult result = MessageBox.Show("Would you like to connect to the chat?", "Chat Dialogue", MessageBoxButtons.YesNo);
+                    if (result.ToString() == "Yes")
+                    {
+                        try
+                        {
+                            chatServerID = online.requestChatServer();
+                        }
+                        catch (notConnectedException)
+                        {
+                            MessageBox.Show("Could not connect to chat server, not connected to server.", "Not connected to server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
+                        /*
+                        chat = (ChatClient)online.getAvailable();
+                        ChatWindow cw = new ChatWindow(chat, online);
+                        cw.Show();
+                        */
+                    }
+                }
+            }
+        }
 
+        private void refresh_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < ilist.Count; i++)
+            {
+                if (online.isOnline(ilist[i]) == true)
+                {
+                    listBox1.Items.Add(ilist[i] + " Online");
+                }
+                else
+                    listBox1.Items.Add(ilist[i] + " Offline");
+            }
+        }
+
+        private void addToList_Click(object sender, EventArgs e)
+        {
+            string text;
+            uint ID;
+            text = Prompt.ShowDialog("Insert ClientID", "Add to List");
+            //Interaction.InputBox("instert ID");
+            if (UInt32.TryParse(text, out ID) == true)
+            {
+                ilist.Add(ID);
+            }
+            else
+            {
+                MessageBox.Show("thats number is not proper");
+            }
+        }
+
+        private void peopleOnline_Click(object sender, EventArgs e)
+        {
+            if (listBox1.Visible == true)
+            {
+                listBox1.Visible = false;
+            }
+            else
+                listBox1.Visible = true;
+        }
     }
 }

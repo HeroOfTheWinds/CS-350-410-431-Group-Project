@@ -40,7 +40,7 @@ namespace GameCreatorGroupProject
 
         private bool dc;
 
-        private Queue<TCPClient> available = new Queue<TCPClient>();
+        static public Queue<TCPClient> available = new Queue<TCPClient>();
         //main port
         private readonly int port = 20112;
 
@@ -168,7 +168,7 @@ namespace GameCreatorGroupProject
                                     //gives thread enhanced priority to attempt to connect as quickly as possible
                                     t.Priority = ThreadPriority.AboveNormal;
                                     t.Start(c);
-                                    available.Enqueue(c);
+                                    
                                     clients.Add(c);
                                 }
                             }
@@ -200,6 +200,7 @@ namespace GameCreatorGroupProject
                 throw new ArgumentNullException("No client to connect");
             }
             ((TCPClient)connectClient).connectClient(ServerInfo.getServerIP());
+            
         }
 
         //sends request for server type specified by message, and sends request for connection for itself
@@ -307,9 +308,16 @@ namespace GameCreatorGroupProject
         //querys if specified user is online
         public bool isOnline(uint clientID)
         {
-            staticWriter.Write((byte)5);
-            staticWriter.Write(clientID);
-            return staticReader.ReadBoolean();
+            if (staticWriter != null && staticReader != null)
+            {
+                staticWriter.Write((byte)5);
+                staticWriter.Write(clientID);
+                return staticReader.ReadBoolean();
+            }
+            else
+            {
+                return false;
+            }
         }
 
 

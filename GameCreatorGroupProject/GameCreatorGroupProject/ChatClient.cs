@@ -50,25 +50,35 @@ namespace GameCreatorGroupProject
                 bool connected = r.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
                 if (connected)
                 {
-                    stream = client.GetStream();
-                    writer = new StreamWriter(stream);
-                    reader = new StreamReader(stream);
-                    //verifies client with server
-                    writer.WriteLine(MainClient.getThisClientID());
-                    writer.WriteLine(serverID);
-                    writer.Flush();
-                    //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
-                    if (reader.ReadLine().Equals("err"))
+                    try
                     {
-                        disconnectClient();
-                        MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        MainClient.available.Enqueue(this);
+                        stream = client.GetStream();
+                        writer = new StreamWriter(stream);
+                        reader = new StreamReader(stream);
+                        //verifies client with server
+
+                        writer.WriteLine(MainClient.getThisClientID());
+                        writer.WriteLine(serverID);
+                        writer.Flush();
+                        //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
+                        if (reader.ReadLine().Equals("err"))
+                        {
+                            disconnectClient();
+                            MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        //resets priority after connected
+                        Thread.CurrentThread.Priority = ThreadPriority.Normal;
+                        //tells server clients username
+                        writer.WriteLine(MainClient.getUsername());
+                        writer.Flush();
                     }
-                    //resets priority after connected
-                    Thread.CurrentThread.Priority = ThreadPriority.Normal;
-                    //tells server clients username
-                    writer.WriteLine(MainClient.getUsername());
-                    writer.Flush();
+                    catch (IOException)
+                    {
+                        MessageBox.Show("The connection has timed out.", "Connection timeout.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    
                 }
                 else
                 {
@@ -101,7 +111,7 @@ namespace GameCreatorGroupProject
                     catch (Exception) { }
 
                 }
-                MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Disconnected.", "Unable to connect to chat server.", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

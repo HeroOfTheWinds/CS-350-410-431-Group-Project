@@ -20,7 +20,7 @@ namespace GameCreatorGroupProject
         private StreamWriter writer = null;
         private StreamReader reader = null;
 
-        //chat port
+        //resource port
         private readonly int port = 20115;
         public static readonly byte serverType = 2;
         private uint serverID;
@@ -120,9 +120,12 @@ namespace GameCreatorGroupProject
             }
         }
 
+
         public override int getClientType()
         {
             return serverType;
         }
+
+
     }
 }
