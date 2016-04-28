@@ -24,7 +24,7 @@ namespace GameCreatorGroupProject
         private List<uint> ilist = new List<uint>();
 		
         // Create an empty Project instance
-        Project project = new Project();
+        public static Project project = new Project();
 
         // Variable to store information on the Room currently being worked on
         Room currentRoom = new Room();
@@ -65,6 +65,7 @@ namespace GameCreatorGroupProject
         //private List<string> objects = new List<string>();
 
         private uint chatServerID;
+        private uint resourceServerID;
 
         // Declare a ResourceImporter to make it easier to load and save resources
         ResourceImporter resImporter = new ResourceImporter();
@@ -568,12 +569,11 @@ namespace GameCreatorGroupProject
                 {
                     if (spawned.getClientType() == 1)
                     {
-                        ChatWindow cw = new ChatWindow((ChatClient)spawned, online);
-                        cw.Show();
+                        Application.Run(new ChatWindow((ChatClient)spawned, online));
                     }
                     if (spawned.getClientType() == 2)
                     {
-                        //input code for making resource gui popup
+                        spawned.send(null);
                     }
                 }
             }
@@ -1758,6 +1758,23 @@ namespace GameCreatorGroupProject
                         ChatWindow cw = new ChatWindow(chat, online);
                         cw.Show();
                         */
+                    }
+                    else
+                    {
+                        DialogResult r = MessageBox.Show("Would you like to send a resource?", "Resource Dialogue", MessageBoxButtons.YesNo);
+                        if (r.ToString() == "Yes")
+                        {
+                            try
+                            {
+                                resourceServerID = online.requestResourceServer();
+                            }
+                            catch (notConnectedException)
+                            {
+                                MessageBox.Show("Could not connect to resource server, not connected to server.", "Not connected to server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                            MessageBox.Show("Connected to resource server: " + resourceServerID.ToString());
+                        }
                     }
                 }
             }

@@ -112,9 +112,24 @@ namespace GameCreatorGroupProject
                                  {
                                      // Generate the destination file path
                                      string dest = project.getResourceDir() + @"\" + name + ".gob";
-                                     File.WriteAllText(dest, data);*/
-                            File.WriteAllBytes(project.getResourceDir() + reader.ReadString() + reader.ReadBytes(reader.ReadInt32()));
-
+                                     File.WriteAllText(dest, data);
+                                     */
+                            DialogResult d = MessageBox.Show("You have recieved a file.\nWould you like to save this file as a resource?", "", MessageBoxButtons.YesNo);
+                            if (d == DialogResult.Yes)
+                            {
+                                string fileName = Path.Combine(MainWindow.project.getResourceDir(), reader.ReadString());
+                                if (!File.Exists(fileName))
+                                {
+                                    using (File.Create(fileName)) { }
+                                }
+                                File.WriteAllBytes(fileName, reader.ReadBytes(reader.ReadInt32()));
+                            }
+                            //discard data if declined
+                            else
+                            {
+                                reader.ReadString();
+                                reader.ReadBytes(reader.ReadInt32());
+                            }
                         }
                     }
                     catch (Exception) { }

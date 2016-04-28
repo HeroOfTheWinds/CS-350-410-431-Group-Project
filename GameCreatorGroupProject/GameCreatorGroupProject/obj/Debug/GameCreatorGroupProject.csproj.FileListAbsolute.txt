@@ -51,3 +51,11 @@ C:\Users\Cor\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProje
 C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
 C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
 C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csprojResolveAssemblyReference.cache
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.CollisionDesigner.resources
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.ChatWindow.resources
+C:\Users\Jared\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
