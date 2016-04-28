@@ -41,9 +41,10 @@
             // 
             // sendButton
             // 
-            this.sendButton.Location = new System.Drawing.Point(671, 582);
+            this.sendButton.Location = new System.Drawing.Point(1006, 895);
+            this.sendButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.sendButton.Name = "sendButton";
-            this.sendButton.Size = new System.Drawing.Size(75, 23);
+            this.sendButton.Size = new System.Drawing.Size(112, 35);
             this.sendButton.TabIndex = 0;
             this.sendButton.Text = "Send";
             this.sendButton.UseVisualStyleBackColor = true;
@@ -51,9 +52,10 @@
             // 
             // listView1
             // 
-            this.listView1.Location = new System.Drawing.Point(12, 97);
+            this.listView1.Location = new System.Drawing.Point(18, 149);
+            this.listView1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(141, 437);
+            this.listView1.Size = new System.Drawing.Size(210, 670);
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -61,36 +63,41 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(12, 81);
+            this.label1.Location = new System.Drawing.Point(18, 125);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(37, 13);
+            this.label1.Size = new System.Drawing.Size(55, 20);
             this.label1.TabIndex = 2;
             this.label1.Text = "Users:";
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(175, 97);
+            this.richTextBox1.Location = new System.Drawing.Point(262, 149);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(553, 446);
+            this.richTextBox1.Size = new System.Drawing.Size(828, 684);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(175, 582);
+            this.richTextBox2.Location = new System.Drawing.Point(262, 895);
+            this.richTextBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(473, 96);
+            this.richTextBox2.Size = new System.Drawing.Size(708, 146);
             this.richTextBox2.TabIndex = 4;
             this.richTextBox2.Text = "";
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.usersToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(758, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
+            this.menuStrip1.Size = new System.Drawing.Size(1137, 35);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,21 +106,22 @@
             this.usersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addUserToolStripMenuItem});
             this.usersToolStripMenuItem.Name = "usersToolStripMenuItem";
-            this.usersToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.usersToolStripMenuItem.Size = new System.Drawing.Size(67, 29);
             this.usersToolStripMenuItem.Text = "Users";
             // 
             // addUserToolStripMenuItem
             // 
             this.addUserToolStripMenuItem.Name = "addUserToolStripMenuItem";
-            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.addUserToolStripMenuItem.Size = new System.Drawing.Size(183, 30);
             this.addUserToolStripMenuItem.Text = "Add User...";
             this.addUserToolStripMenuItem.Click += new System.EventHandler(this.addUserToolStripMenuItem_Click);
             // 
             // ChatWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AcceptButton = this.sendButton;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(758, 727);
+            this.ClientSize = new System.Drawing.Size(1137, 1028);
             this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.label1);
@@ -121,6 +129,7 @@
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ChatWindow";
             this.Text = "Chat Window";
             this.menuStrip1.ResumeLayout(false);

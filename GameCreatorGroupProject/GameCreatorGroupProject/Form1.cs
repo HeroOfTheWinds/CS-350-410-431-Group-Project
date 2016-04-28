@@ -619,11 +619,13 @@ namespace GameCreatorGroupProject
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            /*
             string msg = "Hello World!";
             //object temp = msg;
             if (chat == null)
                 chat = (ChatClient) online.getAvailable();
             chat.send(msg);
+            */
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1706,7 +1708,11 @@ namespace GameCreatorGroupProject
                     {
                         try
                         {
-                            chatServerID = online.requestChatServer();
+                            uint sid = online.requestChatServer();
+                            foreach (uint i in ilist)
+                            {
+                                online.connectClient(1, sid, i);
+                            }
                         }
                         catch (notConnectedException)
                         {
@@ -1749,7 +1755,7 @@ namespace GameCreatorGroupProject
             }
             else
             {
-                MessageBox.Show("thats number is not proper");
+                MessageBox.Show("that number is not proper");
             }
         }
 
