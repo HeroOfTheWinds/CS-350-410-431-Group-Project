@@ -6,12 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameCreatorGroupProject", "GameCreatorGroupProject\GameCreatorGroupProject.csproj", "{996A0B27-CF11-49A1-A363-55CABA32CED1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CB7F2621-E423-4299-871A-931DA446A37F}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\OpenTK-Test\JustTheBasics\JustTheBasics\fs.glsl = ..\..\OpenTK-Test\JustTheBasics\JustTheBasics\fs.glsl
-		..\..\OpenTK-Test\JustTheBasics\JustTheBasics\fs_tex.glsl = ..\..\OpenTK-Test\JustTheBasics\JustTheBasics\fs_tex.glsl
-		..\..\OpenTK-Test\JustTheBasics\JustTheBasics\vs.glsl = ..\..\OpenTK-Test\JustTheBasics\JustTheBasics\vs.glsl
-		..\..\OpenTK-Test\JustTheBasics\JustTheBasics\vs_tex.glsl = ..\..\OpenTK-Test\JustTheBasics\JustTheBasics\vs_tex.glsl
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1628,9 +1628,6 @@
             this.glRoomView.DragDrop += new System.Windows.Forms.DragEventHandler(this.glRoomView_DragDrop);
             this.glRoomView.DragEnter += new System.Windows.Forms.DragEventHandler(this.glRoomView_DragEnter);
             this.glRoomView.Paint += new System.Windows.Forms.PaintEventHandler(this.glRoomView_Paint);
-            this.glRoomView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.glRoomView_MouseDown);
-            this.glRoomView.MouseMove += new System.Windows.Forms.MouseEventHandler(this.glRoomView_MouseMove);
-            this.glRoomView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.glRoomView_MouseUp);
             // 
             // imageResources
             // 
@@ -1718,7 +1715,7 @@
             this.KeyPreview = true;
             this.Name = "MainWindow";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Protocol Gladios Game Creator";
+            this.Text = "Protocol Game Creator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainWindow_KeyDown);

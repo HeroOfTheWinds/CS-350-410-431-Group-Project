@@ -7,10 +7,12 @@ using System.Windows.Input;
 using OpenTK.Input;
 using System.Windows.Forms;
 using OpenTK;
-using System.Drawing;
 
 namespace GameCreatorGroupProject
 {
+
+
+    
     class GameObject
     {
         //contains all gameObjects with collision detection on, might have to move to external class rather than static var in case user is working on more than one project
@@ -499,42 +501,6 @@ namespace GameCreatorGroupProject
             }
             //returns false if no collision detected, else true
             return false;
-        }
-
-        // Function to determine if a point is within a sprite
-        // Args: point where the click occured, dimensions of the control
-        public bool IsInside(Point clickPt)
-        {
-            // Compare with position and sprite size to determine if point is within
-            if (clickPt.X >= minX && clickPt.X <= maxX) // if within horizontal bounds
-            {
-                if (clickPt.Y >= minY && clickPt.Y <= maxY) // if within vertical bounds
-                {
-                    // It is inside, return true
-                    return true;
-                }
-            }
-
-            // If above didn't return, return false
-            return false;
-        }
-
-        // Function to move the object in a certain direction
-        public void move(Vector2 dist)
-        {
-            minX += dist.X;
-            maxX += dist.X;
-            minY += dist.Y;
-            maxY += dist.Y;
-
-            for (int i = 0; i < loc.GetLength(0); i++)
-            {
-                loc[i].X += dist.X;
-                segs[i].move(dist.X, "r");
-
-                loc[i].Y += dist.Y;
-                segs[i].move(dist.Y, "u");
-            }
         }
 
         /*
