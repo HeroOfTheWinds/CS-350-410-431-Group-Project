@@ -45,6 +45,10 @@
             this.addUserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addUserDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addUserReleaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.refresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToList = new System.Windows.Forms.ToolStripMenuItem();
+            this.peopleOnline = new System.Windows.Forms.ToolStripMenuItem();
             this.toolCompile = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ModeControlTabs = new System.Windows.Forms.TabControl();
@@ -58,6 +62,7 @@
             this.listFPVals = new System.Windows.Forms.ListBox();
             this.listFProperties = new System.Windows.Forms.ListBox();
             this.pnlResourcePreview = new System.Windows.Forms.Panel();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.picPreview = new System.Windows.Forms.PictureBox();
             this.lblResources = new System.Windows.Forms.Label();
             this.btnRemoveResource = new System.Windows.Forms.Button();
@@ -191,6 +196,7 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolFile,
             this.toolChat,
+            this.toolStripDropDownButton1,
             this.toolCompile});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
@@ -312,6 +318,42 @@
             this.addUserReleaseToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.addUserReleaseToolStripMenuItem.Text = "Add User Release";
             this.addUserReleaseToolStripMenuItem.Click += new System.EventHandler(this.addUserReleaseToolStripMenuItem_Click);
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refresh,
+            this.addToList,
+            this.peopleOnline});
+            this.toolStripDropDownButton1.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(87, 22);
+            this.toolStripDropDownButton1.Text = "Connections";
+            this.toolStripDropDownButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            // 
+            // refresh
+            // 
+            this.refresh.Name = "refresh";
+            this.refresh.Size = new System.Drawing.Size(148, 22);
+            this.refresh.Text = "Refresh";
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
+            // 
+            // addToList
+            // 
+            this.addToList.Name = "addToList";
+            this.addToList.Size = new System.Drawing.Size(148, 22);
+            this.addToList.Text = "Add to List";
+            this.addToList.Click += new System.EventHandler(this.addToList_Click);
+            // 
+            // peopleOnline
+            // 
+            this.peopleOnline.Name = "peopleOnline";
+            this.peopleOnline.Size = new System.Drawing.Size(148, 22);
+            this.peopleOnline.Text = "People Online";
+            this.peopleOnline.Click += new System.EventHandler(this.peopleOnline_Click);
             // 
             // toolCompile
             // 
@@ -462,11 +504,22 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlResourcePreview.BackColor = System.Drawing.SystemColors.ControlDark;
             this.pnlResourcePreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pnlResourcePreview.Controls.Add(this.listBox1);
             this.pnlResourcePreview.Controls.Add(this.picPreview);
             this.pnlResourcePreview.Location = new System.Drawing.Point(192, 31);
             this.pnlResourcePreview.Name = "pnlResourcePreview";
             this.pnlResourcePreview.Size = new System.Drawing.Size(707, 390);
             this.pnlResourcePreview.TabIndex = 4;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(477, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(212, 368);
+            this.listBox1.TabIndex = 1;
+            this.listBox1.Visible = false;
+            this.listBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseClick);
             // 
             // picPreview
             // 
@@ -837,7 +890,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInstantiate.Location = new System.Drawing.Point(5, 6);
             this.btnInstantiate.Name = "btnInstantiate";
+<<<<<<< HEAD
+            this.btnInstantiate.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnInstantiate.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnInstantiate.TabIndex = 0;
             this.btnInstantiate.Text = "Instantiate Object";
             this.btnInstantiate.UseVisualStyleBackColor = true;
@@ -848,7 +905,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDestroy.Location = new System.Drawing.Point(5, 35);
             this.btnDestroy.Name = "btnDestroy";
+<<<<<<< HEAD
+            this.btnDestroy.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnDestroy.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnDestroy.TabIndex = 1;
             this.btnDestroy.Text = "Destroy Object";
             this.btnDestroy.UseVisualStyleBackColor = true;
@@ -870,7 +931,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnMove.Location = new System.Drawing.Point(6, 64);
             this.btnMove.Name = "btnMove";
+<<<<<<< HEAD
+            this.btnMove.Size = new System.Drawing.Size(77, 23);
+=======
             this.btnMove.Size = new System.Drawing.Size(111, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnMove.TabIndex = 2;
             this.btnMove.Text = "Move";
             this.btnMove.UseVisualStyleBackColor = true;
@@ -881,7 +946,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnScore.Location = new System.Drawing.Point(6, 93);
             this.btnScore.Name = "btnScore";
+<<<<<<< HEAD
+            this.btnScore.Size = new System.Drawing.Size(77, 23);
+=======
             this.btnScore.Size = new System.Drawing.Size(111, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnScore.TabIndex = 3;
             this.btnScore.Text = "Set Score";
             this.btnScore.UseVisualStyleBackColor = true;
@@ -892,7 +961,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTimer.Location = new System.Drawing.Point(6, 151);
             this.btnTimer.Name = "btnTimer";
+<<<<<<< HEAD
+            this.btnTimer.Size = new System.Drawing.Size(77, 23);
+=======
             this.btnTimer.Size = new System.Drawing.Size(111, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnTimer.TabIndex = 5;
             this.btnTimer.Text = "Set Timer";
             this.btnTimer.UseVisualStyleBackColor = true;
@@ -904,7 +977,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnHealth.Location = new System.Drawing.Point(6, 122);
             this.btnHealth.Name = "btnHealth";
+<<<<<<< HEAD
+            this.btnHealth.Size = new System.Drawing.Size(77, 23);
+=======
             this.btnHealth.Size = new System.Drawing.Size(111, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnHealth.TabIndex = 4;
             this.btnHealth.Text = "Set Health";
             this.btnHealth.UseVisualStyleBackColor = true;
@@ -942,7 +1019,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnCreate.Location = new System.Drawing.Point(5, 3);
             this.btnOnCreate.Name = "btnOnCreate";
+<<<<<<< HEAD
+            this.btnOnCreate.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnOnCreate.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnOnCreate.TabIndex = 4;
             this.btnOnCreate.Text = "On Create";
             this.btnOnCreate.UseVisualStyleBackColor = true;
@@ -954,7 +1035,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTestVar.Location = new System.Drawing.Point(5, 145);
             this.btnTestVar.Name = "btnTestVar";
+<<<<<<< HEAD
+            this.btnTestVar.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnTestVar.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnTestVar.TabIndex = 6;
             this.btnTestVar.Text = "Test Variable";
             this.btnTestVar.UseVisualStyleBackColor = true;
@@ -965,7 +1050,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCollision.Location = new System.Drawing.Point(5, 87);
             this.btnCollision.Name = "btnCollision";
+<<<<<<< HEAD
+            this.btnCollision.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnCollision.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnCollision.TabIndex = 2;
             this.btnCollision.Text = "On Collision";
             this.btnCollision.UseVisualStyleBackColor = true;
@@ -977,7 +1066,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnInput.Location = new System.Drawing.Point(5, 116);
             this.btnInput.Name = "btnInput";
+<<<<<<< HEAD
+            this.btnInput.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnInput.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnInput.TabIndex = 1;
             this.btnInput.Text = "Get Input";
             this.btnInput.UseVisualStyleBackColor = true;
@@ -989,7 +1082,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnDestruct.Location = new System.Drawing.Point(5, 29);
             this.btnOnDestruct.Name = "btnOnDestruct";
+<<<<<<< HEAD
+            this.btnOnDestruct.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnOnDestruct.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnOnDestruct.TabIndex = 5;
             this.btnOnDestruct.Text = "On Destruct";
             this.btnOnDestruct.UseVisualStyleBackColor = true;
@@ -1001,7 +1098,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOnStep.Location = new System.Drawing.Point(5, 58);
             this.btnOnStep.Name = "btnOnStep";
+<<<<<<< HEAD
+            this.btnOnStep.Size = new System.Drawing.Size(78, 23);
+=======
             this.btnOnStep.Size = new System.Drawing.Size(112, 23);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnOnStep.TabIndex = 7;
             this.btnOnStep.Text = "On Step";
             this.btnOnStep.UseVisualStyleBackColor = true;
@@ -1618,7 +1719,11 @@
             // btnSendMsg
             // 
             this.btnSendMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+<<<<<<< HEAD
+            this.btnSendMsg.Location = new System.Drawing.Point(1016, 134);
+=======
             this.btnSendMsg.Location = new System.Drawing.Point(1016, 142);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.btnSendMsg.Name = "btnSendMsg";
             this.btnSendMsg.Size = new System.Drawing.Size(139, 23);
             this.btnSendMsg.TabIndex = 2;
@@ -1629,7 +1734,11 @@
             // 
             this.txtMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+<<<<<<< HEAD
+            this.txtMessage.Location = new System.Drawing.Point(3, 137);
+=======
             this.txtMessage.Location = new System.Drawing.Point(3, 145);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(1006, 20);
             this.txtMessage.TabIndex = 1;
@@ -1644,7 +1753,11 @@
             this.txtChat.Name = "txtChat";
             this.txtChat.ReadOnly = true;
             this.txtChat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+<<<<<<< HEAD
+            this.txtChat.Size = new System.Drawing.Size(1152, 125);
+=======
             this.txtChat.Size = new System.Drawing.Size(1152, 133);
+>>>>>>> 51140f1a159830d8f0a42ba5e1a4106d61b148de
             this.txtChat.TabIndex = 0;
             // 
             // folderPrjDir
@@ -1841,6 +1954,11 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem refresh;
+        private System.Windows.Forms.ToolStripMenuItem addToList;
+        private System.Windows.Forms.ToolStripMenuItem peopleOnline;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

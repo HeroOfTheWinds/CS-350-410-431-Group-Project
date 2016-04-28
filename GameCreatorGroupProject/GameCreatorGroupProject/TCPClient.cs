@@ -13,7 +13,7 @@ namespace GameCreatorGroupProject
 {
     public abstract class TCPClient
     {
-        protected TcpClient client = null;
+        public TcpClient client = null;
         protected NetworkStream stream = null;
 
         //connects to a server
