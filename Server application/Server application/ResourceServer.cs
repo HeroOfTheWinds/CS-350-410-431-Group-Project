@@ -25,7 +25,7 @@ namespace Server_application
 
         //this will probably need to be changed when implimented for resources
         public static readonly object IDLock = new object();
-        private Dictionary<TcpClient, byte[]> clientList = new Dictionary<TcpClient, byte[]>();
+        private List<TcpClient> clientList = new List<TcpClient>();
         private bool running = true;
         private uint serverID = 0;
         //chat port
@@ -127,8 +127,6 @@ namespace Server_application
             }
         }
 
-
-
         public override void stopServer()
         {
             if (listener != null) { listener.Stop(); }
@@ -142,7 +140,6 @@ namespace Server_application
 
         /**************************************
         transmisster method: (server side) sends resource to clients
-        NO STRING ONLY INT AND BYTE[]
         ***************************************/
 
         private void transmitter(Object client)
@@ -151,11 +148,13 @@ namespace Server_application
             using (TcpClient thisClient = (TcpClient)client)
             {
                 NetworkStream inStream = thisClient.GetStream();
-                //string message = "";
-                byte[] message = null;
+                string filename = "";
+                int bytesize = 0;
+                byte[] data = null;
+               
                 BinaryReader reader = new BinaryReader(inStream);
                 //adds client to clientList, client name sent in clients stream
-                clientList.Add(thisClient, reader.ReadBytes(arrayLength));
+                clientList.Add(thisClient);
                 BinaryWriter writer = null;
                 NetworkStream outStream;
                 while (thisClient.Connected && running)
@@ -165,23 +164,25 @@ namespace Server_application
                         //checks if data is available on the clients stream
                         if (inStream.DataAvailable)
                         {
+                            filename = reader.ReadString();
+                            bytesize = reader.ReadInt32();
+                            data = reader.ReadBytes(bytesize);
 
-                            // message =reader.ReadLine(); 
-                            char data = reader.ReadChar();
                             //sends data to all clients in chat
-                            foreach (KeyValuePair<TcpClient, byte[]> c in clientList)
+                            foreach (TcpClient c in clientList)
                             {
-                                byte[] clientName;
+                
+                                if (c != thisClient)//sender being whatever variable holds the sender
+                                {//creates StreamWriter for current outgoing client
+                                    outStream = c.GetStream();
+                                    writer = new BinaryWriter(outStream);
 
-                                //creates StreamWriter for current outgoing client
-                                outStream = c.Key.GetStream();
-                                writer = new BinaryWriter(outStream);
-                                //appends sender name to beginning of message
-                                clientList.TryGetValue(thisClient, out clientName);
-                                //writes sender and message to outgoing stream
-                                writer.Write(arrayLength);//this is set to zero and shouldnt be
-                                writer.Write(clientName + ": " + message.ToString()); //this should be a byte
-                                writer.Flush();
+                                    //writes sender and message to outgoing stream
+                                    writer.Write(filename);
+                                    writer.Write(bytesize);
+                                    writer.Write(data);
+                                    writer.Flush();
+                                }
                             }
                         }
                     }
