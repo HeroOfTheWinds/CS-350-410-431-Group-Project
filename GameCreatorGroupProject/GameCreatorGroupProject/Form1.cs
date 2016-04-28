@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,11 +20,11 @@ namespace GameCreatorGroupProject
 {
     public partial class MainWindow : Form
     {
-        //MainClient main = Program.getMain();
+		//MainClient main = Program.getMain();
         private List<uint> ilist = new List<uint>();
-
+		
         // Create an empty Project instance
-        Project project = new Project();
+        public static Project project = new Project();
 
         // Variable to store information on the Room currently being worked on
         Room currentRoom = new Room();
@@ -65,6 +65,7 @@ namespace GameCreatorGroupProject
         //private List<string> objects = new List<string>();
 
         private uint chatServerID;
+        private uint resourceServerID;
 
         // Declare a ResourceImporter to make it easier to load and save resources
         ResourceImporter resImporter = new ResourceImporter();
@@ -74,7 +75,7 @@ namespace GameCreatorGroupProject
             InitializeComponent();
         }
 
-        private static class Prompt
+		private static class Prompt
         {
             public static string ShowDialog(string text, string caption)
             {
@@ -277,6 +278,7 @@ namespace GameCreatorGroupProject
                     // Show resource in list view
                     listResources.Items.Add(newName + fileExt);
                     cmbSprite.Items.Add(project.Resources[newName + fileExt]);
+                    cmbxBGImage.Items.Add(newName + fileExt);
                 }
             }
             
@@ -483,6 +485,7 @@ namespace GameCreatorGroupProject
                     {
                         listResources.Items.Add(k.Key);
                         cmbSprite.Items.Add(k.Value);
+                        cmbxBGImage.Items.Add(k.Key);
                     }
                 }
 
@@ -505,7 +508,7 @@ namespace GameCreatorGroupProject
                 return;
             }
             MessageBox.Show("Connected to chat server: " + chatServerID.ToString());
-            /*
+			/*
             chat = (ChatClient) online.getAvailable();
             ChatWindow cw = new ChatWindow(chat, online);
             cw.Show();
@@ -535,7 +538,7 @@ namespace GameCreatorGroupProject
         {
             Thread t = new Thread(connectMain);
             t.Start();
-            /*
+			/*
             TCPClient spawned;
             if ((spawned = online.getAvailable()) != null)
             {
@@ -560,25 +563,24 @@ namespace GameCreatorGroupProject
         {
             while (online.isConnected())
             {
-                Thread.Sleep(0);
+				Thread.Sleep(0);
                 TCPClient spawned;
                 if ((spawned = online.getAvailable()) != null)
                 {
                     if (spawned.getClientType() == 1)
                     {
-                        Thread ts = new Thread(startChatGUI);
-                        ts.Start(spawned);
+                        Application.Run(new ChatWindow((ChatClient)spawned, online));
                     }
                     if (spawned.getClientType() == 2)
                     {
-                        //input code for making resource gui popup
+                        spawned.send(null);
                     }
                 }
             }
         }
-
-
-        private void startChatGUI(object c)
+		
+		
+		private void startChatGUI(object c)
         {
             Application.Run(new ChatWindow((ChatClient)c, online));
         }
@@ -619,13 +621,11 @@ namespace GameCreatorGroupProject
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*
             string msg = "Hello World!";
             //object temp = msg;
             if (chat == null)
                 chat = (ChatClient) online.getAvailable();
             chat.send(msg);
-            */
         }
 
         private void addUserToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1250,7 +1250,7 @@ namespace GameCreatorGroupProject
         Vector2[] texcoorddata;
 
         // Dictionary of Lists of Sprites to specify relative draw order (i.e. depth)
-        Dictionary<int, List<Sprite>> objects = new Dictionary<int, List<Sprite>>();
+        SortedDictionary<int, List<Sprite>> objects = new SortedDictionary<int, List<Sprite>>();
 
         // Lists of Backgrounds and background tiles in the current room
         List<Background> BGs = new List<Background>();
@@ -1258,6 +1258,15 @@ namespace GameCreatorGroupProject
 
         // Dictionary to store texture ID's by name
         Dictionary<string, int> textures = new Dictionary<string, int>();
+        Dictionary<string, Vector2> texSizes = new Dictionary<string, Vector2>();
+
+        // Sprite currently selected for editing in the room
+        Sprite selectedSpr = null;
+        GameObject selectedObj = null;
+        Vector3 originalPos = new Vector3();
+
+        // Color to set the background to
+        Color clearColor = Color.Black;
 
         // Function to load a texture for a given gameobject
         private Sprite loadSprite(string obj, string sprPath)
@@ -1271,6 +1280,7 @@ namespace GameCreatorGroupProject
             // Using the passed object's name as a key
             textures.Add(obj, loader.loadImage(sprPath, spr));
             spr.TextureID = textures[obj];
+            texSizes.Add(obj, new Vector2(spr.Width, spr.Height));
 
             return spr;
         }
@@ -1285,8 +1295,8 @@ namespace GameCreatorGroupProject
             GL.ClearColor(Color.Black);
 
             // Set up a viewport
-            int w = glRoomView.Width;
-            int h = glRoomView.Height;
+            int w = glRoomView.Width * 2;
+            int h = glRoomView.Height * 2;
 
             CurrentView = new RectangleF(0, 0, w, h);
 
@@ -1305,6 +1315,7 @@ namespace GameCreatorGroupProject
             // Load two shaders, one for test squares and the other for textured sprites
             shaders.Add("default", new ShaderProgram("vs.glsl", "fs.glsl", true));
             shaders.Add("textured", new ShaderProgram("vs_tex.glsl", "fs_tex.glsl", true));
+            shaders.Add("selected", new ShaderProgram("vs_tex.glsl", "fs_sel.glsl", true));
 
             // Declare that the shader we will use first is the textured sprite
             activeShader = "textured";
@@ -1331,6 +1342,14 @@ namespace GameCreatorGroupProject
                     spr = loadSprite(objName, objectSprites[objName]);
                     currentRoom.Objects[vec].sprite = spr;
                 }
+                else if (currentRoom.Objects[vec].sprite == null)
+                {
+                    // Resuse an old sprite
+                    spr.TextureID = textures[objName];
+                    spr.Width = (int) texSizes[objName].X;
+                    spr.Height = (int)texSizes[objName].Y;
+                    currentRoom.Objects[vec].sprite = spr;
+                }
 
                 // Check if our dictionary has an entry for the current draw depth yet
                 if (!objects.ContainsKey((int)vec.Z))
@@ -1340,11 +1359,17 @@ namespace GameCreatorGroupProject
 
                     // Add this object to the new list
                     objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
+                    currentRoom.Objects[vec].sprite.loaded = true; // prevent double-loading
                 }
                 else
                 {
-                    // Add this object to the correct list
-                    objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
+                    // Add this object to the correct list if not there already
+                    if (currentRoom.Objects[vec].sprite.loaded == false)
+                    {
+                        // Prevent double-loading
+                        currentRoom.Objects[vec].sprite.loaded = true;
+                        objects[(int)vec.Z].Add(currentRoom.Objects[vec].sprite);
+                    }
                 }
             }
         }
@@ -1355,7 +1380,9 @@ namespace GameCreatorGroupProject
             if (!formLoaded)
                 return;
 
-            GL.Viewport(0, 0, Width, Height);
+            GL.Viewport(0, 0, Width * 2, Height * 2);
+
+            GL.ClearColor(clearColor);
 
             // Clear previously drawn graphics
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -1374,7 +1401,7 @@ namespace GameCreatorGroupProject
             foreach (Background bg in BGs)
             {
                 // Populate the previously defined lists
-                verts.AddRange(bg.GetVerts().ToList());
+                verts.AddRange(bg.GetVerts(Width, Height).ToList());
                 inds.AddRange(bg.GetIndices(vertcount).ToList());
                 colors.AddRange(bg.GetColorData().ToList());
                 vertcount += bg.VertCount;
@@ -1542,6 +1569,16 @@ namespace GameCreatorGroupProject
             {
                 Sprite v = sprLists.Pop();
                 {
+                    // Check if this sprite is selected
+                    if (v == selectedSpr)
+                    {
+                        GL.UseProgram(shaders["selected"].ProgramID);
+                    }
+                    else
+                    {
+                        GL.UseProgram(shaders["textured"].ProgramID);
+                    }
+
                     // Tell OpenTK to associate the given texture to the VBO we're drawing
                     GL.BindTexture(TextureTarget.Texture2D, v.TextureID);
                     // Send our projection matrix to the GLSL shader
@@ -1619,16 +1656,16 @@ namespace GameCreatorGroupProject
 
                 // Create a new GameObject
                 GameObject newObj = new GameObject(objName, new Vector2(mouseLoc.X, mouseLoc.Y), offsets, new float[] { 0f, 0f, currentRoom.width, currentRoom.height });
-            
+                newObj.depth = Convert.ToSingle(txtLayer.Text); // Convert to float
 
-                currentRoom.Objects.Add(new Vector3(mouseLoc.X, mouseLoc.Y, 0f), newObj);
+                currentRoom.Objects.Add(new Vector3(mouseLoc.X, mouseLoc.Y, Convert.ToSingle(txtLayer.Text)), newObj);
                 txtXPos.Text = mouseLoc.X.ToString();
                 txtYPos.Text = mouseLoc.Y.ToString();
             }
 
             updateRenderList();
 
-            currentRoom.Objects[new Vector3(mouseLoc.X, mouseLoc.Y, 0f)].sprite.Position = new Vector3(mouseLoc.X/(float)Width, mouseLoc.Y/(float)Height, 0f);
+            currentRoom.Objects[new Vector3(mouseLoc.X, mouseLoc.Y, Convert.ToSingle(txtLayer.Text))].sprite.Position = new Vector3(mouseLoc.X/(float)Width, mouseLoc.Y/(float)Height, 0f);
 
             glRoomView.Invalidate();
             glRoomView.Update();
@@ -1696,7 +1733,7 @@ namespace GameCreatorGroupProject
             }
         }
 
-        private void listBox1_MouseClick(object sender, MouseEventArgs e)
+		private void listBox1_MouseClick(object sender, MouseEventArgs e)
         {
             if (listBox1.Visible == true)
             {
@@ -1708,11 +1745,7 @@ namespace GameCreatorGroupProject
                     {
                         try
                         {
-                            uint sid = online.requestChatServer();
-                            foreach (uint i in ilist)
-                            {
-                                online.connectClient(1, sid, i);
-                            }
+                            chatServerID = online.requestChatServer();
                         }
                         catch (notConnectedException)
                         {
@@ -1725,6 +1758,23 @@ namespace GameCreatorGroupProject
                         ChatWindow cw = new ChatWindow(chat, online);
                         cw.Show();
                         */
+                    }
+                    else
+                    {
+                        DialogResult r = MessageBox.Show("Would you like to send a resource?", "Resource Dialogue", MessageBoxButtons.YesNo);
+                        if (r.ToString() == "Yes")
+                        {
+                            try
+                            {
+                                resourceServerID = online.requestResourceServer();
+                            }
+                            catch (notConnectedException)
+                            {
+                                MessageBox.Show("Could not connect to resource server, not connected to server.", "Not connected to server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                            MessageBox.Show("Connected to resource server: " + resourceServerID.ToString());
+                        }
                     }
                 }
             }
@@ -1755,7 +1805,7 @@ namespace GameCreatorGroupProject
             }
             else
             {
-                MessageBox.Show("that number is not proper");
+                MessageBox.Show("thats number is not proper");
             }
         }
 
@@ -1767,6 +1817,152 @@ namespace GameCreatorGroupProject
             }
             else
                 listBox1.Visible = true;
+        }
+
+        /*
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Code here for starting drag and drop within the room
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        */
+        private bool mouseDown = false;
+
+        private void glRoomView_MouseDown(object sender, MouseEventArgs e)
+        {
+            // First, get the coordinate of the click
+            Point clickPt = glRoomView.PointToClient(MousePosition);
+            clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
+
+            // Clear previous selection
+            selectedSpr = null;
+            selectedObj = null;
+
+            // Check if the point is inside
+            foreach (GameObject obj in currentRoom.Objects.Values)
+            {
+                if (obj.IsInside(clickPt))
+                {
+                    // Select the object for editing
+                    selectedSpr = obj.sprite;
+                    selectedObj = obj;
+
+                    // Store the original position of the object before moving it
+                    // so that the dictionaries can be accessed and updated
+                    originalPos = new Vector3(selectedObj.getMinX(), selectedObj.getMinY(), selectedObj.depth);
+
+                    // Display selected object's data in Room Viewer
+                    txtXPos.Text = obj.getMinX().ToString();
+                    txtYPos.Text = obj.getMinY().ToString();
+
+                    mouseDown = true;
+
+                    // Redraw so user can see selected object
+                    glRoomView.Invalidate();
+                    glRoomView.Update();
+
+                    // break out to avoid conflicts
+                    break;
+                }
+            }
+        }
+
+        //  Stop the dragging here
+        private void glRoomView_MouseUp(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+        }
+
+        private void glRoomView_MouseMove(object sender, MouseEventArgs e)
+        {
+            // First, get the coordinate of the click
+            Point clickPt = glRoomView.PointToClient(MousePosition);
+            clickPt.Y = glRoomView.Height - clickPt.Y; // Convert ref from upper left corner to lower left
+
+            if (mouseDown)
+            {
+                // Calc change in position from last mouse location
+                Vector2 deltaPos = new Vector2();
+                deltaPos.X = clickPt.X - selectedObj.getMinX();
+                deltaPos.Y = clickPt.Y - selectedObj.getMinY();
+
+                // Move the object to the new position
+                selectedObj.move(deltaPos);
+                selectedSpr.Position.X = clickPt.X / (float)Width;
+                selectedSpr.Position.Y = clickPt.Y / (float)Height;
+
+                // Display selected object's data in Room Viewer
+                txtXPos.Text = selectedObj.getMinX().ToString();
+                txtYPos.Text = selectedObj.getMinY().ToString();
+
+                // Generate the new position
+                Vector3 newPosition = new Vector3(selectedObj.getMinX(), selectedObj.getMinY(), selectedObj.depth);
+
+                // check if this position is already in the dictionary
+                if (!currentRoom.Objects.ContainsKey(newPosition))
+                {
+                    int oldCount = currentRoom.Objects.Count;
+
+                    currentRoom.Objects.Add(newPosition, selectedObj);
+                    currentRoom.Objects.Remove(originalPos);
+
+                    //objects[(int)newPosition.Z] = objects[(int)originalPos.Z];
+                    //objects.Remove((int)originalPos.Z);
+
+                    originalPos = newPosition;
+                }
+
+                // Redraw so user can see selected object
+                glRoomView.Invalidate();
+                glRoomView.Update();
+            }
+        }
+
+        private void btnChooseColor_Click(object sender, EventArgs e)
+        {
+            // Display a color picker dialog
+            colorRoomBG.ShowDialog();
+            // Use result for background color
+            clearColor = colorRoomBG.Color;
+
+            currentRoom.bcolor = clearColor;
+
+            // Redraw so user can see selected object
+            glRoomView.Invalidate();
+            glRoomView.Update();
+        }
+
+        private void txtSizeX_TextChanged(object sender, EventArgs e)
+        {
+            glRoomView.Width = Convert.ToInt32(txtSizeX.Text);
+            currentRoom.width = Convert.ToInt32(txtSizeX.Text);
+        }
+
+        private void txtSizeY_TextChanged(object sender, EventArgs e)
+        {
+            glRoomView.Height = Convert.ToInt32(txtSizeY.Text);
+            currentRoom.height = Convert.ToInt32(txtSizeY.Text);
+        }
+
+        private void panel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            // Redraw so user can see selected object
+            glRoomView.Invalidate();
+            glRoomView.Update();
+        }
+
+        private void cmbxBGImage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BGs.Clear();
+
+            Background newBG = new Background();
+            SpriteLoader loader = new SpriteLoader();
+
+            textures.Add(cmbxBGImage.Text, loader.loadImage(project.Resources[cmbxBGImage.Text], newBG, true));
+            newBG.TextureID = textures[cmbxBGImage.Text];
+            BGs.Add(newBG);
+
+            // Redraw so user can see selected object
+            glRoomView.Invalidate();
+            glRoomView.Update();
         }
     }
 }

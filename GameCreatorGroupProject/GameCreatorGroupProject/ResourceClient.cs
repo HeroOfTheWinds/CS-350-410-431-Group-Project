@@ -9,22 +9,31 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Microsoft.VisualBasic;
+using OpenTK;
+using System.Text.RegularExpressions;
+using OpenTK.Graphics.OpenGL;
+using Microsoft.CSharp;
+using System.CodeDom.Compiler;
 
 namespace GameCreatorGroupProject
 {
     //special clients should only be invoked by main client
     internal class ResourceClient : TCPClient
     {
-
-        private StreamWriter writer = null;
-        private StreamReader reader = null;
+        private BinaryWriter writer = null;
+        private BinaryReader reader = null;
+        int arrayLength = 0;
+        byte[] bytearray = null;
 
         //resource port
         private readonly int port = 20115;
         public static readonly byte serverType = 2;
         private uint serverID;
         private bool dc;
+
+        public delegate void DataReceivedHandler(string data);
+        public event DataReceivedHandler DataReceived;
 
         public ResourceClient(uint serverID)
         {
@@ -36,7 +45,6 @@ namespace GameCreatorGroupProject
         //connects to specified server
         public override void connectClient(string serverIP)
         {
-            string data;
             dc = false;
 
             using (client = new TcpClient())
@@ -46,26 +54,36 @@ namespace GameCreatorGroupProject
                 bool connected = r.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
                 if (connected)
                 {
-                    stream = client.GetStream();
-                    writer = new StreamWriter(stream);
-                    reader = new StreamReader(stream);
-                    //verifies client with server
-                    writer.WriteLine(MainClient.getThisClientID());
-                    writer.WriteLine(serverID);
-                    writer.Flush();
-                    //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
-                    if (reader.ReadLine().Equals("err"))
+                    try
                     {
-                        disconnectClient();
-                        MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                        MainClient.available.Enqueue(this);
+                        stream = client.GetStream();
+                        writer = new BinaryWriter(new MemoryStream());
+                        reader = new BinaryReader(new MemoryStream());
+                        //verifies client with server
+
+                        writer.Write(MainClient.getThisClientID());
+                        writer.Write(serverID);
+                        writer.Flush();
+                        //stops if method called improperly, or timeout reached on connection resulting in connection to be improperly established
+                        if (reader.Read().Equals("err"))
+                        {
+                            disconnectClient();
+                            MessageBox.Show("Connection refused by server.", "Connection declined.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                        //resets priority after connected
+                        Thread.CurrentThread.Priority = ThreadPriority.Normal;
+                        //tells server clients username
+                        writer.Write(MainClient.getUsername());
+                        writer.Flush();
                     }
-                    //resets priority after connected
-                    Thread.CurrentThread.Priority = ThreadPriority.Normal;
-                    //tells server clients username
-                    writer.WriteLine(MainClient.getUsername());
-                    writer.Flush();
+                    catch (IOException)
+                    {
+                        MessageBox.Show("The connection has timed out.", "Connection timeout.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+
                 else
                 {
                     client.EndConnect(r);
@@ -76,17 +94,43 @@ namespace GameCreatorGroupProject
                 //gets data 
                 while (client.Connected && !dc)
                 {
+                    Thread.Sleep(0);
                     //if disconnected dataavailable field will throw and acception, and should set connected to false
                     try
                     {
                         //possible issue if server has not yet read sent data
                         if (stream.DataAvailable)
                         {
-                            //reads stream data and returns as a string
-                            data = reader.ReadLine();
+                            //need to set arrayLength
+                            //THIS NEEDS TO CONVERT IT BACK INTO A STRING
+                            /* bytearray = reader.ReadBytes(arrayLength);
+                             data = ByteArrayToString(bytearray); //need to enter the byte[]
+                             Project project;
+                             if (DataReceived != null)
+                             {
+                                 if()//project is open
+                                 {
+                                     // Generate the destination file path
+                                     string dest = project.getResourceDir() + @"\" + name + ".gob";
+                                     File.WriteAllText(dest, data);
+                                     */
+                            DialogResult d = MessageBox.Show("You have recieved a file.\nWould you like to save this file as a resource?", "", MessageBoxButtons.YesNo);
+                            if (d == DialogResult.Yes)
+                            {
+                                string fileName = Path.Combine(MainWindow.project.getResourceDir(), reader.ReadString());
+                                if (!File.Exists(fileName))
+                                {
+                                    using (File.Create(fileName)) { }
+                                }
+                                File.WriteAllBytes(fileName, reader.ReadBytes(reader.ReadInt32()));
+                            }
+                            //discard data if declined
+                            else
+                            {
+                                reader.ReadString();
+                                reader.ReadBytes(reader.ReadInt32());
+                            }
                         }
-
-
                     }
                     catch (Exception) { }
                 }
@@ -104,14 +148,23 @@ namespace GameCreatorGroupProject
         }
 
         /*******************************
-        changes a string into a byte stream
+       send()
+      LoadResource() gets the file data
     **********************************/
-        public override void send(Object data) //idk if data should be a ref Object or a string
+        public override void send(Object d)
         {
+            string Data = LoadResource();
+            byte[] ThisByte = StringToByteArray(Data);
+            string fileName = getResourcePath();
+            string result = Path.GetFileName(fileName);
+
             if (writer != null)
             {
+                int byteLength = ThisByte.Length;
                 //writers data to stream
-                writer.WriteLine((string)data);
+                writer.Write(result);//writes the name
+                writer.Write(byteLength); //send length of the byte array and then the byte array.
+                writer.Write(ThisByte);
                 writer.Flush();
             }
             else
@@ -120,12 +173,67 @@ namespace GameCreatorGroupProject
             }
         }
 
+        /**************************
+            FileToByteArray() takes a path from getAppDataPath() 
+            and converts it into a bytearray
+            ***************************/
+
+        public byte[] StringToByteArray(string path)
+        {
+            //  if (!File.Exists(path))
+            string readText = File.ReadAllText(path); //readalltext() opens a text file, reads all lines of the file, and then closes the file
+
+            byte[] bytes = new byte[readText.Length * sizeof(char)];
+            System.Buffer.BlockCopy(readText.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }
+
+        /*******************************
+            ByteArrayToString() takes the byte array and converts it into a string
+            returns string of the original file.
+           *******************************/
+        static string ByteArrayToString(byte[] bytes)
+        {
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
+        }
+
+        /**************************************
+        getResources()
+            this function uses the system environment to find he current user's
+            application data folder, and returns the path as a string.
+            TEST
+        ***************************************/
+        private string getResourcePath()
+        {
+            // Use the system-defined path to the User's AppData folder.
+            string Path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string path = Path + @"\Resources";
+            return path;
+        }
+
+        /*****************************
+        LoadResource()
+        takes the file from the directory in order to send it
+        ********************************/
+        public string LoadResource()
+        {
+            string resource;
+            string path = getResourcePath(); //getresources returns the path
+            // Create a stream reader to get the data from ProjectData.prj
+            using (StreamReader inFile = new StreamReader(path))
+            {
+                // Read in directory
+                resource = inFile.ReadLine();
+                inFile.Close();
+            }
+            return resource;
+        }
 
         public override int getClientType()
         {
             return serverType;
         }
-
-
     }
 }
