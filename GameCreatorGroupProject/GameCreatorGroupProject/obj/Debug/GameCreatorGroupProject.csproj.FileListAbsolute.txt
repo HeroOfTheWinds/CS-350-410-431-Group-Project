@@ -27,3 +27,6 @@ C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-
 C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-Project-master\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.MainWindow.resources
 C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-Project-master\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.ChatWindow.resources
 C:\Users\cdyrd\Desktop\CS-350-410-431-Group-Project-master\CS-350-410-431-Group-Project-master\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.csproj.GenerateResource.Cache
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\bin\Debug\GameCreatorGroupProject.exe.config
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.exe
+C:\Users\dpuli\OneDrive\Documents\GitHub\CS-350-410-431-Group-Project\GameCreatorGroupProject\GameCreatorGroupProject\obj\Debug\GameCreatorGroupProject.pdb
